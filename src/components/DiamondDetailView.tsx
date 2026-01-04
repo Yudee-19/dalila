@@ -313,7 +313,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
           <div className="p-4">
             <div className="flex gap-4">
               {/* Left Column: Media Display */}
-              <div className="flex-shrink-0" style={{ width: '396px' }}>
+              <div className="flex-shrink-0" style={{ width: '550px' }}>
                 {/* Media Container */}
                 <div className="mb-4">
                   <DiamondMediaViewer
@@ -370,66 +370,69 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                 {/* Divider */}
                 <div className="border-t border-[#C89E3A] mb-4" />
 
-                {/* Total Price */}
-                <div className="mb-4">
-                  <div className="text-xs text-gray-500 mb-1">Total Price</div>
-                  <div className={`text-4xl font-bold text-gray-900 ${marcellus.className}`}>
-                    {formatPrice(diamond.NET_VALUE ?? 0)}
+                {/* Total Price and Buttons Row */}
+                <div className="flex items-center justify-between gap-6 mb-4">
+                  {/* Total Price */}
+                  <div className="flex-shrink-0">
+                    <div className="text-xs text-gray-500 mb-1">Total Price</div>
+                    <div className={`text-4xl font-bold text-gray-900 ${marcellus.className}`}>
+                      {formatPrice(diamond.NET_VALUE ?? 0)}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-1">
+                      Rap Price: {formatPrice(diamond.RAP_PRICE ?? 0)} | Disc %: {formatPercentage(Math.abs(Number(diamond.DISC_PER ?? 0)))}
+                    </div>
                   </div>
-                  <div className="text-sm text-gray-600 mt-1">
-                    Rap Price: {formatPrice(diamond.RAP_PRICE ?? 0)} | Disc %: {formatPercentage(Math.abs(Number(diamond.DISC_PER ?? 0)))}
-                  </div>
-                </div>
 
-                {/* Add to Cart, Hold, and Enquiry Buttons */}
-                {userRole !== "ADMIN" && userRole !== "SUPER_ADMIN" && (
-                <div className="flex gap-3 mb-6">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={isAddingToCart}
-                    className="flex-1 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    style={{ background: '#050C3A' }}
-                  >
-                    {isAddingToCart ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Adding...
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="w-4 h-4" />
-                        Add to Cart
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={handleAddToHold}
-                    disabled={isAddingToHold}
-                    className="flex-1 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                    style={{ background: '#050C3A' }}
-                  >
-                    {isAddingToHold ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        Holding...
-                      </>
-                    ) : (
-                      <>
-                        <Clock className="w-4 h-4" />
-                        Hold
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => setIsEnquiryOpen(true)}
-                    className="flex-1 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2"
-                    style={{ background: '#050C3A' }}
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    Enquiry
-                  </button>
+                  {/* Add to Cart, Hold, and Enquiry Buttons */}
+                  {userRole !== "ADMIN" && userRole !== "SUPER_ADMIN" && (
+                  <div className="flex gap-3 flex-shrink-0">
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={isAddingToCart}
+                      className="text-white py-3 px-6 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ background: '#050C3A', minWidth: '140px' }}
+                    >
+                      {isAddingToCart ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Adding...
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="w-4 h-4" />
+                          Add to Cart
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={handleAddToHold}
+                      disabled={isAddingToHold}
+                      className="text-white py-3 px-6 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ background: '#050C3A', minWidth: '140px' }}
+                    >
+                      {isAddingToHold ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Holding...
+                        </>
+                      ) : (
+                        <>
+                          <Clock className="w-4 h-4" />
+                          Hold
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => setIsEnquiryOpen(true)}
+                      className="text-white py-3 px-6 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2"
+                      style={{ background: '#050C3A', minWidth: '140px' }}
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Enquiry
+                    </button>
+                  </div>
+                  )}
                 </div>
-              )}
 
               {/* Divider */}
               <div className="border-t border-[#C89E3A] mb-4" />

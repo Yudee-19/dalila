@@ -42,11 +42,11 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
   switch(selectedMediaTab) {
     case 'image':
       if (!selectedImage) {
-        return <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Image Available" /></div>;
+        return <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Image Available" /></div>;
       }
       return (
         <div className="bg-gray-50" style={{ overflow: 'hidden', padding: '8px' }}>
-          <div className="relative" style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+          <div className="relative" style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
             <Image
               src={selectedImage}
               alt={diamond.STONE_NO}
@@ -65,7 +65,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
 
     case 'video': {
       if (!videoUrl) {
-        return <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Video Available" /></div>;
+        return <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Video Available" /></div>;
       }
       if (isDirectVideoUrl(videoUrl)) {
         return (
@@ -73,7 +73,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', position: 'relative', overflow: 'hidden' }}>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -104,7 +104,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
               <iframe
                 src={videoUrl}
                 title="Diamond Video Viewer"
@@ -123,7 +123,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
               <iframe
                 src={videoUrl}
                 title="Diamond Video"
@@ -140,7 +140,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
 
     case 'hand': {
       if (!handVideoUrl) {
-        return <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Hand Video Available" /></div>;
+        return <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Hand Video Available" /></div>;
       }
       if (isDirectVideoUrl(handVideoUrl)) {
         return (
@@ -148,7 +148,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', position: 'relative', overflow: 'hidden' }}>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -179,7 +179,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
               <iframe
                 src={handVideoUrl}
                 title="Hand Video Viewer"
@@ -198,7 +198,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
               <iframe
                 src={handVideoUrl}
                 title="Hand Video"
@@ -215,7 +215,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
 
     case 'tweezer': {
       if (!tweezerVideoUrl) {
-        return <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Tweezer Video Available" /></div>;
+        return <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Tweezer Video Available" /></div>;
       }
       if (isDirectVideoUrl(tweezerVideoUrl)) {
         return (
@@ -223,7 +223,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', position: 'relative', overflow: 'hidden' }}>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -254,7 +254,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
               <iframe
                 src={tweezerVideoUrl}
                 title="Tweezer Video Viewer"
@@ -273,7 +273,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
             className="bg-gray-50"
             style={{ overflow: 'hidden', padding: '8px' }}
           >
-            <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
               <iframe
                 src={tweezerVideoUrl}
                 title="Tweezer Video"
@@ -290,11 +290,11 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
 
     case 'certificate':
       if (!certPdfUrl) {
-        return <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Certificate Available" /></div>;
+        return <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}><EmptyMediaPlaceholder message="No Certificate Available" /></div>;
       }
       return (
         <div className="bg-gray-50" style={{ overflow: 'hidden', padding: '8px' }}>
-          <div style={{ width: '380px', height: '380px', maxWidth: '100%', overflow: 'hidden' }}>
+          <div style={{ width: '534px', height: '500px', maxWidth: '100%', overflow: 'hidden' }}>
             <iframe
               src={certPdfUrl}
               className="w-full h-full"
