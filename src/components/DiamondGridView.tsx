@@ -38,7 +38,7 @@ const DiamondGridView: React.FC<GridViewProps> = ({
     keySymbolFilters,
     inclusionFilters,
     priceFilters,
-    pageSize = 12,
+    pageSize = 10,
 }) => {
     // State for pagination - component manages this for server-side pagination
     const [currentPage, setCurrentPage] = useState(1);

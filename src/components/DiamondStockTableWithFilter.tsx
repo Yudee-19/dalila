@@ -479,7 +479,7 @@ export default function DiamondStockTableWithFilter() {
           selectedPolish={selectedPolish}
           selectedSymmetry={selectedSymmetry}
           keySymbolFilters={keySymbolFilters}
-          pageSize={12}
+          pageSize={10}
         />
       )}
 
