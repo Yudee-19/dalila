@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 
 interface SelectableItem {
   _id: string;
@@ -13,47 +13,61 @@ export const useDiamondSelection = <T extends SelectableItem = SelectableItem>({
 }: UseDiamondSelectionProps<T> = {}) => {
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [selectAll, setSelectAll] = useState(false);
+  const onSelectionChangeRef = useRef(onSelectionChange);
+  
+  // Keep ref updated
+  onSelectionChangeRef.current = onSelectionChange;
 
   const handleSelectAll = useCallback((checked: boolean, data: T[]) => {
     if (checked) {
       const allIds = new Set(data.map((row) => row._id));
       setSelectedRows(allIds);
       setSelectAll(true);
-      if (onSelectionChange) {
-        onSelectionChange(Array.from(allIds), data);
+      if (onSelectionChangeRef.current) {
+        onSelectionChangeRef.current(Array.from(allIds), data);
       }
     } else {
       setSelectedRows(new Set());
       setSelectAll(false);
-      if (onSelectionChange) {
-        onSelectionChange([], []);
+      if (onSelectionChangeRef.current) {
+        onSelectionChangeRef.current([], []);
       }
     }
-  }, [onSelectionChange]);
+  }, []);
 
   const handleRowSelect = useCallback((id: string, checked: boolean, allData: T[]) => {
-    const newSelected = new Set(selectedRows);
-    if (checked) {
-      newSelected.add(id);
-    } else {
-      newSelected.delete(id);
-      setSelectAll(false);
-    }
-    setSelectedRows(newSelected);
+    setSelectedRows((prevSelectedRows) => {
+      const newSelected = new Set(prevSelectedRows);
+      if (checked) {
+        newSelected.add(id);
+      } else {
+        newSelected.delete(id);
+      }
 
-    const selected = allData.filter((d) => newSelected.has(d._id));
-    if (onSelectionChange) {
-      onSelectionChange(Array.from(newSelected), selected);
-    }
-  }, [selectedRows, onSelectionChange]);
+      // Calculate selectAll state
+      const allSelected = allData.length > 0 && newSelected.size === allData.length;
+      
+      // Use queueMicrotask to avoid nested state updates
+      queueMicrotask(() => {
+        setSelectAll(allSelected);
+      });
+
+      const selected = allData.filter((d) => newSelected.has(d._id));
+      if (onSelectionChangeRef.current) {
+        onSelectionChangeRef.current(Array.from(newSelected), selected);
+      }
+
+      return newSelected;
+    });
+  }, []);
 
   const clearSelection = useCallback(() => {
     setSelectedRows(new Set());
     setSelectAll(false);
-    if (onSelectionChange) {
-      onSelectionChange([], []);
+    if (onSelectionChangeRef.current) {
+      onSelectionChangeRef.current([], []);
     }
-  }, [onSelectionChange]);
+  }, []);
 
   return {
     selectedRows,
