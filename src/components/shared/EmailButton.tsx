@@ -10,7 +10,7 @@ interface EmailButtonProps {
   disabled?: boolean;
 }
 
-// Helper function to get cookie value
+ // Helper function to get cookie value
 const getCookie = (name: string): string | null => {
   if (typeof document === "undefined") return null;
 
