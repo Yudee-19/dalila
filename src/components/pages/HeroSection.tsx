@@ -81,26 +81,25 @@ export default function HeroSection() {
     };
 
     const getButtonPositionClasses = (position: string, slideIndex: number) => {
+        // Mobile-first responsive positions
         if (position === "center") {
-            return "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-9/10 ";
+            return "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-full";
         }
-
         if (slideIndex === 0) {
-            return "absolute bottom-56 left-18 md:bottom-64 md:left-32";
+            return "absolute bottom-8 left-4 sm:bottom-16 sm:left-10 md:bottom-24 md:left-32";
         }
-
         if (slideIndex === 1) {
-            return "absolute bottom-50 left-22 md:bottom-65 md:left-42";
+            return "absolute bottom-8 left-8 sm:bottom-16 sm:left-16 md:bottom-24 md:left-42";
         }
-        return "absolute bottom-40 left-18 md:bottom-48 md:left-32";
+        return "absolute bottom-8 left-4 sm:bottom-16 sm:left-10 md:bottom-24 md:left-32";
     };
 
     return (
-        <section className="relative h-[calc(90vh+8rem)] flex items-center overflow-hidden bg-white">
+        <section className="relative w-full h-[320px] sm:h-[420px] md:h-[calc(90vh+8rem)] flex items-center overflow-x-hidden bg-white">
             {/* Background Carousel */}
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 w-full h-full">
                 <div
-                    className={`flex h-full ${isTransitioning ? "transition-transform duration-1000 ease-out" : ""}`}
+                    className={`flex h-full w-full ${isTransitioning ? "transition-transform duration-1000 ease-out" : ""}`}
                     style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
                     {extendedSlides.map((slide, index) => {
@@ -111,7 +110,7 @@ export default function HeroSection() {
                         return (
                             <div
                                 key={index}
-                                className="relative min-w-full h-full flex-shrink-0"
+                                className="relative min-w-full w-full h-[320px] sm:h-[420px] md:h-full flex-shrink-0"
                             >
                                 <Image
                                     src={slide.image}
@@ -123,7 +122,7 @@ export default function HeroSection() {
                                     className="object-cover"
                                 />
 
-                                <div className="absolute inset-0 bg-black/10" />
+                                <div className="absolute inset-0 bg-black/10 w-full h-full" />
 
                                 {index > 0 && index <= slides.length && (
                                     <div
@@ -138,7 +137,8 @@ export default function HeroSection() {
                                                     actualSlide.buttonLink
                                                 )
                                             }
-                                            className="group z-20 px-4 py-2 md:px-6 md:py-3 bg-[#c89e3a] text-white font-semibold text-xs md:text-sm rounded-none transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer relative overflow-hidden"
+                                            className="group z-20 px-3 py-1 sm:px-4 sm:py-2 md:px-6 md:py-3 bg-[#c89e3a] text-white font-semibold text-xs sm:text-sm md:text-base rounded transition-all duration-300 shadow-lg hover:shadow-xl cursor-pointer relative overflow-hidden"
+                                            style={{ minWidth: 110 }}
                                         >
                                             <span className="relative z-10">
                                                 Explore More
@@ -157,35 +157,35 @@ export default function HeroSection() {
             <button
                 onClick={prevSlide}
                 aria-label="Previous slide"
-                className="absolute left-4 md:-left-1 top-1/2 -translate-y-10 z-30 text-slate-900 rounded-full p-2 transition-all hover:scale-110"
+                className="absolute left-2 sm:left-4 md:-left-1 top-1/2 -translate-y-1/2 z-30 text-slate-900 rounded-full p-1 sm:p-2 transition-all hover:scale-110"
             >
                 <ChevronLeft
                     strokeWidth={1}
-                    className="w-6 h-6 md:w-14 md:h-11 text-[#c89e3a]"
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-14 md:h-11 text-[#c89e3a]"
                 />
             </button>
 
             <button
                 onClick={nextSlide}
                 aria-label="Next slide"
-                className="absolute right-4 md:-right-1 top-1/2 -translate-y-10 z-30 text-slate-900 rounded-full p-2 transition-all hover:scale-110"
+                className="absolute right-2 sm:right-4 md:-right-1 top-1/2 -translate-y-1/2 z-30 text-slate-900 rounded-full p-1 sm:p-2 transition-all hover:scale-110"
             >
                 <ChevronRight
                     strokeWidth={1}
-                    className="w-6 h-6 md:w-14 md:h-11 text-[#c89e3a]"
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-14 md:h-11 text-[#c89e3a]"
                 />
             </button>
 
             {/* Slide Indicators */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+            <div className="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
                 {slides.map((_, index) => (
                     <button
                         key={index}
                         onClick={() => goToSlide(index)}
                         aria-label={`Go to slide ${index + 1}`}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        className={`w-2 h-2 sm:w-2 sm:h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
                             getActiveIndex() === index
-                                ? "bg-amber-500 w-8"
+                                ? "bg-amber-500 w-6 sm:w-8"
                                 : "bg-white/60 hover:bg-white/80"
                         }`}
                     />

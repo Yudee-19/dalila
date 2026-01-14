@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Loader2, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useHeaderAuth } from "./headerHooks";
+import MobileHeader from "./MobileHeader";
 
 export default function Header() {
     const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
@@ -23,12 +24,19 @@ export default function Header() {
     } = useHeaderAuth();
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-[#050c3a] shadow-lg">
-            <div>
-                <div
-                    className="flex max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 items-center justify-between relative h-20"
-                    style={{
-                        minWidth: 900,
+        <>
+            {/* Mobile Header - Show on screens smaller than lg (1024px) */}
+            <div className="lg:hidden">
+                <MobileHeader />
+            </div>
+
+            {/* Desktop Header - Show on screens lg and larger */}
+            <header className="hidden lg:block fixed top-0 left-0 right-0 z-50 bg-[#050c3a] shadow-lg">
+                <div>
+                    <div
+                        className="flex max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 items-center justify-between relative h-20"
+                        style={{
+                            minWidth: 900,
                         flexWrap: "nowrap",
                         overflow: "visible",
                     }}
@@ -338,5 +346,6 @@ export default function Header() {
                 </div>
             </div>
         </header>
+        </>
     );
 }
