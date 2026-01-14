@@ -32,10 +32,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${jost.variable}`}
+      className={`${playfair.variable} ${jost.variable} overflow-x-hidden`}
       suppressHydrationWarning
     >
-      <body className="antialiased bg-background text-foreground font-jost" suppressHydrationWarning>
+      <body className="antialiased bg-background text-foreground font-jost overflow-x-hidden" suppressHydrationWarning>
         <HeaderFooterWrapper>{children}</HeaderFooterWrapper>
         <Toaster
           position="bottom-right"

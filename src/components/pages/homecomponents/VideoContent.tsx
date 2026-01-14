@@ -42,7 +42,7 @@ export default function VideoContent() {
   }, []);
 
   return (
-    <div className="relative w-full h-[80vh] overflow-hidden">
+    <div className="relative w-full h-[40vh] sm:h-[60vh] md:h-[80vh] overflow-hidden">
       {/* Background Video */}
       <video
         ref={videoRef}
@@ -70,15 +70,15 @@ export default function VideoContent() {
       <div className="absolute inset-0 bg-black/40"></div>
 
       {/* Centered Text Content */}
-      <div className="relative z-10 h-full flex items-center justify-center px-6">
+      <div className="relative z-10 h-full flex items-center justify-center px-3 sm:px-6">
         <div className="text-center max-w-4xl">
           <h5
-            className={`text-white/90 text-sm md:text-base tracking-widest mb-6 font-light ${jost.className}`}
+            className={`text-white/90 text-xs sm:text-sm md:text-base tracking-widest mb-4 sm:mb-6 font-light ${jost.className}`}
           >
             A LEGACY OF REFINEMENT, SHAPED TO PERFECTION
           </h5>
           <h1
-            className={`text-4xl md:text-5xl lg:text-6xl text-white leading-tight tracking-wide font-light ${marcellus.className}`}
+            className={`text-xl sm:text-3xl md:text-4xl lg:text-6xl text-white leading-tight tracking-wide font-light ${marcellus.className}`}
           >
             Every diamond, delicately refined through skill & crafted by the
             hands of true perfectionists.
@@ -88,10 +88,10 @@ export default function VideoContent() {
 
       {/* Elegant border decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-32 h-32 border-t-2 border-l-2 border-white/30"></div>
-        <div className="absolute top-0 right-0 w-32 h-32 border-t-2 border-r-2 border-white/30"></div>
-        <div className="absolute bottom-0 left-0 w-32 h-32 border-b-2 border-l-2 border-white/30"></div>
-        <div className="absolute bottom-0 right-0 w-32 h-32 border-b-2 border-r-2 border-white/30"></div>
+        <div className="absolute top-0 left-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 border-t-2 border-l-2 border-white/30"></div>
+        <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 border-t-2 border-r-2 border-white/30"></div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 border-b-2 border-l-2 border-white/30"></div>
+        <div className="absolute bottom-0 right-0 w-16 h-16 sm:w-24 sm:h-24 md:w-32 md:h-32 border-b-2 border-r-2 border-white/30"></div>
       </div>
     </div>
   );
