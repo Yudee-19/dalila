@@ -20,9 +20,9 @@ export default function AboutHero() {
   return (
     <div className="bg-white py-20">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          {/* Left Half - Image */}
-          <div className="relative pb-12">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-16 items-center">
+          {/* Image first on mobile, left on desktop */}
+          <div className="order-1 lg:order-none w-full relative pb-12">
             <AnimatedContainer direction="scale-out">
               <div className="relative w-full h-96 bg-black rounded-none overflow-hidden shadow-2xl">
                 <Image
@@ -34,27 +34,25 @@ export default function AboutHero() {
                 />
               </div>
             </AnimatedContainer>
-            
-              <div
-                className="absolute bottom-0 -right-2 sm:-right-3 md:-right-4 lg:-right-6 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 shadow-xl mb-6"
-                style={{ backgroundColor: "#c89e3a" }}
+            <div
+              className="absolute bottom-0 -right-2 sm:-right-3 md:-right-4 lg:-right-6 px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 shadow-xl mb-6"
+              style={{ backgroundColor: "#c89e3a" }}
+            >
+              <h3
+                className={`text-xs sm:text-base md:text-lg lg:text-xl font-normal text-white whitespace-nowrap tracking-wide ${marcellus.className}`}
+                style={{ minWidth: 'unset', minHeight: 'unset' }}
               >
-                <h3
-                  className={`text-xs sm:text-base md:text-lg lg:text-xl font-normal text-white whitespace-nowrap tracking-wide ${marcellus.className}`}
-                  style={{ minWidth: 'unset', minHeight: 'unset' }}
-                >
-                  ABOUT DALILA
-                </h3>
-              </div>
-        
+                ABOUT DALILA
+              </h3>
+            </div>
           </div>
 
-          {/* Right Half - Content */}
-          <div className="space-y-6 lg:pl-4">
+          {/* Content second on mobile, right on desktop */}
+          <div className="order-2 lg:order-none w-full space-y-6 lg:pl-4">
             {/* Main Heading */}
             <AnimatedContainer direction="up">
               <h3
-                className={`text-3xl md:tex t-4xl lg:text-5xl text-gray-800 leading-tight ${marcellus.className}`}
+                className={`text-3xl md:text-4xl lg:text-5xl text-gray-800 leading-tight ${marcellus.className}`}
               >
                 Shape Brilliance into Timeless Value.
               </h3>

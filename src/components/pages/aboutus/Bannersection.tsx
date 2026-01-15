@@ -20,7 +20,7 @@ export default function AboutBanner() {
   return (
     <div className="relative bg-slate-900">
       {/* Banner Section */}
-      <section className="relative h-[60vh] md:h-[55vh] lg:h-[50vh] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[36vh] xs:h-[44vh] sm:h-[60vh] md:h-[55vh] lg:h-[50vh] flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -34,23 +34,25 @@ export default function AboutBanner() {
         </div>
 
         {/* Content */}
-        <div className="container mx-auto px-6 relative z-10 text-center py-14">
+        <div className="container mx-auto px-3 xs:px-4 sm:px-6 relative z-10 text-center py-8 sm:py-14">
           <AnimatedContainer direction="right">
             <div className="opacity-100">
               <h1
-                className={`text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-white mb-3 mt-30 ${marcellus.className}`}
+                className={`text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-white mb-3 mt-8 sm:mt-30 whitespace-nowrap sm:whitespace-normal ${marcellus.className}`}
+                style={{ lineHeight: 1.15 }}
               >
                 ABOUT US
               </h1>
-              <div className="w-[35%] h-px bg-amber-400 mx-auto mb-6" />
+              <div className="w-2/3 sm:w-[35%] h-px bg-amber-400 mx-auto mb-6" />
             </div>
           </AnimatedContainer>
 
-          <div className="opacity-100 mt-6">
-            <div
-              className={`flex items-center justify-center gap-2 text-gray-300 text-sm md:text-base${jost.className}`}
-            >
-              <Link href="/" className="hover:text-amber-400 transition-colors">
+          <div className="opacity-100 mt-4 sm:mt-6">
+            <div className="flex flex-wrap items-center justify-center gap-2 text-gray-300 text-xs xs:text-sm md:text-base">
+              <Link
+                href="/"
+                className={`hover:text-amber-400 transition-colors ${jost.className}`}
+              >
                 Home
               </Link>
               <span>›</span>

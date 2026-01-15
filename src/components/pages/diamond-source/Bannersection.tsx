@@ -38,11 +38,11 @@ export default function DiamondSourceBanner() {
           <AnimatedContainer direction="right">
             <div className="opacity-100">
               <h1
-                className={`text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-white mb-3 mt-8 sm:mt-30 whitespace-nowrap sm:whitespace-normal ${marcellus.className}`}
+                className={`text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-white mb-3 mt-8 sm:mt-30 sm:whitespace-normal ${marcellus.className}`}
                 style={{ lineHeight: 1.15 }}
               >
                 <span className="hidden sm:inline">DS4U - Diamond<br />Source For You</span>
-                <span className="inline sm:hidden">DS4U - Diamond Source For You</span>
+                <span className="inline sm:hidden block">DS4U - Diamond<br />Source For You</span>
               </h1>
               <div className="w-2/3 sm:w-[35%] h-px bg-amber-400 mx-auto mb-6" />
             </div>
