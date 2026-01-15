@@ -46,117 +46,215 @@ export default function Footer() {
         <footer className="bg-[#0a0e27] text-white">
             {/* Main Footer Content */}
             <div className="border-b border-white/10">
-                <div className="container mx-auto px-6 py-12">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
-                        {/* Logo Column */}
-                        <div>
-                            <div className="mb-6">
+                <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+                    {/* Mobile Layout */}
+                    <div className="block md:hidden">
+                        {/* Row 1: Logo/Insta and Address side by side */}
+                        <div className="grid grid-cols-2 gap-4 items-start">
+                            {/* Logo and Instagram */}
+                            <div className="flex flex-col items-center justify-center">
                                 <Image
-                                    src="/dalila_img/Dalila_Logo.png"
-                                    alt="Dalila Diamonds Logo"
-                                    width={160}
-                                    height={64}
-                                    className="h-16 w-auto object-contain"
+                                    src="/dalila_img/mobile-logo.png"
+                                    alt="Dalila Diamonds Mobile Logo"
+                                    width={120}
+                                    height={48}
+                                    className="h-12 w-auto object-contain"
                                     priority
                                 />
-                            </div>
-                            <div>
                                 <a
                                     href="https://www.instagram.com/p/DO56RDlDKde/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-white/70 hover:text-[#c89e3a] transition-colors"
+                                    className="inline-flex items-center gap-2 text-white/70 hover:text-[#c89e3a] transition-colors mt-2"
                                 >
                                     <FaInstagram className="w-5 h-5" />
                                 </a>
                             </div>
-                        </div>
-
-                        {/* Address Column */}
-                        <div>
-                            <h4 className="text-lg font-medium mb-6">
-                                Address
-                            </h4>
-                            <div className="text-white/70 space-y-2">
-                                <p className="font-medium text-white">
-                                    Dalila Diamonds
-                                </p>
-                                <p>Shreyas D. Gandhi</p>
-                                <p>Hoveniersstraat 30, Box - 105</p>
-                                <p>Suite 326, 2018 Antwerpen</p>
-                                <p className="mt-3">BTW BE: 0736.671.250</p>
+                            {/* Address */}
+                            <div className="flex flex-col items-center justify-center">
+                                <h4 className="text-base font-medium mb-2">Address</h4>
+                                <div className="text-white/70 space-y-1 text-center">
+                                    <p className="font-medium text-white">Dalila Diamonds</p>
+                                    <p>Shreyas D. Gandhi</p>
+                                    <p>Hoveniersstraat 30, Box - 105</p>
+                                    <p>Suite 326, 2018 Antwerpen</p>
+                                    <p className="mt-2">BTW BE: 0736.671.250</p>
+                                </div>
                             </div>
                         </div>
+                        {/* Row 2: Quick Links and Contact Us */}
+                        <div className="mt-8 grid grid-cols-2 gap-6">
+                            {/* Quick Links */}
+                            <div>
+                                <h4 className="text-base font-medium mb-2">Quick Links</h4>
+                                <ul className="space-y-2">
+                                    {quickLinks.map((link) => (
+                                        <li key={link.name}>
+                                            <button
+                                                onClick={() => handleNavigation(link.href)}
+                                                className="text-white/70 hover:text-[#c89e3a] transition-colors text-left cursor-pointer text-sm"
+                                            >
+                                                {link.name}
+                                            </button>
+                                        </li>
+                                    ))}
+                                    {/* Our Services Dropdown */}
+                                    <li className="relative">
+                                        <button
+                                            onClick={() => setIsServicesOpen(!isServicesOpen)}
+                                            className="text-white/70 hover:text-[#c89e3a] transition-colors flex items-center gap-2 cursor-pointer text-sm"
+                                        >
+                                            Our Services
+                                            <ChevronDown
+                                                size={14}
+                                                className={`transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`}
+                                            />
+                                        </button>
+                                        {isServicesOpen && (
+                                            <ul className="mt-1 ml-2 space-y-1">
+                                                {serviceLinks.map((service) => (
+                                                    <li key={service.name}>
+                                                        <button
+                                                            onClick={() => handleNavigation(service.href)}
+                                                            className="text-white/60 hover:text-[#c89e3a] transition-colors text-xs text-left cursor-pointer"
+                                                        >
+                                                            {service.name}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </li>
+                                </ul>
+                            </div>
+                            {/* Contact Us */}
+                            <div>
+                                <h4 className="text-base font-medium mb-2">Contact Us</h4>
+                                <div className="space-y-2 text-white/70 text-sm">
+                                    <p>
+                                        <span className="text-white/90 font-medium">Landline:</span> +32 3 613 94 74
+                                    </p>
+                                    <p>
+                                        <span className="text-white/90 font-medium">Phone:</span> +32 487 93 93 51
+                                    </p>
+                                    <p>business@daliladiamonds.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/* Desktop Layout (unchanged) */}
+                    <div className="hidden md:block">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+                            {/* Logo Column */}
+                            <div>
+                                <div className="mb-6">
+                                    <Image
+                                        src="/dalila_img/Dalila_Logo.png"
+                                        alt="Dalila Diamonds Logo"
+                                        width={160}
+                                        height={64}
+                                        className="h-16 w-auto object-contain"
+                                        priority
+                                    />
+                                </div>
+                                <div>
+                                    <a
+                                        href="https://www.instagram.com/p/DO56RDlDKde/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-white/70 hover:text-[#c89e3a] transition-colors"
+                                    >
+                                        <FaInstagram className="w-5 h-5" />
+                                    </a>
+                                </div>
+                            </div>
 
-                        {/* Quick Links Column */}
-                        <div>
-                            <h4 className="text-lg font-medium mb-6">
-                                Quick Links
-                            </h4>
-                            <ul className="space-y-3">
-                                {quickLinks.map((link) => (
-                                    <li key={link.name}>
+                            {/* Address Column */}
+                            <div>
+                                <h4 className="text-lg font-medium mb-6">
+                                    Address
+                                </h4>
+                                <div className="text-white/70 space-y-2">
+                                    <p className="font-medium text-white">
+                                        Dalila Diamonds
+                                    </p>
+                                    <p>Shreyas D. Gandhi</p>
+                                    <p>Hoveniersstraat 30, Box - 105</p>
+                                    <p>Suite 326, 2018 Antwerpen</p>
+                                    <p className="mt-3">BTW BE: 0736.671.250</p>
+                                </div>
+                            </div>
+
+                            {/* Quick Links Column */}
+                            <div>
+                                <h4 className="text-lg font-medium mb-6">
+                                    Quick Links
+                                </h4>
+                                <ul className="space-y-3">
+                                    {quickLinks.map((link) => (
+                                        <li key={link.name}>
+                                            <button
+                                                onClick={() =>
+                                                    handleNavigation(link.href)
+                                                }
+                                                className="text-white/70 hover:text-[#c89e3a] transition-colors text-left cursor-pointer"
+                                            >
+                                                {link.name}
+                                            </button>
+                                        </li>
+                                    ))}
+
+                                    {/* Our Services Dropdown */}
+                                    <li className="relative">
                                         <button
                                             onClick={() =>
-                                                handleNavigation(link.href)
+                                                setIsServicesOpen(!isServicesOpen)
                                             }
-                                            className="text-white/70 hover:text-[#c89e3a] transition-colors text-left cursor-pointer"
+                                            className="text-white/70 hover:text-[#c89e3a] transition-colors flex items-center gap-2 cursor-pointer"
                                         >
-                                            {link.name}
+                                            Our Services
+                                            <ChevronDown
+                                                size={16}
+                                                className={`transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`}
+                                            />
                                         </button>
+
+                                        {isServicesOpen && (
+                                            <ul className="mt-2 ml-4 space-y-2">
+                                                {serviceLinks.map((service) => (
+                                                    <li key={service.name}>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleNavigation(
+                                                                    service.href
+                                                                )
+                                                            }
+                                                            className="text-white/60 hover:text-[#c89e3a] transition-colors text-sm text-left cursor-pointer"
+                                                        >
+                                                            {service.name}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
                                     </li>
-                                ))}
+                                </ul>
+                            </div>
 
-                                {/* Our Services Dropdown */}
-                                <li className="relative">
-                                    <button
-                                        onClick={() =>
-                                            setIsServicesOpen(!isServicesOpen)
-                                        }
-                                        className="text-white/70 hover:text-[#c89e3a] transition-colors flex items-center gap-2 cursor-pointer"
-                                    >
-                                        Our Services
-                                        <ChevronDown
-                                            size={16}
-                                            className={`transition-transform duration-200 ${isServicesOpen ? "rotate-180" : ""}`}
-                                        />
-                                    </button>
-
-                                    {isServicesOpen && (
-                                        <ul className="mt-2 ml-4 space-y-2">
-                                            {serviceLinks.map((service) => (
-                                                <li key={service.name}>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleNavigation(
-                                                                service.href
-                                                            )
-                                                        }
-                                                        className="text-white/60 hover:text-[#c89e3a] transition-colors text-sm text-left cursor-pointer"
-                                                    >
-                                                        {service.name}
-                                                    </button>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Contact Us Column */}
-                         <div>
-                            <h4 className="text-lg font-medium mb-6">
-                                Contact Us
-                            </h4>
-                            <div className="space-y-3 text-white/70">
-                                <p>
-                                    <span className="text-white/90 font-medium">Landline:</span> +32 3 613 94 74
-                                </p>
-                                <p>
-                                    <span className="text-white/90 font-medium">Phone:</span> +32 487 93 93 51
-                                </p>
-                                <p>business@daliladiamonds.com</p>
+                            {/* Contact Us Column */}
+                            <div>
+                                <h4 className="text-lg font-medium mb-6">
+                                    Contact Us
+                                </h4>
+                                <div className="space-y-3 text-white/70">
+                                    <p>
+                                        <span className="text-white/90 font-medium">Landline:</span> +32 3 613 94 74
+                                    </p>
+                                    <p>
+                                        <span className="text-white/90 font-medium">Phone:</span> +32 487 93 93 51
+                                    </p>
+                                    <p>business@daliladiamonds.com</p>
+                                </div>
                             </div>
                         </div>
                     </div>

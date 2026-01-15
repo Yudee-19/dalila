@@ -5,9 +5,21 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 export default function HeroSection() {
+    // All hooks must be called unconditionally and in the same order
+    const [isMobile, setIsMobile] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(1);
     const [isTransitioning, setIsTransitioning] = useState(true);
     const router = useRouter();
+
+    useEffect(() => {
+        // Check if window is mobile size
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     const slides = [
         {
@@ -94,8 +106,79 @@ export default function HeroSection() {
         return "absolute bottom-8 left-4 sm:bottom-16 sm:left-10 md:bottom-24 md:left-32";
     };
 
+    // Now conditionally render based on isMobile
+    if (isMobile) {
+        // Clamp the index to a valid range
+        let safeIndex = getActiveIndex();
+        if (safeIndex < 0 || safeIndex >= slides.length) safeIndex = 0;
+        return (
+            <section className="w-full flex justify-center items-center bg-white pt-6 pb-6 px-2">
+                <div className="w-full flex justify-center items-center">
+                    <div
+                        className="bg-white rounded-2xl shadow-md overflow-hidden"
+                        style={{
+                            marginTop: '45px',
+                            marginBottom: '10px',
+                            marginLeft: '12px',
+                            marginRight: '12px',
+                            width: '100%',
+                            maxWidth: 370,
+                            maxHeight: 220,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <div style={{ position: 'relative', width: '100%', height: 0, paddingBottom: '59%' }}>
+                            <Image
+                                src={slides[safeIndex].image}
+                                alt={slides[safeIndex].title}
+                                fill
+                                priority
+                                quality={85}
+                                sizes="100vw"
+                                className="object-cover rounded-2xl"
+                                style={{ borderRadius: '18px' }}
+                            />
+                            <div className="absolute inset-0 bg-black/10 w-full h-full rounded-2xl" />
+                            {/* Explore More button for each banner */}
+                            <div
+                                className="absolute left-1/2 bottom-8 -translate-x-1/2 flex justify-center items-center w-full z-20"
+                            >
+                                <button
+                                    onClick={() => handleExploreClick(slides[safeIndex].buttonLink)}
+                                    className="group px-3 py-1 bg-[#c89e3a] text-white font-semibold text-xs rounded transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer relative overflow-hidden min-w-[90px] min-h-[32px]"
+                                    style={{ fontSize: 13, padding: '6px 16px', borderRadius: 12 }}
+                                >
+                                    <span className="relative z-10">Explore More</span>
+                                    <span className="absolute inset-0 bg-[#b08932] transform scale-0 group-hover:scale-100 transition-transform duration-300 ease-out origin-center" />
+                                </button>
+                            </div>
+                            {/* Slide Indicators for mobile */}
+                            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+                                {slides.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => goToSlide(index)}
+                                        aria-label={`Go to slide ${index + 1}`}
+                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                            safeIndex === index
+                                                ? "bg-amber-500 w-6"
+                                                : "bg-white/60 hover:bg-white/80"
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        );
+    }
+
+    // Desktop carousel
     return (
-        <section className="relative w-full h-[320px] sm:h-[420px] md:h-[calc(90vh+8rem)] flex items-center overflow-x-hidden bg-white">
+        <section className="relative w-full h-[45vh] xs:h-[55vh] sm:h-[420px] md:h-[calc(90vh+8rem)] flex items-center overflow-x-hidden bg-white">
             {/* Background Carousel */}
             <div className="absolute inset-0 w-full h-full">
                 <div
@@ -110,7 +193,7 @@ export default function HeroSection() {
                         return (
                             <div
                                 key={index}
-                                className="relative min-w-full w-full h-[320px] sm:h-[420px] md:h-full flex-shrink-0"
+                                className="relative min-w-full w-full h-[45vh] xs:h-[55vh] sm:h-[420px] md:h-full flex-shrink-0"
                             >
                                 <Image
                                     src={slide.image}
