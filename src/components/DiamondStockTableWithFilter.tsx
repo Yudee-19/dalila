@@ -591,8 +591,8 @@ export default function DiamondStockTableWithFilter() {
         <div className="flex flex-1 min-h-0 overflow-hidden">
           {/* Left Column - Filter Sidebar (Conditional) */}
           {mobileFiltersOpen && (
-            <div className="w-1/2 border-r overflow-y-auto bg-white max-h-full p-2">
-              <div className="space-y-2">
+            <div className="w-1/2 border-r overflow-y-auto bg-white max-h-full">
+              <div className="space-y-2 p-2">
 
                 <ShapeFilter
                   selectedShape={selectedShape}
@@ -658,7 +658,7 @@ export default function DiamondStockTableWithFilter() {
               mobileFiltersOpen ? "w-1/2" : "w-full"
             } flex-1 min-h-0 overflow-y-auto bg-white`}
           >
-            <div className="p-0">
+            <div>
               {viewMode === "list" ? (
                 <div className="w-full overflow-x-auto max-w-full">
                   <DiamondStockTable

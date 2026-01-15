@@ -501,47 +501,19 @@ const DiamondGridView: React.FC<GridViewProps> = ({
                     </div>
                 </div>
 
-                {/* Mobile Pagination Footer - Compact */}
-                <div className="border-t border-gray-300 bg-white px-2 py-1.5">
-                    <div className="flex items-center justify-between text-[10px]">
-                        <div className="text-gray-600">
-                            {paginationInfo.start}-{paginationInfo.end} of {paginationInfo.total}
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                            <button
-                                onClick={() => setCurrentPage(1)}
-                                disabled={currentPage === 1 || loading}
-                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
-                            >
-                                First
-                            </button>
-                            <button
-                                onClick={() => setCurrentPage(currentPage - 1)}
-                                disabled={currentPage === 1 || loading}
-                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
-                            >
-                                Prev
-                            </button>
-                            <span className="px-1.5 py-0.5 text-gray-700">
-                                {currentPage}/{totalPages}
-                            </span>
-                            <button
-                                onClick={() => setCurrentPage(currentPage + 1)}
-                                disabled={currentPage === totalPages || loading}
-                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
-                            >
-                                Next
-                            </button>
-                            <button
-                                onClick={() => setCurrentPage(totalPages)}
-                                disabled={currentPage === totalPages || loading}
-                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
-                            >
-                                Last
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                {/* Mobile Pagination Footer - Using shared component */}
+                <DiamondTablePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    rowsPerPage={rowsPerPage}
+                    paginationInfo={paginationInfo}
+                    onPageChange={setCurrentPage}
+                    onRowsPerPageChange={(newSize) => {
+                        setRowsPerPage(newSize);
+                        setCurrentPage(1);
+                    }}
+                    disabled={loading}
+                />
             </div>
         </div>
     );

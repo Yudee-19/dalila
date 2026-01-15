@@ -211,9 +211,9 @@ const DiamondStockTable: React.FC<TableProps> = ({
           </div>
         )}
 
-        {/* Mobile Table Container with horizontal scroll */}
-        <div className={`flex-1 overflow-x-auto overflow-y-auto border border-gray-300 ${loading && hasLoadedOnce ? 'opacity-50 pointer-events-none' : ''}`}>
-          <div className="min-w-[800px]">
+        {/* Mobile Table Container with horizontal scroll - Fixed scrolling */}
+        <div className={`flex-1 overflow-auto border border-gray-300 ${loading && hasLoadedOnce ? 'opacity-50 pointer-events-none' : ''}`} style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ minWidth: '800px', width: 'max-content' }}>
             <DiamondTable
               diamonds={data}
               selectedRows={selectedRows}
@@ -225,47 +225,16 @@ const DiamondStockTable: React.FC<TableProps> = ({
           </div>
         </div>
 
-        {/* Mobile Pagination Controls - Compact */}
-        <div className="border-t border-gray-300 bg-white px-2 py-1.5">
-          <div className="flex items-center justify-between text-xs">
-            <div className="text-gray-600">
-              {paginationInfo.start}-{paginationInfo.end} of {paginationInfo.total}
-            </div>
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => handlePageChange(1)}
-                disabled={currentPage === 1 || loading}
-                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-              >
-                First
-              </button>
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1 || loading}
-                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-              >
-                Prev
-              </button>
-              <span className="px-2 py-1 text-gray-700">
-                {currentPage}/{totalPages}
-              </span>
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages || loading}
-                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-              >
-                Next
-              </button>
-              <button
-                onClick={() => handlePageChange(totalPages)}
-                disabled={currentPage === totalPages || loading}
-                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
-              >
-                Last
-              </button>
-            </div>
-          </div>
-        </div>
+        {/* Mobile Pagination - Using shared component */}
+        <DiamondTablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          rowsPerPage={rowsPerPage}
+          paginationInfo={paginationInfo}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
+          disabled={loading}
+        />
       </div>
     );
 
