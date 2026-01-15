@@ -2,7 +2,6 @@
 import React, { useState, useCallback } from "react";
 import toast from "react-hot-toast";
 
-import { DiamondData } from "@/types/diamond.types";
 import type { LimitedEditionDiamond } from "@/lib/api";
 import ColorFilterLimited from "./Filters/ColorFilterLimited";
 import ShapeFilter from "./Filters/ShapeFilterLimited";

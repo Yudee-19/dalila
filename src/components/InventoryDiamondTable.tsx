@@ -165,7 +165,10 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
   });
   
   // Determine which data/loading/error to use
-  const data = isExternalData ? (propData || []) : fetchedData;
+  const data = useMemo(() => 
+    isExternalData ? (propData || []) : fetchedData,
+    [isExternalData, propData, fetchedData]
+  );
   const loading = isExternalData ? (propLoading ?? false) : fetchLoading;
   const error = isExternalData ? propError : fetchError;
   const pagination = isExternalData ? externalPagination : fetchPagination;

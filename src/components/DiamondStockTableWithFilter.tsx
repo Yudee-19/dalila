@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Grid3x3, List, ChevronDown, ChevronUp } from "lucide-react";
+import { Grid3x3, List, ChevronDown, ChevronUp, Filter, Search, RotateCcw, ShoppingCart, Hand, GitCompare } from "lucide-react";
 import Image from "next/image";
 import { DiamondData } from "@/types/diamond.types";
 import DiamondComparisonPage from "./DiamondComparisonPage";
@@ -89,6 +89,7 @@ export default function DiamondStockTableWithFilter() {
   const [compareDiamonds, setCompareDiamonds] = useState<DiamondData[]>([]);
   const [showComparison, setShowComparison] = useState(false);
   const [clearSelectionTrigger, setClearSelectionTrigger] = useState(0);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const [measurements, setMeasurements] = useState({
     length: { from: "", to: "" },
@@ -252,10 +253,16 @@ export default function DiamondStockTableWithFilter() {
     });
   };
 
+  const toggleView = () => {
+    setViewMode(viewMode === "list" ? "grid" : "list");
+  };
+
   return (
-    <div className="w-full px-4 py-4 bg-[#F5F7FA] mt-30">
-      {/* Admin Refresh Button */}
-      {isAdmin && (
+    <div className="w-full">
+      {/* Desktop Layout - Hidden on Mobile */}
+      <div className="hidden lg:block w-full px-4 py-4 bg-[#F5F7FA] mt-30">
+        {/* Admin Refresh Button */}
+        {isAdmin && (
         <div className="flex items-center mb-4 justify-end">
           <button
             onClick={handleRefresh}
@@ -483,16 +490,240 @@ export default function DiamondStockTableWithFilter() {
         />
       )}
 
-      {/* Comparison Modal */}
-      {showComparison && (
-        <DiamondComparisonPage
-          diamonds={compareDiamonds}
-          onClose={() => {
-            setShowComparison(false);
-            setCompareDiamonds([]);
-          }}
-        />
-      )}
+        {/* Comparison Modal */}
+        {showComparison && (
+          <DiamondComparisonPage
+            diamonds={compareDiamonds}
+            onClose={() => {
+              setShowComparison(false);
+              setCompareDiamonds([]);
+            }}
+          />
+        )}
+      </div>
+
+      {/* Mobile Layout - Visible only on Mobile */}
+      <div className="lg:hidden flex flex-col min-h-screen max-h-screen overflow-hidden bg-[#F5F7FA]">
+        {/* Top Controls - Mobile */}
+        <div className="px-1.5 py-1.5 bg-gray-100 border-b sticky top-0 z-20 rounded-lg">
+          <div className="flex items-center gap-1.5 justify-between mt-20">
+            {/* View Toggle Button */}
+            <button
+              onClick={toggleView}
+              className="bg-white border border-gray-300 text-black rounded-full h-7 w-7 p-0 flex items-center justify-center min-w-0 hover:bg-gray-50 flex-shrink-0"
+            >
+              {viewMode === "list" ? (
+                <Grid3x3 className="w-3 h-3" />
+              ) : (
+                <List className="w-3 h-3" />
+              )}
+            </button>
+
+            {/* Search with Button Inside */}
+            <div className="flex-1 min-w-0 relative">
+              <input
+                type="text"
+                placeholder="Diamond ID"
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="w-full bg-white border border-gray-300 rounded-full h-7 text-[10px] pr-7 pl-2.5 placeholder:text-[10px]"
+              />
+              <button
+                onClick={() => handleSearch(searchTerm)}
+                className="absolute right-0.5 top-1/2 -translate-y-1/2 rounded-full h-5.5 w-5.5 p-0 bg-black hover:bg-gray-800 text-white flex items-center justify-center min-w-0"
+              >
+                <Search className="h-2.5 w-2.5" />
+              </button>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button
+                onClick={handleResetFilters}
+                className="bg-white border border-gray-300 rounded-full h-7 w-7 p-0 flex items-center justify-center min-w-0 hover:bg-gray-50"
+              >
+                <RotateCcw className="w-3 h-3" />
+              </button>
+
+              {isLoggedIn && (
+                <>
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={selectedDiamonds.length === 0}
+                    className="bg-black hover:bg-gray-800 text-white rounded-full h-7 px-1.5 flex items-center gap-0.5 disabled:opacity-50 min-w-0"
+                  >
+                    <ShoppingCart className="w-3 h-3" />
+                  </button>
+
+                  <button
+                    onClick={handleAddToHold}
+                    disabled={selectedDiamonds.length === 0}
+                    className="bg-gray-700 hover:bg-gray-900 text-white rounded-full h-7 px-1.5 flex items-center gap-0.5 disabled:opacity-50 min-w-0"
+                  >
+                    <Hand className="w-3 h-3" />
+                  </button>
+                </>
+              )}
+
+              <button
+                onClick={handleCompare}
+                disabled={selectedDiamonds.length < 2}
+                className="bg-gray-700 hover:bg-gray-900 text-white rounded-full h-7 px-1.5 flex items-center gap-0.5 disabled:opacity-50 min-w-0"
+              >
+                <GitCompare className="w-3 h-3" />
+              </button>
+
+              <button
+                onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
+                className={`rounded-full h-7 w-7 p-0 flex items-center justify-center min-w-0 ${
+                  mobileFiltersOpen
+                    ? "bg-black hover:bg-gray-800 text-white"
+                    : "bg-white hover:bg-gray-50 text-black border border-gray-300"
+                }`}
+              >
+                <Filter className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Two Column Layout - Mobile */}
+        <div className="flex flex-1 min-h-0 overflow-hidden">
+          {/* Left Column - Filter Sidebar (Conditional) */}
+          {mobileFiltersOpen && (
+            <div className="w-1/2 border-r overflow-y-auto bg-white max-h-full p-2">
+              <div className="space-y-2">
+
+                <ShapeFilter
+                  selectedShape={selectedShape}
+                  onShapeChange={handleShapeChange}
+                />
+                <CaratFilter
+                  selectedCaratRanges={selectedCaratRanges}
+                  onCaratChange={handleCaratChange}
+                />
+                <ClarityFilter
+                  selectedClarity={selectedClarity}
+                  selectedSpecial={selectedSpecial}
+                  selectedCut={selectedCut}
+                  selectedPolish={selectedPolish}
+                  selectedSymmetry={selectedSymmetry}
+                  onClarityChange={handleClarityChange}
+                  onSpecialChange={handleSpecialChange}
+                  onCutChange={handleCutChange}
+                  onPolishChange={handlePolishChange}
+                  onSymmetryChange={handleSymmetryChange}
+                />
+                <FluorFilter
+                  selectedFluor={selectedFluor}
+                  onFluorChange={handleFluorChange}
+                />
+                <ColorFilter
+                  selectedColor={selectedColor}
+                  onColorChange={handleColorChange}
+                />
+                {showFilters && (
+                  <>
+                    <InclusionFilter
+                      inclusions={inclusions}
+                      onInclusionChange={setInclusions}
+                    />
+                    <KeySymbolFilter
+                      filters={keySymbolFilters}
+                      onFiltersChange={setKeySymbolFilters}
+                    />
+                    <PriceLocationFilter
+                      filters={priceLocationFilters}
+                      onFiltersChange={setPriceLocationFilters}
+                    />
+                    <MeasurementFilter
+                      measurements={measurements}
+                      onMeasurementChange={setMeasurements}
+                    />
+                  </>
+                )}
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="w-full text-xs text-blue-600 hover:text-blue-800 mt-2"
+                >
+                  {showFilters ? "Hide Advanced Filters" : "Show Advanced Filters"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Right Column - Diamond Display */}
+          <div
+            className={`${
+              mobileFiltersOpen ? "w-1/2" : "w-full"
+            } flex-1 min-h-0 overflow-y-auto bg-white`}
+          >
+            <div className="p-0">
+              {viewMode === "list" ? (
+                <div className="w-full overflow-x-auto max-w-full">
+                  <DiamondStockTable
+                    searchTerm={searchTerm}
+                    selectedShape={selectedShape}
+                    selectedColor={selectedColor}
+                    selectedMinCarat={selectedCaratRanges.length === 1 ? selectedCaratRanges[0].min : ""}
+                    selectedMaxCarat={selectedCaratRanges.length === 1 ? selectedCaratRanges[0].max : ""}
+                    selectedFluor={selectedFluor}
+                    selectedClarity={selectedClarity}
+                    selectedCut={selectedCut}
+                    selectedPolish={selectedPolish}
+                    selectedSymmetry={selectedSymmetry}
+                    onSelectionChange={handleSelectionChange}
+                    priceFilters={priceLocationFilters}
+                    selectedLocations={priceLocationFilters.locations}
+                    selectedLabs={priceLocationFilters.labs}
+                    keySymbolFilters={keySymbolFilters}
+                    inclusionFilters={inclusions}
+                    measurementFilters={{
+                      length: measurements.length,
+                      width: measurements.width,
+                      depth: measurements.depth,
+                      table: measurements.table,
+                      depthPercent: measurements.depthPercent,
+                      pavAngle: measurements.pavAngle,
+                      pavHeight: measurements.pavHeight,
+                      crAngle: measurements.crAngle,
+                      crHeight: measurements.crHeight,
+                    }}
+                    pageSize={10}
+                    clearSelectionTrigger={clearSelectionTrigger}
+                  />
+                </div>
+              ) : (
+                <DiamondGridView
+                  searchTerm={searchTerm}
+                  selectedShape={selectedShape}
+                  selectedColor={selectedColor}
+                  selectedMinCarat={selectedCaratRanges.length === 1 ? selectedCaratRanges[0].min : ""}
+                  selectedMaxCarat={selectedCaratRanges.length === 1 ? selectedCaratRanges[0].max : ""}
+                  selectedFluor={selectedFluor}
+                  selectedClarity={selectedClarity}
+                  selectedCut={selectedCut}
+                  selectedPolish={selectedPolish}
+                  selectedSymmetry={selectedSymmetry}
+                  keySymbolFilters={keySymbolFilters}
+                  pageSize={10}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Comparison Modal - Mobile */}
+        {showComparison && (
+          <DiamondComparisonPage
+            diamonds={compareDiamonds}
+            onClose={() => {
+              setShowComparison(false);
+              setCompareDiamonds([]);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

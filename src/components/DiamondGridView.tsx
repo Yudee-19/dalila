@@ -157,192 +157,401 @@ const DiamondGridView: React.FC<GridViewProps> = ({
         return <DiamondTableEmpty hasFilters={hasActiveFilters} />;
     }
 
-    return (
-        <>
-            <div
-                className={`w-full flex flex-col bg-gray-50 p-4 ${mavenPro.className} relative`}
-            >
-                {/* Loading overlay for subsequent data fetches */}
-                {loading && hasLoadedOnce && (
-                    <div className="absolute inset-0 bg-white z-50 flex items-center justify-center rounded-none">
-                        <div className="text-center">
-                            <Loader2 className="w-12 h-12 animate-spin text-[#050c3a] mx-auto mb-4" />
-                            <p className="text-gray-700 font-medium">Loading diamonds...</p>
-                        </div>
+    // Desktop view (no changes)
+    const desktopView = (
+        <div
+            className={`w-full flex flex-col bg-gray-50 p-4 ${mavenPro.className} relative hidden lg:flex`}
+        >
+            {/* Loading overlay for subsequent data fetches */}
+            {loading && hasLoadedOnce && (
+                <div className="absolute inset-0 bg-white z-50 flex items-center justify-center rounded-none">
+                    <div className="text-center">
+                        <Loader2 className="w-12 h-12 animate-spin text-[#050c3a] mx-auto mb-4" />
+                        <p className="text-gray-700 font-medium">Loading diamonds...</p>
                     </div>
-                )}
+                </div>
+            )}
 
-                <div className={`bg-white shadow-sm flex flex-col rounded-lg ${loading && hasLoadedOnce ? 'opacity-0' : 'opacity-100'}`}>
-                    {/* Grid Container */}
-                    <div className="p-4">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                            {paginatedData.map((diamond) => {
-                                const videoUrl =
-                                    (diamond as DiamondData & { MP4?: string })
-                                        .MP4 || "";
-                                const ratio = diamond.MEASUREMENTS
-                                    ? (() => {
-                                          const parts =
-                                              diamond.MEASUREMENTS.split("-");
-                                          if (parts.length >= 2) {
-                                              const length = parseFloat(
-                                                  parts[0]
-                                              );
-                                              const width = parseFloat(
-                                                  parts[1].split("*")[0]
-                                              );
-                                              return !isNaN(length) &&
-                                                  !isNaN(width)
-                                                  ? (length / width).toFixed(2)
-                                                  : "N/A";
-                                          }
-                                          return "N/A";
-                                      })()
-                                    : "N/A";
+            <div className={`bg-white shadow-sm flex flex-col rounded-lg ${loading && hasLoadedOnce ? 'opacity-0' : 'opacity-100'}`}>
+                {/* Grid Container */}
+                <div className="p-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                        {paginatedData.map((diamond) => {
+                            const videoUrl =
+                                (diamond as DiamondData & { MP4?: string })
+                                    .MP4 || "";
+                            const ratio = diamond.MEASUREMENTS
+                                ? (() => {
+                                      const parts =
+                                          diamond.MEASUREMENTS.split("-");
+                                      if (parts.length >= 2) {
+                                          const length = parseFloat(
+                                              parts[0]
+                                          );
+                                          const width = parseFloat(
+                                              parts[1].split("*")[0]
+                                          );
+                                          return !isNaN(length) &&
+                                              !isNaN(width)
+                                              ? (length / width).toFixed(2)
+                                              : "N/A";
+                                      }
+                                      return "N/A";
+                                  })()
+                                : "N/A";
 
-                                return (
+                            return (
+                                <div
+                                    key={diamond._id}
+                                    className="bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden relative border border-gray-200"
+                                >
+                                    {/* Video Container - No Padding */}
                                     <div
-                                        key={diamond._id}
-                                        className="bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden relative border border-gray-200"
+                                        className="relative w-full bg-gray-100 overflow-hidden cursor-pointer"
+                                        style={{ aspectRatio: "1 / 1" }}
+                                        onMouseEnter={(e) => {
+                                            const video =
+                                                e.currentTarget.querySelector(
+                                                    "video"
+                                                ) as HTMLVideoElement;
+                                            if (video) video.play();
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            const video =
+                                                e.currentTarget.querySelector(
+                                                    "video"
+                                                ) as HTMLVideoElement;
+                                            if (video) {
+                                                video.pause();
+                                                video.currentTime = 0;
+                                            }
+                                        }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (onRowClick) {
+                                                onRowClick(diamond);
+                                            } else {
+                                                setSelectedDiamond(diamond);
+                                            }
+                                        }}
                                     >
-                                        {/* Video Container - No Padding */}
-                                        <div
-                                            className="relative w-full bg-gray-100 overflow-hidden cursor-pointer"
-                                            style={{ aspectRatio: "1 / 1" }}
-                                            onMouseEnter={(e) => {
-                                                const video =
-                                                    e.currentTarget.querySelector(
-                                                        "video"
-                                                    ) as HTMLVideoElement;
-                                                if (video) video.play();
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                const video =
-                                                    e.currentTarget.querySelector(
-                                                        "video"
-                                                    ) as HTMLVideoElement;
-                                                if (video) {
-                                                    video.pause();
-                                                    video.currentTime = 0;
-                                                }
-                                            }}
+                                        {videoUrl ? (
+                                            <video
+                                                src={videoUrl}
+                                                muted
+                                                loop
+                                                playsInline
+                                                className="w-full h-full object-cover"
+                                                style={{ display: "block" }}
+                                            />
+                                        ) : diamond.REAL_IMAGE ? (
+                                            <Image
+                                                src={diamond.REAL_IMAGE}
+                                                alt={diamond.STONE_NO}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                                                No Media
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Diamond Info */}
+                                    <div className="px-3 py-3 space-y-2 bg-white">
+                                        {/* Title */}
+                                        <div className="text-sm font-semibold text-gray-900 truncate">
+                                            {diamond.SHAPE} {diamond.CARATS}
+                                            ct {diamond.COLOR}{" "}
+                                            {diamond.CLARITY} {diamond.CUT}{" "}
+                                            {diamond.POL} {diamond.SYM}
+                                        </div>
+
+                                        {/* Stock ID & Lab */}
+                                        <div className="text-xs text-gray-600">
+                                            <span className="font-medium">
+                                                {diamond.STONE_NO}
+                                            </span>{" "}
+                                            • {diamond.LAB}
+                                        </div>
+
+                                        {/* Measurements Grid */}
+                                        <div className="grid grid-cols-3 gap-2 text-xs">
+                                            <div>
+                                                <div className="text-gray-500">
+                                                    T: {diamond.TABLE_PER}%
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="text-gray-500">
+                                                    D: {diamond.DEPTH_PER}%
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="text-gray-500">
+                                                    R: {ratio}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Measurements */}
+                                        <div className="text-xs text-gray-600">
+                                            <span className="font-medium">
+                                                Measurements:
+                                            </span>{" "}
+                                            {diamond.MEASUREMENTS || "N/A"}
+                                        </div>
+
+                                        {/* View Button */}
+                                        <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 if (onRowClick) {
                                                     onRowClick(diamond);
                                                 } else {
-                                                    setSelectedDiamond(diamond);
+                                                    setSelectedDiamond(
+                                                        diamond
+                                                    );
                                                 }
                                             }}
+                                            className="w-full mt-2 px-4 py-1.5 text-xs font-medium text-white bg-[#050C3A] hover:bg-[#030822] transition-colors duration-200 rounded"
                                         >
-                                            {videoUrl ? (
-                                                <video
-                                                    src={videoUrl}
-                                                    muted
-                                                    loop
-                                                    playsInline
-                                                    className="w-full h-full object-cover"
-                                                    style={{ display: "block" }}
-                                                />
-                                            ) : diamond.REAL_IMAGE ? (
-                                                <Image
-                                                    src={diamond.REAL_IMAGE}
-                                                    alt={diamond.STONE_NO}
-                                                    fill
-                                                    className="object-cover"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
-                                                    No Media
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Diamond Info */}
-                                        <div className="px-3 py-3 space-y-2 bg-white">
-                                            {/* Title */}
-                                            <div className="text-sm font-semibold text-gray-900 truncate">
-                                                {diamond.SHAPE} {diamond.CARATS}
-                                                ct {diamond.COLOR}{" "}
-                                                {diamond.CLARITY} {diamond.CUT}{" "}
-                                                {diamond.POL} {diamond.SYM}
-                                            </div>
-
-                                            {/* Stock ID & Lab */}
-                                            <div className="text-xs text-gray-600">
-                                                <span className="font-medium">
-                                                    {diamond.STONE_NO}
-                                                </span>{" "}
-                                                • {diamond.LAB}
-                                            </div>
-
-                                            {/* Measurements Grid */}
-                                            <div className="grid grid-cols-3 gap-2 text-xs">
-                                                <div>
-                                                    <div className="text-gray-500">
-                                                        T: {diamond.TABLE_PER}%
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div className="text-gray-500">
-                                                        D: {diamond.DEPTH_PER}%
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <div className="text-gray-500">
-                                                        R: {ratio}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            {/* Measurements */}
-                                            <div className="text-xs text-gray-600">
-                                                <span className="font-medium">
-                                                    Measurements:
-                                                </span>{" "}
-                                                {diamond.MEASUREMENTS || "N/A"}
-                                            </div>
-
-                                            {/* View Button */}
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    if (onRowClick) {
-                                                        onRowClick(diamond);
-                                                    } else {
-                                                        setSelectedDiamond(
-                                                            diamond
-                                                        );
-                                                    }
-                                                }}
-                                                className="w-full mt-2 px-4 py-1.5 text-xs font-medium text-white bg-[#050C3A] hover:bg-[#030822] transition-colors duration-200 rounded"
-                                            >
-                                                View Details
-                                            </button>
-                                        </div>
+                                            View Details
+                                        </button>
                                     </div>
-                                );
-                            })}
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Pagination Footer */}
+                <DiamondTablePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    rowsPerPage={rowsPerPage}
+                    paginationInfo={paginationInfo}
+                    onPageChange={setCurrentPage}
+                    onRowsPerPageChange={(newSize) => {
+                        setRowsPerPage(newSize);
+                        setCurrentPage(1);
+                    }}
+                    disabled={loading}
+                />
+            </div>
+        </div>
+    );
+
+    // Mobile view with 2 columns
+    const mobileView = (
+        <div
+            className={`w-full flex flex-col bg-gray-50 p-2 ${mavenPro.className} relative lg:hidden`}
+        >
+            {/* Loading overlay for subsequent data fetches */}
+            {loading && hasLoadedOnce && (
+                <div className="absolute inset-0 bg-white z-50 flex items-center justify-center rounded-none">
+                    <div className="text-center">
+                        <Loader2 className="w-8 h-8 animate-spin text-[#050c3a] mx-auto mb-2" />
+                        <p className="text-gray-700 font-medium text-sm">Loading diamonds...</p>
+                    </div>
+                </div>
+            )}
+
+            <div className={`bg-white shadow-sm flex flex-col rounded-lg ${loading && hasLoadedOnce ? 'opacity-0' : 'opacity-100'}`}>
+                {/* Mobile Grid Container - 2 columns */}
+                <div className="p-2">
+                    <div className="grid grid-cols-2 gap-2">
+                        {paginatedData.map((diamond) => {
+                            const videoUrl =
+                                (diamond as DiamondData & { MP4?: string })
+                                    .MP4 || "";
+                            const ratio = diamond.MEASUREMENTS
+                                ? (() => {
+                                      const parts =
+                                          diamond.MEASUREMENTS.split("-");
+                                      if (parts.length >= 2) {
+                                          const length = parseFloat(
+                                              parts[0]
+                                          );
+                                          const width = parseFloat(
+                                              parts[1].split("*")[0]
+                                          );
+                                          return !isNaN(length) &&
+                                              !isNaN(width)
+                                              ? (length / width).toFixed(2)
+                                              : "N/A";
+                                      }
+                                      return "N/A";
+                                  })()
+                                : "N/A";
+
+                            return (
+                                <div
+                                    key={diamond._id}
+                                    className="bg-white rounded-lg hover:shadow-lg transition-all duration-300 overflow-hidden relative border border-gray-200"
+                                >
+                                    {/* Video Container - Compact */}
+                                    <div
+                                        className="relative w-full bg-gray-100 overflow-hidden cursor-pointer"
+                                        style={{ aspectRatio: "1 / 1" }}
+                                        onMouseEnter={(e) => {
+                                            const video =
+                                                e.currentTarget.querySelector(
+                                                    "video"
+                                                ) as HTMLVideoElement;
+                                            if (video) video.play();
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            const video =
+                                                e.currentTarget.querySelector(
+                                                    "video"
+                                                ) as HTMLVideoElement;
+                                            if (video) {
+                                                video.pause();
+                                                video.currentTime = 0;
+                                            }
+                                        }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            if (onRowClick) {
+                                                onRowClick(diamond);
+                                            } else {
+                                                setSelectedDiamond(diamond);
+                                            }
+                                        }}
+                                    >
+                                        {videoUrl ? (
+                                            <video
+                                                src={videoUrl}
+                                                muted
+                                                loop
+                                                playsInline
+                                                className="w-full h-full object-cover"
+                                                style={{ display: "block" }}
+                                            />
+                                        ) : diamond.REAL_IMAGE ? (
+                                            <Image
+                                                src={diamond.REAL_IMAGE}
+                                                alt={diamond.STONE_NO}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full flex items-center justify-center text-gray-400" style={{ fontSize: "10px" }}>
+                                                No Media
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Diamond Info - Compact */}
+                                    <div className="px-2 py-2 space-y-1 bg-white">
+                                        {/* Title - Smaller */}
+                                        <div className="text-[10px] font-semibold text-gray-900 truncate leading-tight">
+                                            {diamond.SHAPE} {diamond.CARATS}ct {diamond.COLOR} {diamond.CLARITY}
+                                        </div>
+
+                                        {/* Stock ID & Lab - Smaller */}
+                                        <div className="text-[9px] text-gray-600">
+                                            <span className="font-medium">
+                                                {diamond.STONE_NO}
+                                            </span>{" "}
+                                            • {diamond.LAB}
+                                        </div>
+
+                                        {/* Measurements Grid - Compact */}
+                                        <div className="grid grid-cols-3 gap-1 text-[9px]">
+                                            <div>
+                                                <div className="text-gray-500">
+                                                    T: {diamond.TABLE_PER}%
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="text-gray-500">
+                                                    D: {diamond.DEPTH_PER}%
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div className="text-gray-500">
+                                                    R: {ratio}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* View Button - Compact */}
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (onRowClick) {
+                                                    onRowClick(diamond);
+                                                } else {
+                                                    setSelectedDiamond(
+                                                        diamond
+                                                    );
+                                                }
+                                            }}
+                                            className="w-full mt-1 px-2 py-1 text-[9px] font-medium text-white bg-[#050C3A] hover:bg-[#030822] transition-colors duration-200 rounded"
+                                        >
+                                            View Details
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Mobile Pagination Footer - Compact */}
+                <div className="border-t border-gray-300 bg-white px-2 py-1.5">
+                    <div className="flex items-center justify-between text-[10px]">
+                        <div className="text-gray-600">
+                            {paginationInfo.start}-{paginationInfo.end} of {paginationInfo.total}
+                        </div>
+                        <div className="flex items-center gap-0.5">
+                            <button
+                                onClick={() => setCurrentPage(1)}
+                                disabled={currentPage === 1 || loading}
+                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
+                            >
+                                First
+                            </button>
+                            <button
+                                onClick={() => setCurrentPage(currentPage - 1)}
+                                disabled={currentPage === 1 || loading}
+                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
+                            >
+                                Prev
+                            </button>
+                            <span className="px-1.5 py-0.5 text-gray-700">
+                                {currentPage}/{totalPages}
+                            </span>
+                            <button
+                                onClick={() => setCurrentPage(currentPage + 1)}
+                                disabled={currentPage === totalPages || loading}
+                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
+                            >
+                                Next
+                            </button>
+                            <button
+                                onClick={() => setCurrentPage(totalPages)}
+                                disabled={currentPage === totalPages || loading}
+                                className="px-1.5 py-0.5 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100 text-[9px]"
+                            >
+                                Last
+                            </button>
                         </div>
                     </div>
-
-                    {/* Pagination Footer */}
-                    <DiamondTablePagination
-                        currentPage={currentPage}
-                        totalPages={totalPages}
-                        rowsPerPage={rowsPerPage}
-                        paginationInfo={paginationInfo}
-                        onPageChange={setCurrentPage}
-                        onRowsPerPageChange={(newSize) => {
-                            setRowsPerPage(newSize);
-                            setCurrentPage(1);
-                        }}
-                        disabled={loading}
-                    />
                 </div>
             </div>
+        </div>
+    );
 
-            {/* Detail Modal */}
+    return (
+        <>
+            {desktopView}
+            {mobileView}
+
+            {/* Detail Modal - Shared */}
             {selectedDiamond && (
                 <DiamondDetailView
                     diamond={selectedDiamond}

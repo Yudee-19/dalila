@@ -112,8 +112,27 @@ export default function CaratFilter({
         }
     };
 
-    return (
-        <div className={`${mavenPro.className} mb-1.5 mt-0.5`}>
+    // Chevron icon for dropdown
+    const ChevronIcon = ({ open }: { open: boolean }) => (
+        <svg
+            width="18"
+            height="18"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="ml-1"
+        >
+            {open ? (
+                <path d="M6 12l4-4 4 4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            ) : (
+                <path d="M6 8l4 4 4-4" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            )}
+        </svg>
+    );
+
+    // Desktop layout (unchanged)
+    const desktopView = (
+        <div className={`${mavenPro.className} mb-1.5 mt-0.5 hidden lg:block`}>
             {/* Header */}
             <div
                 className="flex items-center gap-1.5 px-2.5 py-1.5"
@@ -188,5 +207,103 @@ export default function CaratFilter({
                 </div>
             </div>
         </div>
+    );
+
+    // Mobile dropdown state
+    const [open, setOpen] = useState(false);
+
+    // Mobile layout: dropdown, 2 columns for ranges
+    const mobileView = (
+        <div className={`${mavenPro.className} mb-1.5 mt-0.5 block lg:hidden`}>
+            <button
+                type="button"
+                className="w-full flex items-center justify-between px-2.5 py-1.5 focus:outline-none"
+                style={{ backgroundColor: "#000033" }}
+                onClick={() => setOpen((prev) => !prev)}
+                aria-expanded={open}
+                aria-controls="carat-filter-mobile-panel"
+            >
+                <div className="flex items-center gap-1.5">
+                    <Image
+                        src="/filtersicon/carat.png"
+                        alt="Carat"
+                        width={16}
+                        height={16}
+                        className="w-6 h-6"
+                        priority
+                    />
+                    <span className="text-sm font-normal text-white">Carat</span>
+                </div>
+                <div className="flex items-center ml-auto">
+                    <ChevronIcon open={open} />
+                </div>
+            </button>
+            {open && (
+                <div
+                    id="carat-filter-mobile-panel"
+                    className="p-2.5 bg-white"
+                    style={{
+                        border: "0.25px solid #f9e8cd",
+                        borderTop: "none",
+                        height: "auto",
+                    }}
+                >
+                    {/* Input Fields */}
+                    <div className="flex gap-2 mb-2">
+                        <div className="relative flex-1">
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={fromValue}
+                                onChange={handleFromChange}
+                                className="w-full px-2 py-1 text-xs text-gray-900 border border-[#f9e8cd] min-h-[32px] focus:outline-none focus:border-[#d4b896]"
+                                placeholder="From"
+                                style={{ color: "#111827", borderRadius: "0" }}
+                            />
+                        </div>
+                        <div className="relative flex-1">
+                            <input
+                                type="number"
+                                step="0.01"
+                                min="0"
+                                value={toValue}
+                                onChange={handleToChange}
+                                className="w-full px-2 py-1 text-xs text-gray-900 border border-[#f9e8cd] min-h-[32px] focus:outline-none focus:border-[#d4b896]"
+                                placeholder="To"
+                                style={{ color: "#111827", borderRadius: "0" }}
+                            />
+                        </div>
+                    </div>
+                    {/* Range Buttons */}
+                    <div className="grid grid-cols-2 gap-1">
+                        {STATIC_CARAT_RANGES.map((range) => {
+                            const isSelected = isRangeSelected(range);
+                            return (
+                                <button
+                                    key={range.value}
+                                    onClick={() => handleRangeClick(range)}
+                                    className={`px-2 py-1 text-xs font-normal transition-colors ${
+                                        isSelected
+                                            ? "text-gray-800 bg-[#FAF6EB] border border-[#FAF6EB]"
+                                            : "bg-white text-gray-700 hover:bg-gray-50 border border-[#f9e8cd]"
+                                    } min-h-[32px] min-w-[70px]`}
+                                    style={{ borderRadius: "0" }}
+                                >
+                                    {range.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+
+    return (
+        <>
+            {desktopView}
+            {mobileView}
+        </>
     );
 }

@@ -166,46 +166,122 @@ const DiamondStockTable: React.FC<TableProps> = ({
         );
     }
 
-    return (
-    <div className={`w-full h-full flex flex-col ${mavenPro.className} relative`}>
-      {/* Loading overlay for subsequent data fetches */}
-      {loading && hasLoadedOnce && (
-        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
-          <DiamondTableLoading />
+    // Desktop view (no changes)
+    const desktopView = (
+      <div className={`w-full h-full flex flex-col ${mavenPro.className} relative hidden lg:flex`}>
+        {/* Loading overlay for subsequent data fetches */}
+        {loading && hasLoadedOnce && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
+            <DiamondTableLoading />
+          </div>
+        )}
+
+        {/* Main Table Container */}
+        <div className={`flex-1 overflow-hidden border border-gray-300 ${loading && hasLoadedOnce ? 'opacity-50 pointer-events-none' : ''}`}>
+          <DiamondTable
+            diamonds={data}
+            selectedRows={selectedRows}
+            selectAll={selectAll}
+            onSelectAll={(checked) => handleSelectAll(checked, data)}
+            onRowSelect={(id, checked) => handleRowSelect(id, checked, data)}
+            onStockIdClick={handleStockIdClick}
+          />
         </div>
-      )}
 
-      {/* Main Table Container */}
-      <div className={`flex-1 overflow-hidden border border-gray-300 ${loading && hasLoadedOnce ? 'opacity-50 pointer-events-none' : ''}`}>
-        <DiamondTable
-          diamonds={data}
-          selectedRows={selectedRows}
-          selectAll={selectAll}
-          onSelectAll={(checked) => handleSelectAll(checked, data)}
-          onRowSelect={(id, checked) => handleRowSelect(id, checked, data)}
-          onStockIdClick={handleStockIdClick}
-                        />
-                      </div>
+        {/* Pagination Controls */}
+        <DiamondTablePagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          rowsPerPage={rowsPerPage}
+          paginationInfo={paginationInfo}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
+          disabled={loading}
+        />
+      </div>
+    );
 
-      {/* Pagination Controls */}
-      <DiamondTablePagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        rowsPerPage={rowsPerPage}
-        paginationInfo={paginationInfo}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleRowsPerPageChange}
-        disabled={loading}
-      />
+    // Mobile view with compact design
+    const mobileView = (
+      <div className={`w-full h-full flex flex-col ${mavenPro.className} relative lg:hidden`}>
+        {/* Loading overlay for subsequent data fetches */}
+        {loading && hasLoadedOnce && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50">
+            <DiamondTableLoading />
+          </div>
+        )}
 
-      {/* Detail View Modal */}
-            {selectedDiamond && (
-                <DiamondDetailView
-                    diamond={selectedDiamond}
-          onClose={handleCloseDetail}
-                />
-            )}
-    </div>
+        {/* Mobile Table Container with horizontal scroll */}
+        <div className={`flex-1 overflow-x-auto overflow-y-auto border border-gray-300 ${loading && hasLoadedOnce ? 'opacity-50 pointer-events-none' : ''}`}>
+          <div className="min-w-[800px]">
+            <DiamondTable
+              diamonds={data}
+              selectedRows={selectedRows}
+              selectAll={selectAll}
+              onSelectAll={(checked) => handleSelectAll(checked, data)}
+              onRowSelect={(id, checked) => handleRowSelect(id, checked, data)}
+              onStockIdClick={handleStockIdClick}
+            />
+          </div>
+        </div>
+
+        {/* Mobile Pagination Controls - Compact */}
+        <div className="border-t border-gray-300 bg-white px-2 py-1.5">
+          <div className="flex items-center justify-between text-xs">
+            <div className="text-gray-600">
+              {paginationInfo.start}-{paginationInfo.end} of {paginationInfo.total}
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1 || loading}
+                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                First
+              </button>
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1 || loading}
+                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Prev
+              </button>
+              <span className="px-2 py-1 text-gray-700">
+                {currentPage}/{totalPages}
+              </span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages || loading}
+                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Next
+              </button>
+              <button
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages || loading}
+                className="px-2 py-1 border border-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+              >
+                Last
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    return (
+      <>
+        {desktopView}
+        {mobileView}
+
+        {/* Detail View Modal - Shared */}
+        {selectedDiamond && (
+          <DiamondDetailView
+            diamond={selectedDiamond}
+            onClose={handleCloseDetail}
+          />
+        )}
+      </>
     );
 };
 

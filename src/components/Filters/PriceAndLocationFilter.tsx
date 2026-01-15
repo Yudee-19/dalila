@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react";
 
 export interface PriceRange {
@@ -43,9 +43,10 @@ const LAB_OPTIONS = [
 
 // Note: Price filtering is now done server-side via API
 // This function is kept for backward compatibility
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const matchesPriceFilters = (
-  _diamond: Diamond,
-  _filters: PriceLocationFilters,
+  diamond: Diamond,
+  filters: PriceLocationFilters,
 ): boolean => {
   return true; // All filtering done server-side
 };
@@ -139,9 +140,24 @@ export default function PriceLocationFilter({
     return filters.labs?.includes(lab) || false;
   };
 
-  return (
+  const [open, setOpen] = useState(false);
+
+  // Chevron icon component
+  const ChevronIcon = ({ open }: { open: boolean }) => (
+    <svg
+      className={`w-4 h-4 transition-transform ${open ? "rotate-180" : ""}`}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+
+  // Desktop view (no changes)
+  const desktopView = (
     <div
-      className="mb-2 mt-1"
+      className="mb-2 mt-1 hidden lg:block"
       style={{ width: "100%", fontFamily: "Maven Pro, sans-serif" }}
     >
       {/* Price Section */}
@@ -476,5 +492,389 @@ export default function PriceLocationFilter({
         </div>
       </div>
     </div>
+  );
+
+  // Mobile view with dropdown
+  const mobileView = (
+    <div className="mb-2 mt-1 block lg:hidden" style={{ width: "100%", fontFamily: "Maven Pro, sans-serif" }}>
+      {/* Header with dropdown */}
+      <div
+        className="flex items-center justify-between px-2 py-1.5 cursor-pointer"
+        style={{ backgroundColor: "#000033" }}
+        onClick={() => setOpen(!open)}
+      >
+        <span className="text-sm font-normal text-white">Price & Location</span>
+        <div className="ml-auto text-white">
+          <ChevronIcon open={open} />
+        </div>
+      </div>
+
+      {/* Dropdown panel */}
+      {open && (
+        <div
+          className="bg-white p-1.5"
+          style={{ border: "1px solid #f9e8cd", borderTop: "none" }}
+        >
+          {/* Price Section */}
+          <div className="mb-2">
+            <div
+              className="px-1.5 py-1 mb-1"
+              style={{ backgroundColor: "#000033" }}
+            >
+              <span className="text-xs font-normal text-white">Price</span>
+            </div>
+            <div className="space-y-1">
+              {/* $/ct */}
+              <div className="flex items-center gap-1">
+                <div
+                  className="px-1.5 py-1 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "50px", fontSize: "10px" }}
+                >
+                  $/ct
+                </div>
+                <div
+                  className="flex items-center bg-white rounded-none"
+                  style={{ border: "1px solid #f9e8cd" }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={filters.pricePerCarat?.from || ""}
+                    onChange={(e) =>
+                      handlePriceChange("pricePerCarat", "from", e.target.value)
+                    }
+                    placeholder="0"
+                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                  />
+                  <div
+                    className="flex flex-col border-l"
+                    style={{ borderColor: "#e5e7eb" }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        incrementValue("pricePerCarat", "from");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors"
+                    >
+                      <ChevronUp className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        decrementValue("pricePerCarat", "from");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors border-t"
+                      style={{ borderColor: "#e5e7eb" }}
+                    >
+                      <ChevronDown className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+                <span className="text-gray-500 font-normal" style={{ fontSize: "10px" }}>To</span>
+                <div
+                  className="flex items-center bg-white rounded-none"
+                  style={{ border: "1px solid #f9e8cd" }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={filters.pricePerCarat?.to || ""}
+                    onChange={(e) =>
+                      handlePriceChange("pricePerCarat", "to", e.target.value)
+                    }
+                    placeholder="TO"
+                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                  />
+                  <div
+                    className="flex flex-col border-l"
+                    style={{ borderColor: "#f9e8cd" }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        incrementValue("pricePerCarat", "to");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors"
+                    >
+                      <ChevronUp className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        decrementValue("pricePerCarat", "to");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors border-t"
+                      style={{ borderColor: "#f9e8cd" }}
+                    >
+                      <ChevronDown className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Disc% */}
+              <div className="flex items-center gap-1">
+                <div
+                  className="px-1.5 py-1 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "50px", fontSize: "10px" }}
+                >
+                  Disc%
+                </div>
+                <div
+                  className="flex items-center bg-white rounded-none"
+                  style={{ border: "1px solid #f9e8cd" }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={filters.discount?.from || ""}
+                    onChange={(e) =>
+                      handlePriceChange("discount", "from", e.target.value)
+                    }
+                    placeholder="0"
+                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                  />
+                  <div
+                    className="flex flex-col border-l"
+                    style={{ borderColor: "#e5e7eb" }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        incrementValue("discount", "from");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors"
+                    >
+                      <ChevronUp className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        decrementValue("discount", "from");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors border-t"
+                      style={{ borderColor: "#e5e7eb" }}
+                    >
+                      <ChevronDown className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+                <span className="text-gray-500 font-normal" style={{ fontSize: "10px" }}>To</span>
+                <div
+                  className="flex items-center bg-white rounded-none"
+                  style={{ border: "1px solid #f9e8cd" }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={filters.discount?.to || ""}
+                    onChange={(e) =>
+                      handlePriceChange("discount", "to", e.target.value)
+                    }
+                    placeholder="TO"
+                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                  />
+                  <div
+                    className="flex flex-col border-l"
+                    style={{ borderColor: "#f9e8cd" }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        incrementValue("discount", "to");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors"
+                    >
+                      <ChevronUp className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        decrementValue("discount", "to");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors border-t"
+                      style={{ borderColor: "#f9e8cd" }}
+                    >
+                      <ChevronDown className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Total $ */}
+              <div className="flex items-center gap-1">
+                <div
+                  className="px-1.5 py-1 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "50px", fontSize: "10px" }}
+                >
+                  Total $
+                </div>
+                <div
+                  className="flex items-center bg-white rounded-none"
+                  style={{ border: "1px solid #f9e8cd" }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={filters.totalPrice?.from || ""}
+                    onChange={(e) =>
+                      handlePriceChange("totalPrice", "from", e.target.value)
+                    }
+                    placeholder="0"
+                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                  />
+                  <div
+                    className="flex flex-col border-l"
+                    style={{ borderColor: "#f9e8cd" }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        incrementValue("totalPrice", "from");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors"
+                    >
+                      <ChevronUp className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        decrementValue("totalPrice", "from");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors border-t"
+                      style={{ borderColor: "#f9e8cd" }}
+                    >
+                      <ChevronDown className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+                <span className="text-gray-500 font-normal" style={{ fontSize: "10px" }}>To</span>
+                <div
+                  className="flex items-center bg-white rounded-none"
+                  style={{ border: "1px solid #f9e8cd" }}
+                >
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={filters.totalPrice?.to || ""}
+                    onChange={(e) =>
+                      handlePriceChange("totalPrice", "to", e.target.value)
+                    }
+                    placeholder="TO"
+                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                  />
+                  <div
+                    className="flex flex-col border-l"
+                    style={{ borderColor: "#f9e8cd" }}
+                  >
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        incrementValue("totalPrice", "to");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors"
+                    >
+                      <ChevronUp className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        decrementValue("totalPrice", "to");
+                      }}
+                      className="px-0.5 hover:bg-gray-100 transition-colors border-t"
+                      style={{ borderColor: "#f9e8cd" }}
+                    >
+                      <ChevronDown className="w-2.5 h-2.5 text-gray-600" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Location Section */}
+          <div className="mb-2">
+            <div
+              className="px-1.5 py-1 mb-1 font-normal text-white text-xs"
+              style={{ backgroundColor: "#000033" }}
+            >
+              <span>Location</span>
+            </div>
+            <div className="grid grid-cols-3 gap-1">
+              {LOCATION_OPTIONS.map((location) => (
+                <button
+                  key={location.value}
+                  onClick={() => toggleLocation(location.value)}
+                  className={`px-1 py-1 rounded-none font-normal transition-colors ${
+                    isLocationSelected(location.value)
+                      ? "text-gray-800 bg-[#FAF6EB]"
+                      : "bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                  style={{
+                    minWidth: "40px",
+                    minHeight: "24px",
+                    fontFamily: "inherit",
+                    fontSize: "10px",
+                    border: isLocationSelected(location.value)
+                      ? "0.25px solid #FAF6EB"
+                      : "1px solid #f9e8cd",
+                  }}
+                >
+                  {location.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Lab Section */}
+          <div>
+            <div
+              className="px-1.5 py-1 mb-1 font-normal text-white text-xs"
+              style={{ backgroundColor: "#000033" }}
+            >
+              <span>Lab :</span>
+            </div>
+            <div className="grid grid-cols-2 gap-1">
+              {LAB_OPTIONS.map((lab) => (
+                <button
+                  key={lab.value}
+                  onClick={() => toggleLab(lab.value)}
+                  className={`px-1 py-1 rounded-none font-normal transition-colors ${
+                    isLabSelected(lab.value)
+                      ? "text-gray-800 bg-[#FAF6EB]"
+                      : "bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                  style={{
+                    minWidth: "45px",
+                    minHeight: "24px",
+                    fontFamily: "inherit",
+                    fontSize: "10px",
+                    border: isLabSelected(lab.value)
+                      ? "0.25px solid #FAF6EB"
+                      : "1px solid #f9e8cd",
+                  }}
+                >
+                  {lab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <>
+      {desktopView}
+      {mobileView}
+    </>
   );
 }
