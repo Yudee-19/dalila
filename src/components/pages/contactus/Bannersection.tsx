@@ -18,7 +18,7 @@ const jost = Jost({
 
 export default function ContactBanner() {
   return (
-    <section className="relative h-[60vh] md:h-[55vh] lg:h-[50vh] flex items-center justify-center overflow-hidden bg-slate-900">
+    <section className="relative h-[36vh] xs:h-[44vh] sm:h-[60vh] md:h-[55vh] lg:h-[50vh] flex items-center justify-center overflow-hidden bg-slate-900">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -32,25 +32,26 @@ export default function ContactBanner() {
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-6 relative z-10 text-center py-14">
+      <div className="container mx-auto px-3 xs:px-4 sm:px-6 relative z-10 text-center py-8 sm:py-14">
         <AnimatedContainer direction="right">
           <div className="opacity-100">
             <h1
-              className={`text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-white mb-3 mt-35 ${marcellus.className}`}
+              className={`text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-white mb-3 mt-8 sm:mt-30 whitespace-nowrap sm:whitespace-normal ${marcellus.className}`}
+              style={{ lineHeight: 1.15 }}
             >
               CONTACT US
             </h1>
-            <div className="w-[35%] h-px bg-amber-400 mx-auto mb-6 " />
-            <p className="text-[#8E939C]">
+            <div className="w-2/3 sm:w-[35%] h-px bg-amber-400 mx-auto mb-6" />
+            <p className="text-[#8E939C] text-xs xs:text-sm sm:text-base">
               Have a question or need assistance with your booking? Our
-              dedicated team is<br></br> available around the clock to provide
+              dedicated team is<br /> available around the clock to provide
               you with prompt and friendly service.
             </p>
           </div>
         </AnimatedContainer>
 
-        <div className="opacity-100 mt-6">
-          <div className="flex items-center justify-center gap-2 text-gray-300 text-sm md:text-base">
+        <div className="opacity-100 mt-4 sm:mt-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 text-gray-300 text-xs xs:text-sm md:text-base">
             <Link
               href="/"
               className={`hover:text-amber-400 transition-colors ${jost.className}`}

@@ -55,23 +55,26 @@ export default function Diamondshowcase() {
     <div className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6 md:px-8 lg:px-12">
         {/* Sell Diamonds Section */}
-        <div className="grid md:grid-cols-2 gap-16 items-center mb-32">
-          <AnimatedContainer direction="left">
-            <div>
-              <div className="relative h-[350px] md:h-[390px] w-full max-w-[340px] mx-auto overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/diamondwork.png"
-                  alt="Professional diamond dealer"
-                  fill
-                  className="object-cover"
-                  unoptimized
-                />
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-16 items-center mb-32">
+          {/* Image first on mobile, left on desktop */}
+          <div className="order-1 md:order-none w-full">
+            <AnimatedContainer direction="left">
+              <div>
+                <div className="relative h-[350px] md:h-[390px] w-full max-w-[340px] mx-auto overflow-hidden shadow-2xl">
+                  <Image
+                    src="/images/diamondwork.png"
+                    alt="Professional diamond dealer"
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
               </div>
-            </div>
-          </AnimatedContainer>
-          <div>
+            </AnimatedContainer>
+          </div>
+          <div className="order-2 md:order-none w-full">
             <AnimatedContainer direction="right">
-              <div className="max-w-xl">
+              <div className="max-w-xl mx-auto">
                 <h4
                   className={`text-sm md:text-base uppercase tracking-widest text-gray-500 mb-4 font-medium ${marcellus.className}`}
                   style={{ color: "#515151" }}
@@ -99,42 +102,9 @@ export default function Diamondshowcase() {
         </div>
 
         {/* Language of Diamonds Section */}
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <AnimatedContainer direction="left">
-            <div>
-              <div className="max-w-xl">
-                <h4
-                  className={`text-sm md:text-base uppercase tracking-widest text-gray-500 mb-4 font-medium ${marcellus.className}`}
-                  style={{ color: "#515151" }}
-                >
-                  Diamond&apos;s Journey
-                </h4>
-                <h2
-                  className={`text-[2.75rem] md:text-5xl lg:text-[3.25rem] font-light mb-7 text-gray-900 leading-[1.15] tracking-tight ${marcellus.className}`}
-                >
-                  The Journey of a Diamond
-                </h2>
-                <p
-                  className={`text-gray-600 leading-relaxed mb-8 text-[15px] md:text-base font-normal ${jost.className}`}
-                >
-                  Natural diamonds are created under extreme pressure and
-                  temperature conditions, deep below the Earth&apos;s surface.
-                  Over millions of years, these crystals travel upward through
-                  volcanic activity, eventually reaching the surface where they
-                  are mined and transformed into beautiful jewels.
-                </p>
-                <p
-                  className={`text-gray-600 leading-relaxed mb-8 text-[15px] md:text-base font-normal ${jost.className}`}
-                >
-                  Each diamond&apos;s journey — from mine to masterpiece —
-                  involves ethical sourcing, expert craftsmanship, and precise
-                  grading to ensure its authenticity and value.
-                </p>
-              </div>
-            </div>
-          </AnimatedContainer>
-
-          <div>
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-16 items-center">
+          {/* Image first on mobile, right on desktop */}
+          <div className="order-1 md:order-2 w-full">
             <AnimatedContainer direction="right">
               <div className="relative h-[370px] md:h-[400px] w-full max-w-[380px] mx-auto overflow-hidden shadow-2xl group">
                 {/* Carousel Container with sliding effect */}
@@ -194,6 +164,39 @@ export default function Diamondshowcase() {
                     />
                   ))}
                 </div>
+              </div>
+            </AnimatedContainer>
+          </div>
+          <div className="order-2 md:order-1 w-full">
+            <AnimatedContainer direction="left">
+              <div className="max-w-xl mx-auto">
+                <h4
+                  className={`text-sm md:text-base uppercase tracking-widest text-gray-500 mb-4 font-medium ${marcellus.className}`}
+                  style={{ color: "#515151" }}
+                >
+                  Diamond&apos;s Journey
+                </h4>
+                <h2
+                  className={`text-[2.75rem] md:text-5xl lg:text-[3.25rem] font-light mb-7 text-gray-900 leading-[1.15] tracking-tight ${marcellus.className}`}
+                >
+                  The Journey of a Diamond
+                </h2>
+                <p
+                  className={`text-gray-600 leading-relaxed mb-8 text-[15px] md:text-base font-normal ${jost.className}`}
+                >
+                  Natural diamonds are created under extreme pressure and
+                  temperature conditions, deep below the Earth&apos;s surface.
+                  Over millions of years, these crystals travel upward through
+                  volcanic activity, eventually reaching the surface where they
+                  are mined and transformed into beautiful jewels.
+                </p>
+                <p
+                  className={`text-gray-600 leading-relaxed mb-8 text-[15px] md:text-base font-normal ${jost.className}`}
+                >
+                  Each diamond&apos;s journey — from mine to masterpiece —
+                  involves ethical sourcing, expert craftsmanship, and precise
+                  grading to ensure its authenticity and value.
+                </p>
               </div>
             </AnimatedContainer>
           </div>

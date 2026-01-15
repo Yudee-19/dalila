@@ -40,8 +40,8 @@ export default function DiamondShapeCuts() {
         {/* Diamond Cuts Grid */}
         <AnimatedContainer direction="up">
           <div className="max-w-6xl mx-auto">
-            {/* First 8 items in 4 columns */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
+            {/* First 8 items in 2 columns on mobile, 4 columns on desktop */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-6">
               {diamondCuts.slice(0, 8).map((cut, index) => (
                 <div
                   key={index}
@@ -66,8 +66,8 @@ export default function DiamondShapeCuts() {
               ))}
             </div>
 
-            {/* Last 2 items centered */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-2xl mx-auto">
+            {/* Last 2 items centered, 2 columns on mobile */}
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-2xl mx-auto">
               {diamondCuts.slice(8).map((cut, index) => (
                 <div
                   key={index + 8}
