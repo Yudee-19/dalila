@@ -258,9 +258,9 @@ export default function LoginPage() {
             {/* Content */}
             <div className="relative z-10 flex items-center justify-center w-full h-full p-4">
                 <div className="flex w-full max-w-[1100px] h-auto md:h-[480px] rounded-xl shadow-2xl border border-gray-800 overflow-hidden flex-col md:flex-row">
-                    {/* Left Panel - Brand Info */}
+                    {/* Left Panel - Brand Info - Hidden on Mobile */}
                     <div
-                        className="flex flex-col justify-between text-white px-10 py-10 w-full md:w-[50%] md:min-w-[350px]"
+                        className="hidden md:flex flex-col justify-between text-white px-10 py-10 w-full md:w-[50%] md:min-w-[350px]"
                         style={{
                             background:
                                 "linear-gradient(to right, rgba(4, 8, 37, 0.9) 0%, rgba(4, 8, 37, 0.9) 100%)",
@@ -307,8 +307,8 @@ export default function LoginPage() {
                         </div>
                     </div>
 
-                    {/* Right Panel - Login Form */}
-                    <div className="relative flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 md:py-0">
+                    {/* Right Panel - Login Form - Full Width on Mobile */}
+                    <div className="relative w-full md:flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 md:py-0">
                         {/* Home Button */}
                         <button
                             className="absolute top-4 md:top-6 right-4 md:right-6 bg-[#101638]/80 rounded-full p-2 shadow-md z-10 hover:bg-[#d4a018] transition-all duration-200 hover:scale-110 cursor-pointer"
@@ -322,7 +322,7 @@ export default function LoginPage() {
                         {/* Login Form */}
                         <form
                             onSubmit={handleLogin}
-                            className="relative z-10 w-full max-w-[400px] md:max-w-[550px]"
+                            className="relative z-10 w-full max-w-[400px] md:max-w-[550px] px-4 md:px-0"
                         >
                             <h2 className="text-2xl md:text-3xl font-semibold text-white mb-6 text-center">
                                 Login to Your Account
@@ -344,7 +344,7 @@ export default function LoginPage() {
                                     required
                                     disabled={isLoading}
                                     placeholder="Email Address"
-                                    className="w-[90%] ml-5 px-5 py-3 rounded-lg bg-white border border-gray-300 focus:border-[#FFD166] text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FFD166] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                                    className="w-full px-5 py-3 rounded-lg bg-white border border-gray-300 focus:border-[#FFD166] text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FFD166] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                                     autoComplete="email"
                                 />
                             </div>
@@ -360,13 +360,13 @@ export default function LoginPage() {
                                     required
                                     disabled={isLoading}
                                     placeholder="Password"
-                                    className="w-[90%] ml-5 px-5 py-3 rounded-lg bg-white border border-gray-300 focus:border-[#FFD166] text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FFD166] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                                    className="w-full px-5 py-3 rounded-lg bg-white border border-gray-300 focus:border-[#FFD166] text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FFD166] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
                                     autoComplete="current-password"
                                 />
                                 <button
                                     type="button"
                                     onClick={togglePasswordVisibility}
-                                    className="absolute right-[60px] top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
                                     disabled={isLoading}
                                     title={
                                         showPassword
@@ -383,7 +383,7 @@ export default function LoginPage() {
                             </div>
 
                             {/* Remember Me & Forgot Password */}
-                            <div className="flex justify-between items-center mb-6 ml-100">
+                            <div className="flex justify-between items-center mb-6">
                                 <a
                                     href="#"
                                     onClick={handleForgotPassword}
@@ -397,7 +397,7 @@ export default function LoginPage() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-[90%] ml-5 bg-[#d4a018] hover:bg-[#c4a639] text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                                className="w-full bg-[#d4a018] hover:bg-[#c4a639] text-white font-semibold py-3 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                             >
                                 {isLoading ? (
                                     <Loader2 className="w-5 h-5 animate-spin" />

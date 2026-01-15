@@ -426,9 +426,9 @@ function CustomerDetailsContent() {
 
       <div className="relative z-10 flex items-center justify-center w-full min-h-screen p-4 py-8">
         <div className="flex w-full max-w-[1200px] min-h-[700px] rounded-xl shadow-2xl border border-gray-800 overflow-hidden flex-col md:flex-row">
-          {/* Left Welcome Panel */}
+          {/* Left Welcome Panel - Hidden on Mobile */}
           <div
-            className="flex flex-col justify-between text-white px-10 py-10 w-full md:w-[40%] md:min-w-[350px]"
+            className="hidden md:flex flex-col justify-between text-white px-10 py-10 w-full md:w-[40%] md:min-w-[350px]"
             style={{
               background:
                 "linear-gradient(to right, rgba(4, 8, 37, 0.9) 0%, rgba(4, 8, 37, 0.9) 100%)",
@@ -504,8 +504,8 @@ function CustomerDetailsContent() {
                         </div>
                     </div>
 
-          {/* Right Panel - Form */}
-          <div className="relative flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 overflow-y-auto max-h-screen">
+          {/* Right Panel - Form - Full Width on Mobile */}
+          <div className="relative w-full md:flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 overflow-y-auto max-h-screen">
             {/* Navigation Buttons */}
             <div className="absolute top-4 md:top-6 right-4 md:right-6 flex gap-2 z-10">
               <button

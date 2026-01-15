@@ -212,9 +212,9 @@ export default function RegisterPage() {
 
             <div className="relative z-10 flex items-center justify-center w-full h-full p-4">
                 <div className="flex w-full max-w-[1100px] h-auto md:h-[600px] rounded-xl shadow-2xl border border-gray-800 overflow-hidden flex-col md:flex-row">
-                    {/* Left Welcome Panel */}
+                    {/* Left Welcome Panel - Hidden on Mobile */}
                     <div
-                        className="flex flex-col justify-between text-white px-10 py-10 w-full md:w-[50%] md:min-w-[350px]"
+                        className="hidden md:flex flex-col justify-between text-white px-10 py-10 w-full md:w-[50%] md:min-w-[350px]"
                         style={{
                             background:
                                 "linear-gradient(to right, rgba(4, 8, 37, 0.9) 0%, rgba(4, 8, 37, 0.9) 100%)",
@@ -266,8 +266,8 @@ export default function RegisterPage() {
                         </div>
                     </div>
 
-                    {/* Right Panel */}
-                    <div className="relative flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 md:py-0">
+                    {/* Right Panel - Registration Form - Full Width on Mobile */}
+                    <div className="relative w-full md:flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 md:py-0">
                         {/* Home Button */}
                         <button
                             className="absolute top-4 md:top-6 right-4 md:right-6 bg-[#101638]/80 rounded-full p-2 shadow-md z-50 hover:bg-[#d4a018] transition-all duration-200 hover:scale-110 cursor-pointer"
@@ -285,7 +285,7 @@ export default function RegisterPage() {
                         {/* Registration Form */}
                         <form
                             onSubmit={handleRegister}
-                            className="relative z-10 w-full max-w-[400px] md:max-w-[550px]"
+                            className="relative z-10 w-full max-w-[400px] md:max-w-[550px] px-4 md:px-0"
                         >
                             <h2
                                 className={`text-2xl md:text-3xl font-semibold text-white mb-6 text-center ${playFair.className}`}

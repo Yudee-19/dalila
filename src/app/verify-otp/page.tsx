@@ -201,9 +201,9 @@ function OTPVerificationContent() {
 
       <div className="relative z-10 flex items-center justify-center w-full h-full p-4">
         <div className="flex w-full max-w-[900px] h-auto md:h-[550px] rounded-xl shadow-2xl border border-gray-800 overflow-hidden flex-col md:flex-row">
-          {/* Left Welcome Panel */}
+          {/* Left Welcome Panel - Hidden on Mobile */}
           <div
-            className="flex flex-col justify-between text-white px-10 py-10 w-full md:w-[50%] md:min-w-[350px]"
+            className="hidden md:flex flex-col justify-between text-white px-10 py-10 w-full md:w-[50%] md:min-w-[350px]"
             style={{
               background:
                 "linear-gradient(to right, rgba(4, 8, 37, 0.9) 0%, rgba(4, 8, 37, 0.9) 100%)",
@@ -247,8 +247,8 @@ function OTPVerificationContent() {
             </div>
           </div>
 
-          {/* Right Panel */}
-          <div className="relative flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 md:py-0">
+          {/* Right Panel - OTP Form - Full Width on Mobile */}
+          <div className="relative w-full md:flex-1 flex flex-col justify-center items-center bg-black/20 px-4 py-8 md:py-0">
             {/* Navigation Buttons */}
             <div className="absolute top-4 md:top-6 right-4 md:right-6 flex gap-2 z-10">
               <button
@@ -272,7 +272,7 @@ function OTPVerificationContent() {
             {/* OTP Form */}
             <form
               onSubmit={handleVerifyOtp}
-              className="relative z-10 w-full max-w-[400px]"
+              className="relative z-10 w-full max-w-[400px] px-4 md:px-0"
             >
               <h2
                 className={`text-2xl md:text-3xl font-semibold text-white mb-6 text-center ${playFair.className}`}
