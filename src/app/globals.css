@@ -23,12 +23,31 @@
 }
 
 /* Global defaults */
+html {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-jost);
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
+}
+
+/* Prevent horizontal scroll on all pages */
+#__next,
+main {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Font utility classes */
@@ -76,5 +95,17 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome/Safari/Webkit */
+}
+
+/* Responsive container safety */
+@media (max-width: 768px) {
+  * {
+    max-width: 100%;
+  }
+  
+  .container {
+    max-width: 100% !important;
+    overflow-x: hidden;
+  }
 }
 

@@ -85,7 +85,7 @@ export default function ContactUsPage() {
     };
 
     return (
-        <div className="bg-gray-50">
+        <div className="bg-gray-50 w-full overflow-x-hidden">
             {/* Contact Form Section */}
             <section className="pt-16 pb-16 px-4">
                 <div className="container mx-auto max-w-7xl">

@@ -24,7 +24,7 @@ export default function HeaderFooterWrapper({
   return (
     <>
       {!hideHeaderFooter && <Header />}
-      <main className="relative">{children}</main>
+      <main className="relative overflow-x-hidden w-full max-w-full">{children}</main>
       {!hideHeaderFooter && <Footer />}
     </>
   );

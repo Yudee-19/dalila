@@ -4,7 +4,7 @@ import ContactHeroSection from "@/components/pages/contactus/Herosection";
 export default function Contact() {
   return (
     <>
-      <main className="relative">
+      <main className="relative overflow-x-hidden w-full max-w-full">
         <ContactBanner />
         <ContactHeroSection />
         <ContactForm />

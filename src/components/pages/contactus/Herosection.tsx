@@ -20,8 +20,8 @@ export default function ContactHeroSection() {
   const goldColor = "#B58900";
 
   return (
-    <div className="bg-white">
-      <div className="container mx-auto max-w-7xl px-4 pt-16 pb-0">
+    <div className="bg-white w-full overflow-x-hidden">
+      <div className="container mx-auto max-w-7xl px-4 pt-16 pb-0 w-full">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
           <div>

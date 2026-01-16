@@ -18,7 +18,7 @@ const jost = Jost({
 
 export default function ContactBanner() {
   return (
-    <section className="relative h-[36vh] xs:h-[44vh] sm:h-[60vh] md:h-[55vh] lg:h-[50vh] flex items-center justify-center overflow-hidden bg-slate-900">
+    <section className="relative h-[36vh] xs:h-[44vh] sm:h-[60vh] md:h-[55vh] lg:h-[50vh] flex items-center justify-center overflow-hidden bg-slate-900 w-full max-w-full">
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
