@@ -19,7 +19,6 @@ function OTPVerificationContent() {
   const [email, setEmail] = useState<string>("");
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isResending, setIsResending] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [countdown, setCountdown] = useState<number>(0);
@@ -149,40 +148,7 @@ function OTPVerificationContent() {
     }
   };
 
-  const handleResendOtp = async () => {
-    if (countdown > 0) return;
 
-    setIsResending(true);
-    setError("");
-    setSuccess("");
-
-    try {
-      console.log("Resending OTP...");
-
-      const response = await userApi.sendOtp(email);
-
-      if (response && response.success) {
-        setSuccess(response.message || "OTP sent successfully to your email!");
-        setCountdown(60); // Start 60 second countdown
-        setOtp(["", "", "", ""]); // Clear OTP inputs
-        inputRefs.current[0]?.focus(); // Focus first input
-      } else {
-        setError(
-          response?.message || "Failed to resend OTP. Please try again.",
-        );
-      }
-    } catch (err: unknown) {
-      console.error("Resend OTP error:", err);
-
-      if (err instanceof Error) {
-        setError(err.message || "Failed to resend OTP. Please try again.");
-      } else {
-        setError("Unable to connect to server. Please try again.");
-      }
-    } finally {
-      setIsResending(false);
-    }
-  };
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black">

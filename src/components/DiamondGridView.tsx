@@ -459,23 +459,17 @@ const DiamondGridView: React.FC<GridViewProps> = ({
                                             • {diamond.LAB}
                                         </div>
 
-                                        {/* Measurements Grid - Compact */}
-                                        <div className="grid grid-cols-3 gap-1 text-[9px]">
-                                            <div>
-                                                <div className="text-gray-500">
-                                                    T: {diamond.TABLE_PER}%
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="text-gray-500">
-                                                    D: {diamond.DEPTH_PER}%
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div className="text-gray-500">
-                                                    R: {ratio}
-                                                </div>
-                                            </div>
+                                        {/* Measurements Grid - Compact, improved spacing */}
+                                        <div className="flex justify-between items-center text-[9px] mb-0.5 gap-2">
+                                            <span className="text-gray-500 whitespace-nowrap">T: {diamond.TABLE_PER}%</span>
+                                            <span className="text-gray-500 whitespace-nowrap">D: {diamond.DEPTH_PER}%</span>
+                                            <span className="text-gray-500 whitespace-nowrap min-w-[38px] text-right font-mono" style={{overflow: 'visible'}}>
+                                                R: {ratio}
+                                            </span>
+                                        </div>
+                                        {/* Measurements - Compact, below grid to avoid collision */}
+                                        <div className="text-[9px] text-gray-600 truncate">
+                                            <span className="font-medium">M:</span> {diamond.MEASUREMENTS || "N/A"}
                                         </div>
 
                                         {/* View Button - Compact */}

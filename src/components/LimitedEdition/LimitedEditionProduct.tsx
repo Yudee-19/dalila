@@ -34,10 +34,7 @@ export default function LimitedEditionPage({
   diamonds = [],
   loading = false,
   error = "",
-  hasLoadedOnce: _hasLoadedOnce = true,
-  refreshLimitedEditionDiamonds: _refreshLimitedEditionDiamonds = () => {},
   isOpen = true,
-  onToggle: _onToggle = () => {},
 }: LimitedEditionPageProps) {
   const [selectedDiamond, setSelectedDiamond] = useState<LimitedEditionDiamond | null>(null);
   const [currentPage, setCurrentPage] = useState(1);

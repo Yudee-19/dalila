@@ -19,13 +19,6 @@ interface PriceLocationFilterProps {
   onFiltersChange: (filters: PriceLocationFilters) => void;
 }
 
-interface Diamond {
-  NET_RATE?: string | number;
-  DISC_PER?: string | number;
-  NET_VALUE?: string | number;
-  [key: string]: unknown;
-}
-
 const LOCATION_OPTIONS = [
   { label: "MUM", value: "MUM", apiValue: "MU" },
   { label: "BEL", value: "BEL", apiValue: "BE" },
@@ -40,16 +33,6 @@ const LAB_OPTIONS = [
   { label: "HRD", value: "HRD", apiValue: "HRD" },
   { label: "OTHERS", value: "OTHERS", apiValue: "OTHERS" },
 ];
-
-// Note: Price filtering is now done server-side via API
-// This function is kept for backward compatibility
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const matchesPriceFilters = (
-  diamond: Diamond,
-  filters: PriceLocationFilters,
-): boolean => {
-  return true; // All filtering done server-side
-};
 
 export const getLocationApiValues = (selectedLocations: string[]): string[] => {
   return selectedLocations

@@ -1,21 +1,12 @@
 "use client";
 import { useEffect, useRef } from "react";
-;
 import AnimatedContainer from "@/components/shared/AnimatedContainer";
-import { Marcellus,Jost} from "next/font/google";
-import { p } from "framer-motion/client";
+import { Marcellus } from "next/font/google";
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
   subsets: ["latin"],
   weight: "400",
-});
-const jost = Jost({
-  variable: "--font-jost",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  preload: true,
 });
 
 export default function DiamondExperience() {

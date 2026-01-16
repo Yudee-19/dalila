@@ -526,7 +526,8 @@ export default function DiamondStockTableWithFilter() {
                 placeholder="Diamond ID"
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
-                className="w-full bg-white border border-gray-300 rounded-full h-7 text-[10px] pr-7 pl-2.5 placeholder:text-[10px]"
+                className="w-full bg-white border border-gray-300 rounded-full h-7 text-[10px] pr-7 pl-2.5 placeholder:text-[10px] placeholder:text-gray-400 focus:placeholder:text-gray-400"
+                style={{ color: '#222', background: '#fff' }}
               />
               <button
                 onClick={() => handleSearch(searchTerm)}
@@ -539,10 +540,12 @@ export default function DiamondStockTableWithFilter() {
             {/* Action Buttons */}
             <div className="flex items-center gap-1 flex-shrink-0">
               <button
-                onClick={handleResetFilters}
+                onClick={handleRefresh}
+                disabled={refreshing}
                 className="bg-white border border-gray-300 rounded-full h-7 w-7 p-0 flex items-center justify-center min-w-0 hover:bg-gray-50"
+                title="Refresh Inventory"
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3 h-3 text-black" />
               </button>
 
               {isLoggedIn && (
@@ -592,8 +595,7 @@ export default function DiamondStockTableWithFilter() {
           {/* Left Column - Filter Sidebar (Conditional) */}
           {mobileFiltersOpen && (
             <div className="w-1/2 border-r overflow-y-auto bg-white max-h-full">
-              <div className="space-y-2 p-2">
-
+              <div className="space-y-2 p-2 pt-0">
                 <ShapeFilter
                   selectedShape={selectedShape}
                   onShapeChange={handleShapeChange}

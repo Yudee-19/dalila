@@ -38,27 +38,13 @@ interface HoldItem {
   _id: string;
 }
 
-interface Query {
-  id: string;
-  _id: string;
-  userId: string;
-  stoneNo: string;
-  query: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  adminReply?: string;
-  repliedAt?: string;
-  diamond?: Diamond;
-}
-
 export default function CustomerManagementPage() {
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
   // Custom hooks for data management with server-side pagination
-  const { rows, setRows, loading, error, stats, setStats, pagination, refetch } = 
+  const { rows, setRows, loading, error, stats, setStats, pagination } = 
     useCustomerManagementData(currentPage, itemsPerPage);
   
   const {

@@ -74,7 +74,6 @@ export default function BuyFormManagement() {
     hasNextPage: false,
     hasPrevPage: false,
   });
-  const itemsPerPage = 10;
 
   const fetchSubmissions = useCallback(async () => {
     try {
