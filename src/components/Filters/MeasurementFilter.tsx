@@ -167,18 +167,18 @@ export default function MeasurementFilter({
   // Mobile view: dropdown with compact layout
   const mobileView = (
     <div
-      className={`${mavenPro.className} mb-2 mt-1 block lg:hidden`}
+      className={`${mavenPro.className} mb-1 mt-0.5 block lg:hidden`}
       style={{ width: "100%" }}
     >
       <button
         type="button"
-        className="w-full flex items-center justify-between px-2.5 py-1.5 focus:outline-none"
+        className="w-full flex items-center justify-between px-1.5 py-1 focus:outline-none"
         style={{ backgroundColor: "#000033" }}
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
         aria-controls="measurement-filter-mobile-panel"
       >
-        <span className="text-sm font-normal text-white">Measurement</span>
+        <span className="text-xs font-normal text-white">Measurement</span>
         <div className="flex items-center ml-auto">
           <ChevronIcon open={open} />
         </div>
@@ -186,15 +186,15 @@ export default function MeasurementFilter({
       {open && (
         <div
           id="measurement-filter-mobile-panel"
-          className="bg-white p-2"
+          className="bg-white p-1"
           style={{ border: "1px solid #f9e8cd", borderTop: "none" }}
         >
-          <div className="space-y-1.5">
+          <div className="space-y-0.5">
             {MEASUREMENT_FIELDS.map((field) => (
-              <div key={field.key} className="flex items-center gap-1">
+              <div key={field.key} className="flex items-center gap-0.5">
                 <div
-                  className="px-1.5 py-1 font-normal text-white rounded-none text-xs"
-                  style={{ backgroundColor: "#000033", minWidth: "60px", fontSize: "10px" }}
+                  className="px-1 py-0.5 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "45px", fontSize: "8px" }}
                 >
                   {field.label}
                 </div>
@@ -216,11 +216,11 @@ export default function MeasurementFilter({
                     )
                   }
                   placeholder="Min"
-                  className="w-14 px-1 py-0.5 text-center text-xs text-gray-900 rounded-none border border-[#f9e8cd] outline-none focus:border-[#d4b896]"
-                  style={{ fontFamily: "inherit", color: "#111827", fontSize: "10px" }}
+                  className="w-11 px-0.5 py-0.5 text-center text-gray-900 rounded-none border border-[#f9e8cd] outline-none focus:border-[#d4b896]"
+                  style={{ fontFamily: "inherit", color: "#111827", fontSize: "8px" }}
                 />
 
-                <span className="text-gray-500 text-xs font-normal" style={{ fontSize: "10px" }}>To</span>
+                <span className="text-gray-500 font-normal" style={{ fontSize: "8px" }}>To</span>
 
                 {/* To Input */}
                 <input
@@ -239,8 +239,8 @@ export default function MeasurementFilter({
                     )
                   }
                   placeholder="Max"
-                  className="w-14 px-1 py-0.5 text-center text-xs text-gray-900 rounded-none border border-[#f9e8cd] outline-none focus:border-[#d4b896]"
-                  style={{ fontFamily: "inherit", color: "#111827", fontSize: "10px" }}
+                  className="w-11 px-0.5 py-0.5 text-center text-gray-900 rounded-none border border-[#f9e8cd] outline-none focus:border-[#d4b896]"
+                  style={{ fontFamily: "inherit", color: "#111827", fontSize: "8px" }}
                 />
               </div>
             ))}

@@ -479,14 +479,14 @@ export default function PriceLocationFilter({
 
   // Mobile view with dropdown
   const mobileView = (
-    <div className="mb-2 mt-1 block lg:hidden" style={{ width: "100%", fontFamily: "Maven Pro, sans-serif" }}>
+    <div className="mb-1 mt-0.5 block lg:hidden" style={{ width: "100%", fontFamily: "Maven Pro, sans-serif" }}>
       {/* Header with dropdown */}
       <div
-        className="flex items-center justify-between px-2 py-1.5 cursor-pointer"
+        className="flex items-center justify-between px-1.5 py-1 cursor-pointer"
         style={{ backgroundColor: "#000033" }}
         onClick={() => setOpen(!open)}
       >
-        <span className="text-sm font-normal text-white">Price & Location</span>
+        <span className="text-xs font-normal text-white">Price & Location</span>
         <div className="ml-auto text-white">
           <ChevronIcon open={open} />
         </div>
@@ -495,23 +495,23 @@ export default function PriceLocationFilter({
       {/* Dropdown panel */}
       {open && (
         <div
-          className="bg-white p-1.5"
+          className="bg-white p-1"
           style={{ border: "1px solid #f9e8cd", borderTop: "none" }}
         >
           {/* Price Section */}
-          <div className="mb-2">
+          <div className="mb-1">
             <div
-              className="px-1.5 py-1 mb-1"
+              className="px-1 py-0.5 mb-0.5"
               style={{ backgroundColor: "#000033" }}
             >
-              <span className="text-xs font-normal text-white">Price</span>
+              <span className="text-[9px] font-normal text-white">Price</span>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {/* $/ct */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 <div
-                  className="px-1.5 py-1 font-normal text-white rounded-none"
-                  style={{ backgroundColor: "#000033", minWidth: "50px", fontSize: "10px" }}
+                  className="px-1 py-0.5 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "35px", fontSize: "8px" }}
                 >
                   $/ct
                 </div>
@@ -527,8 +527,8 @@ export default function PriceLocationFilter({
                       handlePriceChange("pricePerCarat", "from", e.target.value)
                     }
                     placeholder="0"
-                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
-                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                    className="w-10 px-0.5 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "8px" }}
                   />
                   <div
                     className="flex flex-col border-l"
@@ -555,7 +555,7 @@ export default function PriceLocationFilter({
                     </button>
                   </div>
                 </div>
-                <span className="text-gray-500 font-normal" style={{ fontSize: "10px" }}>To</span>
+                <span className="text-gray-500 font-normal" style={{ fontSize: "8px" }}>To</span>
                 <div
                   className="flex items-center bg-white rounded-none"
                   style={{ border: "1px solid #f9e8cd" }}
@@ -568,8 +568,8 @@ export default function PriceLocationFilter({
                       handlePriceChange("pricePerCarat", "to", e.target.value)
                     }
                     placeholder="TO"
-                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
-                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                    className="w-10 px-0.5 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "8px" }}
                   />
                   <div
                     className="flex flex-col border-l"
@@ -599,10 +599,10 @@ export default function PriceLocationFilter({
               </div>
 
               {/* Disc% */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 <div
-                  className="px-1.5 py-1 font-normal text-white rounded-none"
-                  style={{ backgroundColor: "#000033", minWidth: "50px", fontSize: "10px" }}
+                  className="px-1 py-0.5 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "35px", fontSize: "8px" }}
                 >
                   Disc%
                 </div>
@@ -618,8 +618,8 @@ export default function PriceLocationFilter({
                       handlePriceChange("discount", "from", e.target.value)
                     }
                     placeholder="0"
-                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
-                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                    className="w-10 px-0.5 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "8px" }}
                   />
                   <div
                     className="flex flex-col border-l"
@@ -690,10 +690,10 @@ export default function PriceLocationFilter({
               </div>
 
               {/* Total $ */}
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 <div
-                  className="px-1.5 py-1 font-normal text-white rounded-none"
-                  style={{ backgroundColor: "#000033", minWidth: "50px", fontSize: "10px" }}
+                  className="px-1 py-0.5 font-normal text-white rounded-none"
+                  style={{ backgroundColor: "#000033", minWidth: "35px", fontSize: "8px" }}
                 >
                   Total $
                 </div>
@@ -709,8 +709,8 @@ export default function PriceLocationFilter({
                       handlePriceChange("totalPrice", "from", e.target.value)
                     }
                     placeholder="0"
-                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
-                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                    className="w-10 px-0.5 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "8px" }}
                   />
                   <div
                     className="flex flex-col border-l"
@@ -737,7 +737,7 @@ export default function PriceLocationFilter({
                     </button>
                   </div>
                 </div>
-                <span className="text-gray-500 font-normal" style={{ fontSize: "10px" }}>To</span>
+                <span className="text-gray-500 font-normal" style={{ fontSize: "8px" }}>To</span>
                 <div
                   className="flex items-center bg-white rounded-none"
                   style={{ border: "1px solid #f9e8cd" }}
@@ -750,8 +750,8 @@ export default function PriceLocationFilter({
                       handlePriceChange("totalPrice", "to", e.target.value)
                     }
                     placeholder="TO"
-                    className="w-12 px-1 py-0.5 text-center outline-none text-black"
-                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "10px" }}
+                    className="w-10 px-0.5 py-0.5 text-center outline-none text-black"
+                    style={{ appearance: "textfield", fontFamily: "inherit", color: "#000000", fontSize: "8px" }}
                   />
                   <div
                     className="flex flex-col border-l"
@@ -783,14 +783,14 @@ export default function PriceLocationFilter({
           </div>
 
           {/* Location Section */}
-          <div className="mb-2">
+          <div className="mb-1">
             <div
-              className="px-1.5 py-1 mb-1 font-normal text-white text-xs"
-              style={{ backgroundColor: "#000033" }}
+              className="px-1 py-0.5 mb-0.5 font-normal text-white"
+              style={{ backgroundColor: "#000033", fontSize: "9px" }}
             >
               <span>Location</span>
             </div>
-            <div className="grid grid-cols-3 gap-1">
+            <div className="grid grid-cols-3 gap-0.5">
               {LOCATION_OPTIONS.map((location) => (
                 <button
                   key={location.value}
@@ -819,12 +819,12 @@ export default function PriceLocationFilter({
           {/* Lab Section */}
           <div>
             <div
-              className="px-1.5 py-1 mb-1 font-normal text-white text-xs"
-              style={{ backgroundColor: "#000033" }}
+              className="px-1 py-0.5 mb-0.5 font-normal text-white"
+              style={{ backgroundColor: "#000033", fontSize: "9px" }}
             >
               <span>Lab :</span>
             </div>
-            <div className="grid grid-cols-2 gap-1">
+            <div className="grid grid-cols-2 gap-0.5">
               {LAB_OPTIONS.map((lab) => (
                 <button
                   key={lab.value}
