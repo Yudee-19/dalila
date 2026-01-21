@@ -50,7 +50,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                 return (
                     <div
                         style={{
-                            width: "600px",
+                            width: "100%",
                             height: "500px",
                             maxWidth: "100%",
                             overflow: "hidden",
@@ -68,7 +68,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                     <div
                         className="relative"
                         style={{
-                            width: "600px",
+                            width: "100%",
                             height: "500px",
                             maxWidth: "100%",
                             overflow: "hidden",
@@ -95,7 +95,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                 return (
                     <div
                         style={{
-                            width: "600px",
+                            width: "100%",
                             height: "500px",
                             maxWidth: "100%",
                             overflow: "hidden",
@@ -113,7 +113,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                     >
                         <div
                             style={{
-                                width: "600px",
+                                width: "100%",
                                 height: "500px",
                                 maxWidth: "100%",
                                 position: "relative",
@@ -341,7 +341,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                 return (
                     <div
                         style={{
-                            width: "600px",
+                            width: "100%",
                             height: "500px",
                             maxWidth: "100%",
                             overflow: "hidden",
@@ -359,7 +359,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                     >
                         <div
                             style={{
-                                width: "600px",
+                                width: "100%",
                                 height: "500px",
                                 maxWidth: "100%",
                                 position: "relative",
@@ -464,7 +464,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                 return (
                     <div
                         style={{
-                            width: "600px",
+                            width: "100%",
                             height: "500px",
                             maxWidth: "100%",
                             overflow: "hidden",
@@ -481,7 +481,7 @@ export const DiamondMediaViewer: React.FC<DiamondMediaViewerProps> = ({
                 >
                     <div
                         style={{
-                            width: "600px",
+                            width: "100%",
                             height: "500px",
                             maxWidth: "100%",
                             overflow: "hidden",
