@@ -44,7 +44,6 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
 
     return (
         <tr
-            key={diamond._id}
             style={{ background: backgroundStyle, border: "none" }}
             className="transition-opacity"
         >
@@ -666,3 +665,4 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
         </tr>
     );
 };
+ 
