@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "clean": "powershell -Command \"Remove-Item -Recurse -Force .next, out, node_modules\\.cache -ErrorAction SilentlyContinue\"",
+    "clean:all": "powershell -Command \"Remove-Item -Recurse -Force .next, out, node_modules -ErrorAction SilentlyContinue\"",
+    "rebuild": "npm run clean && npm install && npm run build"
   },
   "dependencies": {
     "@tabler/icons-react": "^3.35.0",

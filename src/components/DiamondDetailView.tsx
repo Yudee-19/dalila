@@ -21,6 +21,7 @@ import toast from "react-hot-toast";
 import { formatPrice, formatPercentage } from "@/utils/formatting";
 import { DiamondMediaViewer } from "./Diamond/DiamondMediaViewer";
 import { useRouter } from "next/navigation";
+import DiamondDetailViewMobile from "./DiamondDetailViewMobile";
 
 const marcellus = Marcellus({
     variable: "--font-marcellus",
@@ -55,6 +56,19 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
     const [selectedMediaTab, setSelectedMediaTab] = useState<
         "image" | "video" | "hand" | "tweezer" | "certificate"
     >("video");
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect mobile screen size
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     // Check user role and login status on mount
     useEffect(() => {
@@ -241,23 +255,42 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
 
     return (
         <div
-            className={`fixed left-0 right-0 bottom-0 top-[88px] w-full flex items-center justify-center z-40 bg-black/50 ${mavenPro.variable} ${marcellus.variable}`}
+            className={`fixed left-0 right-0 bottom-0 w-full flex items-center justify-center z-40 bg-black/50 ${mavenPro.variable} ${marcellus.variable}`}
+            style={{ top: isMobile ? 0 : '88px' }}
             onClick={onClose}
         >
-            <div
-                className="bg-white shadow-xl w-full h-full overflow-y-auto font-maven-pro"
-                onClick={(e) => e.stopPropagation()}
-                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-                {/* Single Container with Fixed Width */}
+            {isMobile ? (
+                // MOBILE VIEW
+                <DiamondDetailViewMobile
+                    diamond={diamond}
+                    onClose={onClose}
+                    isLoggedIn={isLoggedIn}
+                    userRole={userRole}
+                    selectedMediaTab={selectedMediaTab}
+                    setSelectedMediaTab={setSelectedMediaTab}
+                    handleAddToCart={handleAddToCart}
+                    handleAddToHold={handleAddToHold}
+                    setIsEnquiryOpen={setIsEnquiryOpen}
+                    handleLoginRedirect={handleLoginRedirect}
+                    isAddingToCart={isAddingToCart}
+                    isAddingToHold={isAddingToHold}
+                />
+            ) : (
+                // DESKTOP VIEW - UNCHANGED
                 <div
-                    className="mx-auto border border-[#C89E3A] mt-8 mb-[100px]"
-                    style={{
-                        minWidth: "1200px",
-                        maxWidth: "1400px",
-                        width: "100%",
-                    }}
+                    className="bg-white shadow-xl w-full h-full overflow-y-auto font-maven-pro"
+                    onClick={(e) => e.stopPropagation()}
+                    style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
                 >
+                    {/* Single Container with Fixed Width */}
+                    <div
+                        className="mx-auto border border-[#C89E3A] mt-8 mb-[100px]"
+                        style={{
+                            minWidth: "1200px",
+                            maxWidth: "1400px",
+                            width: "100%",
+                        }}
+                    >
                     {/* Top Navigation Bar: Back Button + Media Tabs */}
                     <div
                         className="flex items-center gap-2 px-4 py-2 border-t border-b border-[#C89E3A] bg-white sticky top-0 z-30"
@@ -448,7 +481,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                 </div>
 
                                 {/* Divider */}
-                                <div className="border-t border-[#C89E3A] mb-4" />
+                                <div className="border-t border-[#C89E3A] mb-4 mr-4" />
 
                                 {/* Total Price - Only show if logged in */}
                                 {isLoggedIn ? (
@@ -483,7 +516,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                         {/* Action Buttons */}
                                         {userRole !== "ADMIN" &&
                                             userRole !== "SUPER_ADMIN" && (
-                                                <div className="flex flex-1 gap-3 mb-6">
+                                                <div className="flex gap-2 mb-6">
                                                     {isLoggedIn ? (
                                                         <>
                                                             <button
@@ -493,7 +526,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                                                 disabled={
                                                                     isAddingToCart
                                                                 }
-                                                                className="flex-1 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                                className="px-4 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                                                 style={{
                                                                     background:
                                                                         "#050C3A",
@@ -519,7 +552,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                                                 disabled={
                                                                     isAddingToHold
                                                                 }
-                                                                className="flex-1 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                                className="px-4 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                                                                 style={{
                                                                     background:
                                                                         "#050C3A",
@@ -543,7 +576,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                                                         true,
                                                                     )
                                                                 }
-                                                                className="flex-1 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2"
+                                                                className="px-4 text-white py-3 rounded font-semibold transition-colors text-sm flex items-center justify-center gap-2"
                                                                 style={{
                                                                     background:
                                                                         "#050C3A",
@@ -564,8 +597,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                                                     "#050C3A",
                                                             }}
                                                         >
-                                                            Login to Add to Cart
-                                                            / Hold / Enquire
+                                                           
                                                         </button>
                                                     )}
                                                 </div>
@@ -589,7 +621,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                     </div>
                                 )}
 
-                                <div className="border-t border-[#C89E3A] mb-4" />
+                                <div className="border-t border-[#C89E3A] mb-4 mr-4" />
 
                                 {/* Diamond Specifications */}
                                 <div className="mb-6">
@@ -690,7 +722,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                 {/* Only show measurement details if logged in */}
                                 {isLoggedIn && (
                                     <>
-                                        <div className="border-t border-[#C89E3A] mb-4" />
+                                        <div className="border-t border-[#C89E3A] mb-4 mr-4" />
 
                                         {/* Measurements */}
                                         <div className="mb-6">
@@ -793,7 +825,7 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                                             </div>
                                         </div>
 
-                                        <div className="border-t border-[#C89E3A] mb-4" />
+                                        <div className="border-t border-[#C89E3A] mb-4 mr-4" />
 
                                         {/* Inclusion Details */}
                                         <div className="mb-6">
@@ -849,10 +881,11 @@ const DiamondDetailView: React.FC<DiamondDetailViewProps> = ({
                             </div>
                         </div>
                     </div>
+                    </div>
+                    {/* Footer */}
+                    <Footer />
                 </div>
-                {/* Footer */}
-                <Footer />
-            </div>
+            )}
 
             {/* Enquiry Modal - only show if logged in */}
             {isEnquiryOpen && isLoggedIn && (
