@@ -30,8 +30,14 @@ export default function MobileHeader() {
     };
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-[#050c3a] shadow-lg" style={{ maxWidth: '100vw', width: '100%' }}>
-            <div className="flex items-center w-full px-2 py-2 box-border" style={{ maxWidth: '100vw' }}>
+        <header
+            className="fixed top-0 left-0 right-0 z-50 bg-[#050c3a] shadow-lg"
+            style={{ maxWidth: "100vw", width: "100%" }}
+        >
+            <div
+                className="flex items-center w-full px-2 py-2 box-border"
+                style={{ maxWidth: "100vw" }}
+            >
                 {/* Logo - left aligned */}
                 <button
                     onClick={() => {
@@ -69,10 +75,10 @@ export default function MobileHeader() {
                                 Register
                             </button>
                             <button
-                                onClick={() => router.push("/contact")}
+                                onClick={() => router.push("/inventory")}
                                 className="px-2 py-1 text-xs text-white border border-[#c89e3a] rounded hover:bg-[#c89e3a] hover:text-white font-normal whitespace-nowrap"
                             >
-                                Contact Us
+                                Inventory
                             </button>
                         </>
                     ) : (
@@ -80,7 +86,9 @@ export default function MobileHeader() {
                             <button
                                 onClick={(e) => {
                                     if (typeof window !== "undefined") {
-                                        const closeModalEvent = new CustomEvent("close-diamond-modal");
+                                        const closeModalEvent = new CustomEvent(
+                                            "close-diamond-modal",
+                                        );
                                         window.dispatchEvent(closeModalEvent);
                                     }
                                     if (isInventoryAccessible) {
@@ -88,12 +96,18 @@ export default function MobileHeader() {
                                         closeMobileMenu();
                                     } else {
                                         e.preventDefault();
-                                        alert("Your account is pending approval. Please wait for admin verification to access the inventory.");
+                                        alert(
+                                            "Your account is pending approval. Please wait for admin verification to access the inventory.",
+                                        );
                                     }
                                 }}
                                 disabled={!isInventoryAccessible}
                                 className={`px-2 py-1 text-xs border border-[#c89e3a] rounded font-normal whitespace-nowrap ${isInventoryAccessible ? "text-white hover:bg-[#c89e3a] hover:text-white cursor-pointer" : "text-gray-400 bg-gray-700 cursor-not-allowed opacity-60"}`}
-                                title={!isInventoryAccessible ? "Your account is pending approval" : ""}
+                                title={
+                                    !isInventoryAccessible
+                                        ? "Your account is pending approval"
+                                        : ""
+                                }
                             >
                                 Inventory
                             </button>
@@ -121,13 +135,9 @@ export default function MobileHeader() {
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     className="text-[#c89e3a] flex-shrink-0 flex-grow-0 w-12 h-12 flex items-center justify-center ml-2"
                     aria-label="Toggle menu"
-                    style={{ minWidth: '48px' }}
+                    style={{ minWidth: "48px" }}
                 >
-                    {isMobileMenuOpen ? (
-                        <X size={28} />
-                    ) : (
-                        <Menu size={28} />
-                    )}
+                    {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
             </div>
 
@@ -136,35 +146,67 @@ export default function MobileHeader() {
                 <div className="absolute top-full left-0 right-0 bg-[#050c3a] border-t border-[#c89e3a] shadow-lg max-h-[calc(100vh-60px)] overflow-y-auto">
                     <nav className="py-2">
                         {/* Main Navigation - Same order as desktop (LEFT SIDE) */}
-                        <Link href="/aboutUs" onClick={closeMobileMenu} className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700">
+                        <Link
+                            href="/aboutUs"
+                            onClick={closeMobileMenu}
+                            className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
+                        >
                             About Us
                         </Link>
-                        
+
                         <div className="border-b border-gray-700">
-                            <button onClick={() => setIsServicesOpen(!isServicesOpen)} className="w-full px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors flex items-center justify-between">
+                            <button
+                                onClick={() =>
+                                    setIsServicesOpen(!isServicesOpen)
+                                }
+                                className="w-full px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors flex items-center justify-between"
+                            >
                                 <span>Our Services</span>
-                                <ChevronDown size={18} className={`transition-transform ${isServicesOpen ? "rotate-180" : ""}`} />
+                                <ChevronDown
+                                    size={18}
+                                    className={`transition-transform ${isServicesOpen ? "rotate-180" : ""}`}
+                                />
                             </button>
                             {isServicesOpen && (
                                 <div className="bg-[#0a1454]">
-                                    <Link href="/secure-to-source" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                    <Link
+                                        href="/secure-to-source"
+                                        onClick={closeMobileMenu}
+                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                    >
                                         S2S - Secure To Source
                                     </Link>
-                                    <Link href="/diamond-source" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                    <Link
+                                        href="/diamond-source"
+                                        onClick={closeMobileMenu}
+                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                    >
                                         DS4U - Diamond Source For You
                                     </Link>
-                                    <Link href="/sud" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                    <Link
+                                        href="/sud"
+                                        onClick={closeMobileMenu}
+                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                    >
                                         SYD - Sell Your Diamonds
                                     </Link>
                                 </div>
                             )}
                         </div>
-                        
-                        <Link href="/diamondKnowledge" onClick={closeMobileMenu} className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700">
+
+                        <Link
+                            href="/diamondKnowledge"
+                            onClick={closeMobileMenu}
+                            className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
+                        >
                             Diamond Knowledge
                         </Link>
-                        
-                        <Link href="/blogs" onClick={closeMobileMenu} className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700">
+
+                        <Link
+                            href="/blogs"
+                            onClick={closeMobileMenu}
+                            className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
+                        >
                             Blogs
                         </Link>
 
@@ -172,7 +214,11 @@ export default function MobileHeader() {
                         <div className="h-2 bg-[#0a1454] border-b border-gray-700"></div>
 
                         {/* Right Side Buttons - Same as desktop (RIGHT SIDE) */}
-                        <Link href="/contact" onClick={closeMobileMenu} className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700">
+                        <Link
+                            href="/contact"
+                            onClick={closeMobileMenu}
+                            className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
+                        >
                             Contact Us
                         </Link>
 
@@ -182,10 +228,18 @@ export default function MobileHeader() {
                             </div>
                         ) : !isLoggedIn ? (
                             <>
-                                <Link href="/login" onClick={closeMobileMenu} className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700">
+                                <Link
+                                    href="/login"
+                                    onClick={closeMobileMenu}
+                                    className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
+                                >
                                     Login
                                 </Link>
-                                <Link href="/register" onClick={closeMobileMenu} className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700">
+                                <Link
+                                    href="/register"
+                                    onClick={closeMobileMenu}
+                                    className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
+                                >
                                     Register
                                 </Link>
                             </>
@@ -195,18 +249,35 @@ export default function MobileHeader() {
                                 {!isAdmin && (
                                     <div className="border-b border-gray-700">
                                         <button
-                                            onClick={() => setIsUserPanelOpen(!isUserPanelOpen)}
+                                            onClick={() =>
+                                                setIsUserPanelOpen(
+                                                    !isUserPanelOpen,
+                                                )
+                                            }
                                             className="w-full px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors flex items-center justify-between"
                                         >
-                                            <span className="text-sm font-medium">USER PANEL</span>
-                                            <ChevronDown size={18} className={`transition-transform ${isUserPanelOpen ? "rotate-180" : ""}`} />
+                                            <span className="text-sm font-medium">
+                                                USER PANEL
+                                            </span>
+                                            <ChevronDown
+                                                size={18}
+                                                className={`transition-transform ${isUserPanelOpen ? "rotate-180" : ""}`}
+                                            />
                                         </button>
                                         {isUserPanelOpen && (
                                             <div className="bg-[#0a1454]">
-                                                <Link href="/dashboard" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/dashboard"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Dashboard
                                                 </Link>
-                                                <Link href="/enquiry" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/enquiry"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Enquiry
                                                 </Link>
                                             </div>
@@ -218,15 +289,22 @@ export default function MobileHeader() {
                                 <button
                                     onClick={(e) => {
                                         if (typeof window !== "undefined") {
-                                            const closeModalEvent = new CustomEvent("close-diamond-modal");
-                                            window.dispatchEvent(closeModalEvent);
+                                            const closeModalEvent =
+                                                new CustomEvent(
+                                                    "close-diamond-modal",
+                                                );
+                                            window.dispatchEvent(
+                                                closeModalEvent,
+                                            );
                                         }
                                         if (isInventoryAccessible) {
                                             router.push("/inventory");
                                             closeMobileMenu();
                                         } else {
                                             e.preventDefault();
-                                            alert("Your account is pending approval. Please wait for admin verification to access the inventory.");
+                                            alert(
+                                                "Your account is pending approval. Please wait for admin verification to access the inventory.",
+                                            );
                                         }
                                     }}
                                     disabled={!isInventoryAccessible}
@@ -236,38 +314,75 @@ export default function MobileHeader() {
                                             : "text-gray-400 bg-gray-700/30 cursor-not-allowed opacity-60"
                                     }`}
                                 >
-                                    Inventory {!isInventoryAccessible && "(Pending Approval)"}
+                                    Inventory{" "}
+                                    {!isInventoryAccessible &&
+                                        "(Pending Approval)"}
                                 </button>
 
                                 {/* Admin Panel - For admins */}
                                 {isAdmin && (
                                     <div className="border-b border-gray-700">
                                         <button
-                                            onClick={() => setIsAdminPanelOpen(!isAdminPanelOpen)}
+                                            onClick={() =>
+                                                setIsAdminPanelOpen(
+                                                    !isAdminPanelOpen,
+                                                )
+                                            }
                                             className="w-full px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors flex items-center justify-between"
                                         >
-                                            <span className="text-sm font-medium">ADMIN PANEL</span>
-                                            <ChevronDown size={18} className={`transition-transform ${isAdminPanelOpen ? "rotate-180" : ""}`} />
+                                            <span className="text-sm font-medium">
+                                                ADMIN PANEL
+                                            </span>
+                                            <ChevronDown
+                                                size={18}
+                                                className={`transition-transform ${isAdminPanelOpen ? "rotate-180" : ""}`}
+                                            />
                                         </button>
                                         {isAdminPanelOpen && (
                                             <div className="bg-[#0a1454]">
-                                                <Link href="/inventory-management" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/inventory-management"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Inventory & Suppliers
                                                 </Link>
-                                                <Link href="/member" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/member"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Members
                                                 </Link>
-                                                <Link href="/customer-management" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/customer-management"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Customer Management
                                                 </Link>
-                                                <Link href="/buy-form" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/buy-form"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Buy Form Submissions
                                                 </Link>
-                                                <Link href="/limitedEdition" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                <Link
+                                                    href="/limitedEdition"
+                                                    onClick={closeMobileMenu}
+                                                    className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                >
                                                     Limited Edition
                                                 </Link>
                                                 {userRole === "SUPER_ADMIN" && (
-                                                    <Link href="/create-admin" onClick={closeMobileMenu} className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10">
+                                                    <Link
+                                                        href="/create-admin"
+                                                        onClick={
+                                                            closeMobileMenu
+                                                        }
+                                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                                    >
                                                         Create Admin
                                                     </Link>
                                                 )}

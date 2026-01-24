@@ -50,9 +50,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
             {/* Checkbox Column - Sticky */}
             {!isPublicApi && (
                 <td
-                    className="text-center"
+                    className="text-center md:sticky md:left-0"
                     style={{
-                        position: "sticky",
                         left: stickyOffsets.checkbox,
                         zIndex: 20,
                         backgroundColor,
@@ -79,10 +78,9 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
 
             {/* Stock ID Column - Sticky */}
             <td
-                className="text-[14px] text-gray-700 font-medium cursor-pointer hover:text-blue-600 hover:underline"
+                className="text-[14px] text-gray-700 font-medium cursor-pointer hover:text-blue-600 hover:underline md:sticky"
                 onClick={(e) => onStockIdClick(e, diamond)}
                 style={{
-                    position: "sticky",
                     left: isPublicApi ? 0 : stickyOffsets.stockId,
                     zIndex: 20,
                     backgroundColor,
@@ -103,9 +101,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
             {/* Location Column - Sticky */}
             {!isPublicApi && (
                 <td
-                    className="text-[14px] text-gray-700 text-center"
+                    className="text-[14px] text-gray-700 text-center md:sticky"
                     style={{
-                        position: "sticky",
                         left: stickyOffsets.loc,
                         zIndex: 20,
                         backgroundColor,
@@ -125,9 +122,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
             {/* Status Column - Sticky */}
             {!isPublicApi && (
                 <td
-                    className="text-[14px] text-gray-700"
+                    className="text-[14px] text-gray-700 md:sticky"
                     style={{
-                        position: "sticky",
                         left: stickyOffsets.status,
                         zIndex: 20,
                         backgroundColor,
@@ -146,9 +142,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
 
             {/* Shape Column - Sticky */}
             <td
-                className="text-[14px] text-gray-700"
+                className="text-[14px] text-gray-700 md:sticky"
                 style={{
-                    position: "sticky",
                     left: isPublicApi ? 100 : stickyOffsets.shape,
                     zIndex: 20,
                     backgroundColor,
@@ -168,9 +163,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
 
             {/* Carat Column - Sticky */}
             <td
-                className="text-[14px] text-gray-700"
+                className="text-[14px] text-gray-700 md:sticky"
                 style={{
-                    position: "sticky",
                     left: isPublicApi ? 175 : stickyOffsets.carat,
                     zIndex: 20,
                     backgroundColor,
@@ -188,9 +182,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
 
             {/* Color Column - Sticky */}
             <td
-                className="text-[14px] text-gray-700"
+                className="text-[14px] text-gray-700 md:sticky"
                 style={{
-                    position: "sticky",
                     left: isPublicApi ? 239 : stickyOffsets.color,
                     zIndex: 20,
                     backgroundColor,
@@ -208,9 +201,8 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
 
             {/* Clarity Column - Sticky */}
             <td
-                className="text-[14px] text-gray-700"
+                className="text-[14px] text-gray-700 md:sticky"
                 style={{
-                    position: "sticky",
                     left: isPublicApi ? 303 : stickyOffsets.clarity,
                     zIndex: 20,
                     backgroundColor,
@@ -665,4 +657,3 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
         </tr>
     );
 };
- 

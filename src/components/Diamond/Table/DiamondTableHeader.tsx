@@ -29,9 +29,9 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 }) => {
     /**
      * Base styles for horizontally sticky header cells (Checkbox to Clarity)
+     * Note: position sticky is applied via className for responsive behavior
      */
     const horizontalStickyHeaderStyle = {
-        position: "sticky" as const,
         top: 0,
         zIndex: 31,
         backgroundColor: "#050C3A",
@@ -47,9 +47,9 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
     /**
      * Base styles for regular header cells (only sticky at top)
+     * Note: position sticky is applied via className for responsive behavior
      */
     const regularHeaderStyle = {
-        position: "sticky" as const,
         top: 0,
         zIndex: 30,
         backgroundColor: "#050C3A",
@@ -88,7 +88,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Stock ID Column - Sticky */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...horizontalStickyHeaderStyle,
                         left: isPublicApi ? 0 : stickyOffsets.stockId,
@@ -103,7 +103,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 {/* Location Column - Sticky */}
                 {!isPublicApi && (
                     <th
-                        className="text-white text-[14px] font-semibold"
+                        className="text-white text-[14px] font-semibold text-left md:sticky"
                         style={{
                             ...horizontalStickyHeaderStyle,
                             left: stickyOffsets.loc,
@@ -119,7 +119,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 {/* Status Column - Sticky */}
                 {!isPublicApi && (
                     <th
-                        className="text-white text-[14px] font-semibold text-left"
+                        className="text-white text-[14px] font-semibold text-center md:sticky md:left-0"
                         style={{
                             ...horizontalStickyHeaderStyle,
                             left: stickyOffsets.status,
@@ -134,7 +134,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Shape Column - Sticky */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...horizontalStickyHeaderStyle,
                         left: isPublicApi ? 100 : stickyOffsets.shape,
@@ -148,7 +148,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Carat Column - Sticky */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...horizontalStickyHeaderStyle,
                         left: isPublicApi ? 175 : stickyOffsets.carat,
@@ -162,7 +162,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Color Column - Sticky */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...horizontalStickyHeaderStyle,
                         left: isPublicApi ? 239 : stickyOffsets.color,
@@ -176,7 +176,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Clarity Column - Sticky */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...horizontalStickyHeaderStyle,
                         left: isPublicApi ? 303 : stickyOffsets.clarity,
@@ -190,7 +190,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Regular Columns (Non-sticky horizontally) */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "60px",
@@ -201,7 +201,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Cut
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "100px",
@@ -212,7 +212,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Polish
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "60px",
@@ -223,7 +223,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Sym.
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "60px",
@@ -234,7 +234,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Fluor
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "60px",
@@ -297,7 +297,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
 
                 {/* Additional Details Columns */}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "200px",
@@ -308,7 +308,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Comments
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "100px",
@@ -319,7 +319,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Depth%
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "100px",
@@ -330,7 +330,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Table%
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "100px",
@@ -341,7 +341,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Length
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "100px",
@@ -352,7 +352,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Width
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "100px",
@@ -364,7 +364,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 </th>
                 {!isPublicApi && (
                     <th
-                        className="text-white text-[14px] font-semibold text-left"
+                        className="text-white text-[14px] font-semibold text-left md:sticky"
                         style={{
                             ...regularHeaderStyle,
                             width: "140px",
@@ -377,7 +377,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 )}
                 {!isPublicApi && (
                     <th
-                        className="text-white text-[14px] font-semibold text-left"
+                        className="text-white text-[14px] font-semibold text-left md:sticky"
                         style={{
                             ...regularHeaderStyle,
                             width: "200px",
@@ -389,7 +389,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     </th>
                 )}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "110px",
@@ -400,7 +400,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Crown Angle
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "120px",
@@ -411,7 +411,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Crown Height
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "130px",
@@ -422,7 +422,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     Pavillion Angle
                 </th>
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "140px",
@@ -435,7 +435,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 {!isPublicApi && (
                     <>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "100px",
@@ -446,7 +446,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                             CN
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "100px",
@@ -457,7 +457,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                             CW
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "100px",
@@ -468,7 +468,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                             SN
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "100px",
@@ -479,7 +479,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                             SW
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "160px",
@@ -492,7 +492,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     </>
                 )}
                 <th
-                    className="text-white text-[14px] font-semibold text-left"
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
                         width: "110px",
@@ -504,7 +504,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 </th>
                 {!isPublicApi && (
                     <th
-                        className="text-white text-[14px] font-semibold text-left"
+                        className="text-white text-[14px] font-semibold text-left md:sticky"
                         style={{
                             ...regularHeaderStyle,
                             width: "110px",
