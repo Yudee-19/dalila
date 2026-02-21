@@ -5,18 +5,24 @@ import Aboutshowcase from "@/components/pages/aboutus/Showcase";
 import CertifiedBy from "@/components/pages/homecomponents/Certified";
 import DiamondExperience from "@/components/pages/homecomponents/experience";
 import AboutMilestone from "@/components/pages/aboutus/MileStone";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+    alternates: {
+        canonical: "https://www.daliladiamonds.com/aboutUs",
+    },
+};
 export default function AboutPage() {
-  return (
-    <>
-      <main className="relative">
-        <AboutBanner />
-        <AboutHero />
-        <DiamondExperience />
-        <Legacy />
-        <AboutMilestone />
-        <Aboutshowcase />
-        <CertifiedBy />
-      </main>
-    </>
-  );
+    return (
+        <>
+            <main className="relative">
+                <AboutBanner />
+                <AboutHero />
+                <DiamondExperience />
+                <Legacy />
+                <AboutMilestone />
+                <Aboutshowcase />
+                <CertifiedBy />
+            </main>
+        </>
+    );
 }
