@@ -166,13 +166,6 @@ export default function BlogDetailPage() {
             >
               {error || "Blog not found"}
             </h1>
-            <button
-              onClick={() => router.push("/blogs")}
-              className={`inline-flex items-center gap-2 text-[#c89e3a] hover:text-[#9d7400] font-semibold transition-colors ${jost.className}`}
-            >
-              <ArrowLeft size={20} />
-              Back to Blogs
-            </button>
           </div>
         </div>
       </div>
@@ -184,11 +177,11 @@ export default function BlogDetailPage() {
       {/* Back Button */}
       <div className="container mx-auto max-w-5xl px-4 pt-40 pb-6">
         <button
-          onClick={() => router.push("/blogs")}
+          onClick={() => router.back()}
           className={`inline-flex items-center gap-2 text-[#c89e3a] hover:text-[#b8922e] font-medium transition-all ${jost.className} hover:gap-3`}
         >
           <ArrowLeft size={18} />
-          Back to Blogs
+          Back
         </button>
       </div>
 
@@ -309,16 +302,6 @@ export default function BlogDetailPage() {
             </div>
           </div>
         )}
-
-        {/* Navigation to other blogs */}
-        <div className="mt-16 text-center">
-          <button
-            onClick={() => router.push("/blogs")}
-            className={`inline-flex items-center gap-2 px-8 py-3.5 bg-[#c89e3a] text-white hover:bg-[#b8922e] transition-all font-semibold text-base ${jost.className} shadow-md hover:shadow-lg`}
-          >
-            View All Blogs
-          </button>
-        </div>
       </article>
     </div>
   );

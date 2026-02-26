@@ -405,7 +405,7 @@ export default function BlogsPage() {
                 <h1
                   className={`text-4xl md:text-5xl lg:text-6xl text-[#1a1a1a] font-bold tracking-tight ${marcellus.className}`}
                 >
-                  Our Blog
+                  Articles
                 </h1>
 
                 <div className="w-32 flex justify-end">
@@ -419,7 +419,7 @@ export default function BlogsPage() {
                       <span
                         className={`text-sm font-semibold ${jost.className}`}
                       >
-                        Add Blog
+                        Add Article
                       </span>
                     </button>
                   )}
@@ -558,7 +558,7 @@ export default function BlogsPage() {
               <h2
                 className={`text-2xl font-semibold text-[#2d2d2d] ${marcellus.className}`}
               >
-                Add New Blog
+                Add New Article
               </h2>
               <button
                 onClick={() => {
