@@ -17,5 +17,18 @@ Disallow: /cgi-bin/
 Disallow: /*?*
 Disallow: /search
 
+# Block URLs with special characters
+Disallow: /*$
+Disallow: /*&
+Disallow: /*#
+Disallow: /*%
+Disallow: /*^
+Disallow: /**
+Disallow: /*(
+Disallow: /*[
+Disallow: /*{
+Disallow: /*|
+Disallow: /*\
+
 # Sitemap (update if you have one)
 Sitemap: https://www.daliladiamonds.com/sitemap.xml
