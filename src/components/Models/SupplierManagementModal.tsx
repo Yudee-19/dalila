@@ -34,27 +34,38 @@ interface SupplierManagementModalProps {
   onSupplierUpdate?: () => void;
 }
 
-const SUPPLIER_NAME = "Dharam Web Api";
+interface SupplierData {
+  name: string;
+  totalDiamonds: number;
+  isVisible: boolean;
+  loading: boolean;
+}
+
+const SUPPLIERS = ["Dharam Web Api", "Finestar"];
 
 const SupplierManagementModal: React.FC<SupplierManagementModalProps> = ({
   isOpen,
   onClose,
   onSupplierUpdate,
 }) => {
-  const [totalDiamonds, setTotalDiamonds] = useState<number>(0);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [loadingCounts, setLoadingCounts] = useState(false);
+  const [suppliersData, setSuppliersData] = useState<SupplierData[]>(
+    SUPPLIERS.map(name => ({ name, totalDiamonds: 0, isVisible: false, loading: false }))
+  );
   const [showConfigModal, setShowConfigModal] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState<string>("");
 
-  // Fetch total diamonds count
-  const fetchTotalDiamonds = async () => {
-    setLoadingCounts(true);
+  // Fetch total diamonds count for a specific supplier
+  const fetchTotalDiamonds = async (supplierName: string) => {
+    setSuppliersData(prev => prev.map(s => 
+      s.name === supplierName ? { ...s, loading: true } : s
+    ));
+    
     try {
-      // Build URL with encoded query params and pagination
       const url = new URL("https://dalila-inventory-service-dev.caratlogic.com/api/diamonds/admin/search");
-      url.searchParams.set("source", SUPPLIER_NAME);
+      url.searchParams.set("source", supplierName);
       url.searchParams.set("page", "1");
       url.searchParams.set("limit", "10");
+      
       const response = await fetch(url.toString(), {
         method: "GET",
         credentials: "include",
@@ -64,47 +75,74 @@ const SupplierManagementModal: React.FC<SupplierManagementModalProps> = ({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to fetch diamond count");
+        throw new Error(`Failed to fetch diamond count for ${supplierName}`);
       }
 
       const data = await response.json();
-      if (data.pagination && data.pagination.totalRecords) {
-        setTotalDiamonds(data.pagination.totalRecords);
-      }
+      const totalRecords = data.pagination?.totalRecords || 0;
+      
+      setSuppliersData(prev => prev.map(s => 
+        s.name === supplierName 
+          ? { ...s, totalDiamonds: totalRecords, loading: false }
+          : s
+      ));
     } catch (error) {
-      console.error("Error fetching diamond count:", error);
-      toast.error("Failed to fetch diamond count");
-    } finally {
-      setLoadingCounts(false);
+      console.error(`Error fetching diamond count for ${supplierName}:`, error);
+      toast.error(`Failed to fetch diamond count for ${supplierName}`);
+      setSuppliersData(prev => prev.map(s => 
+        s.name === supplierName ? { ...s, loading: false } : s
+      ));
     }
   };
 
-  // Fetch supplier visibility status
+  // Fetch visibility status for a specific supplier
+  const fetchVisibilityStatus = async (supplierName: string) => {
+    try {
+      const storedValue = localStorage.getItem(`supplier_${supplierName}_visible`);
+      if (storedValue !== null) {
+        const isVisible = storedValue === 'true';
+        setSuppliersData(prev => prev.map(s => 
+          s.name === supplierName ? { ...s, isVisible } : s
+        ));
+      }
+    } catch (error) {
+      console.error(`Error fetching visibility for ${supplierName}:`, error);
+    }
+  };
 
   // Load data when modal opens
   useEffect(() => {
     if (isOpen) {
-      fetchTotalDiamonds();
+      SUPPLIERS.forEach(supplierName => {
+        fetchTotalDiamonds(supplierName);
+        fetchVisibilityStatus(supplierName);
+      });
     }
   }, [isOpen]);
 
-  const handleOpenConfigModal = () => {
+  const handleOpenConfigModal = (supplierName: string) => {
+    setSelectedSupplier(supplierName);
     setShowConfigModal(true);
   };
 
   const handleConfigSaved = () => {
     // Refresh data after config is saved
-    fetchTotalDiamonds();
+    if (selectedSupplier) {
+      fetchTotalDiamonds(selectedSupplier);
+    }
     if (onSupplierUpdate) {
       onSupplierUpdate();
     }
   };
 
-  const handleToggleVisibility = async () => {
+  const handleToggleVisibility = async (supplierName: string) => {
+    const supplier = suppliersData.find(s => s.name === supplierName);
+    if (!supplier) return;
+    
     try {
-      const newStatus = !isVisible;
+      const newStatus = !supplier.isVisible;
       const response = await fetch(
-        `https://dalila-inventory-service-dev.caratlogic.com/api/users/admin/supplier-settings/${encodeURIComponent(SUPPLIER_NAME)}`,
+        `https://dalila-inventory-service-dev.caratlogic.com/api/users/admin/supplier-settings/${encodeURIComponent(supplierName)}`,
         {
           method: "PUT",
           credentials: "include",
@@ -127,15 +165,17 @@ const SupplierManagementModal: React.FC<SupplierManagementModalProps> = ({
       );
 
       // Update local state
-      setIsVisible(newStatus);
+      setSuppliersData(prev => prev.map(s => 
+        s.name === supplierName ? { ...s, isVisible: newStatus } : s
+      ));
       
       // Store in localStorage
-      localStorage.setItem(`supplier_${SUPPLIER_NAME}_visible`, String(newStatus));
+      localStorage.setItem(`supplier_${supplierName}_visible`, String(newStatus));
 
       // Dispatch custom event to notify inventory page
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('supplierStatusChanged', { 
-          detail: { isVisible: newStatus, supplierName: SUPPLIER_NAME } 
+          detail: { isVisible: newStatus, supplierName } 
         }));
       }
 
@@ -187,44 +227,51 @@ const SupplierManagementModal: React.FC<SupplierManagementModalProps> = ({
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-gray-200 hover:bg-gray-50">
-                <td className="py-3 px-4 text-gray-800">{SUPPLIER_NAME}</td>
-                <td className="py-3 px-4 text-center text-gray-800">
-                  {loadingCounts ? (
-                    <span className="text-gray-400">Loading...</span>
-                  ) : (
-                    totalDiamonds.toLocaleString()
-                  )}
-                </td>
-                <td className="py-3 px-4">
-                  <div className="flex items-center justify-center gap-3">
-                    <Toggle
-                      checked={isVisible}
-                      onChange={handleToggleVisibility}
-                      disabled={loadingCounts}
-                    />
-                    <button
-                      onClick={handleOpenConfigModal}
-                      className="p-1.5 rounded-md hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-900"
-                      title="Configure API"
-                    >
-                      <Settings className="w-5 h-5" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              {suppliersData.map((supplier) => (
+                <tr key={supplier.name} className="border-b border-gray-200 hover:bg-gray-50">
+                  <td className="py-3 px-4 text-gray-800">{supplier.name}</td>
+                  <td className="py-3 px-4 text-center text-gray-800">
+                    {supplier.loading ? (
+                      <span className="text-gray-400">Loading...</span>
+                    ) : (
+                      supplier.totalDiamonds.toLocaleString()
+                    )}
+                  </td>
+                  <td className="py-3 px-4">
+                    <div className="flex items-center justify-center gap-3">
+                      <Toggle
+                        checked={supplier.isVisible}
+                        onChange={() => handleToggleVisibility(supplier.name)}
+                        disabled={supplier.loading}
+                      />
+                      <button
+                        onClick={() => handleOpenConfigModal(supplier.name)}
+                        className="p-1.5 rounded-md hover:bg-gray-100 transition-colors text-gray-600 hover:text-gray-900"
+                        title="Configure API"
+                      >
+                        <Settings className="w-5 h-5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
 
       {/* Configure API Modal */}
-      <ConfigureAPIModal
-        isOpen={showConfigModal}
-        onClose={() => setShowConfigModal(false)}
-        supplierName={SUPPLIER_NAME}
-        onConfigSaved={handleConfigSaved}
-      />
+      {selectedSupplier && (
+        <ConfigureAPIModal
+          isOpen={showConfigModal}
+          onClose={() => {
+            setShowConfigModal(false);
+            setSelectedSupplier("");
+          }}
+          supplierName={selectedSupplier}
+          onConfigSaved={handleConfigSaved}
+        />
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { useHeaderAuth } from "./headerHooks";
 export default function MobileHeader() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isServicesOpen, setIsServicesOpen] = useState(false);
+    const [isResourcesOpen, setIsResourcesOpen] = useState(false);
     const [isUserPanelOpen, setIsUserPanelOpen] = useState(false);
     const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
     const router = useRouter();
@@ -25,6 +26,7 @@ export default function MobileHeader() {
     const closeMobileMenu = () => {
         setIsMobileMenuOpen(false);
         setIsServicesOpen(false);
+        setIsResourcesOpen(false);
         setIsUserPanelOpen(false);
         setIsAdminPanelOpen(false);
     };
@@ -202,13 +204,48 @@ export default function MobileHeader() {
                             Diamond Knowledge
                         </Link>
 
-                        <Link
-                            href="/blogs"
-                            onClick={closeMobileMenu}
-                            className="block px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors border-b border-gray-700"
-                        >
-                            Blogs
-                        </Link>
+                        {/* Resources Dropdown */}
+                        <div className="border-b border-gray-700">
+                            <button
+                                onClick={() =>
+                                    setIsResourcesOpen(!isResourcesOpen)
+                                }
+                                className="w-full px-4 py-3 text-white hover:bg-[#c89e3a]/10 transition-colors flex items-center justify-between"
+                            >
+                                <span>Resources</span>
+                                <ChevronDown
+                                    size={18}
+                                    className={`transition-transform ${isResourcesOpen ? "rotate-180" : ""}`}
+                                />
+                            </button>
+                            {isResourcesOpen && (
+                                <div className="bg-[#0a1454]">
+                                    <Link
+                                        href="/blogs"
+                                        onClick={closeMobileMenu}
+                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                    >
+                                        Articles
+                                    </Link>
+                                    
+                                    <Link
+                                        href="/premium-b2b-diamond-supplier-belgium"
+                                        onClick={closeMobileMenu}
+                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                    >
+                                        Premium B2B Diamond Supplier in Belgium
+                                    </Link>
+                                    
+                                    <Link
+                                        href="/sell-your-diamond-safely"
+                                        onClick={closeMobileMenu}
+                                        className="block px-6 py-2.5 text-sm text-gray-300 hover:text-white hover:bg-[#c89e3a]/10"
+                                    >
+                                        Sell Your Diamond Safely
+                                    </Link>
+                                </div>
+                            )}
+                        </div>
 
                         {/* Divider */}
                         <div className="h-2 bg-[#0a1454] border-b border-gray-700"></div>

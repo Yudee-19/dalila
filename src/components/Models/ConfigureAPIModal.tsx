@@ -93,7 +93,7 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
     setFilterData(null);
     try {
       const response = await fetch(
-        `https://dalila-inventory-service-dev.caratlogic.com/api/users/admin/supplier-settings/Dharam%20Web%20Api/filters`,
+        `https://dalila-inventory-service-dev.caratlogic.com/api/users/admin/supplier-settings/${encodeURIComponent(supplierName)}/filters`,
         {
           method: "GET",
           credentials: "include",
@@ -429,7 +429,7 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
                 {paginationInfo && (
                   <div className="mt-4 p-3 bg-[#050C3A] border border-blue-200">
                     <p className="text-sm font-semibold text-white">
-                      Total diamonds {paginationInfo.totalRecords.toLocaleString()} from Dharam Web Api 
+                      Total diamonds {paginationInfo.totalRecords.toLocaleString()} from {supplierName}
                     </p>
                   </div>
                 )}

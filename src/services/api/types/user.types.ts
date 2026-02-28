@@ -105,8 +105,14 @@ export interface Quotation {
 // Blog
 export interface Blog {
   _id: string;
-  title: string;
-  description: string;
+  title: string; 
+  h2Subtitle?: string; 
+  customSlug?: string; 
+  featuredImage?: string; 
+  description: string; 
+  content?: string; 
+  metaTitle?: string; 
+  metaDescription?: string; 
   authorId: string;
   authorName: string;
   isDeleted: boolean;

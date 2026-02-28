@@ -11,6 +11,7 @@ export default function Header() {
     const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
     const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
     const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+    const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
     const router = useRouter();
 
     // Custom hooks
@@ -108,13 +109,57 @@ export default function Header() {
                                 Diamond Knowledge
                             </Link>
 
-                            {/* Blogs */}
-                            <Link
-                                href="/blogs"
-                                className="py-3 px-1.5 xl:px-2.5 text-xs xl:text-base text-white hover:text-[#c89e3a] transition-colors whitespace-nowrap"
-                            >
-                                Blogs
-                            </Link>
+                            {/* Resources Dropdown */}
+                            <div className="relative group">
+                                <button
+                                    onMouseEnter={() =>
+                                        setIsResourcesDropdownOpen(true)
+                                    }
+                                    onMouseLeave={() =>
+                                        setIsResourcesDropdownOpen(false)
+                                    }
+                                    className="py-3 px-1.5 cursor-pointer xl:px-2.5 text-xs xl:text-base text-white hover:text-[#c89e3a] transition-colors whitespace-nowrap flex items-center gap-1"
+                                >
+                                    Resources
+                                    <ChevronDown
+                                        size={16}
+                                        className={`transition-transform duration-200 ${isResourcesDropdownOpen ? "rotate-180" : ""}`}
+                                    />
+                                </button>
+
+                                {isResourcesDropdownOpen && (
+                                    <div
+                                        onMouseEnter={() =>
+                                            setIsResourcesDropdownOpen(true)
+                                        }
+                                        onMouseLeave={() => {
+                                            setIsResourcesDropdownOpen(false);
+                                        }}
+                                        className="absolute left-0 top-full mt-0 w-64 bg-white shadow-lg border border-gray-200 rounded-sm z-50"
+                                    >
+                                        <Link
+                                            href="/blogs"
+                                            className="block px-4 py-3 text-sm text-gray-700 hover:bg-[#c89e3a] hover:text-white transition-colors border-b border-gray-100"
+                                        >
+                                            Articles
+                                        </Link>
+                                        
+                                        <Link
+                                            href="/premium-b2b-diamond-supplier-belgium"
+                                            className="block px-4 py-3 text-sm text-gray-700 hover:bg-[#c89e3a] hover:text-white transition-colors border-b border-gray-100"
+                                        >
+                                            Premium B2B Diamond Supplier in Belgium
+                                        </Link>
+                                        
+                                        <Link
+                                            href="/sell-your-diamond-safely"
+                                            className="block px-4 py-3 text-sm text-gray-700 hover:bg-[#c89e3a] hover:text-white transition-colors"
+                                        >
+                                            Sell Your Diamond Safely
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
                         </nav>
 
                         <div
