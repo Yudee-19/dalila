@@ -3,9 +3,9 @@ import { Clock, Mail, AlertCircle } from "lucide-react";
 
 export default function PendingApproval() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 mt-15">
       <div className="max-w-md w-full mx-4">
-        <div className="bg-white rounded-lg shadow-xl p-8 text-center">
+        <div className="bg-white rounded-lg shadow-xl p-8 text-center mt-5">
           {/* Icon */}
           <div className="mb-6 flex justify-center">
             <div className="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center">
