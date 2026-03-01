@@ -2,6 +2,15 @@ import { Marcellus, Jost } from "next/font/google";
 import SeoPageBanner from "@/components/pages/seopage/SeoPageBanner";
 import SeoPageShowcase, { ShowcaseSection } from "@/components/pages/seopage/SeoPageShowcase";
 import SeoPageContent, { ContentSection } from "@/components/pages/seopage/SeoPageContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Premium B2B Diamond Supplier Belgium | Dalila Diamonds",
+    description: "Dalila Diamonds offers premium B2B diamond supply in Belgium — certified quality, reliable service, and trusted sourcing for global businesses.",
+    alternates: {
+        canonical: "https://www.daliladiamonds.com/premium-b2b-diamond-supplier-belgium",
+    },
+};
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
@@ -32,7 +41,7 @@ export default function PremiumB2BDiamondSupplierPage() {
       heading: "Premium B2B Diamond<br />Supplier in Belgium",
       description:
         "<p class='mb-4'>Dalila Diamonds is a premium B2B diamond supplier based in Antwerp, Belgium — the historic and globally recognized heart of the international diamond trade.</p><p class='mb-4'>We specialize in supplying certified natural diamonds to jewelers, manufacturers, wholesalers, luxury retailers, and investment buyers worldwide.</p><p class='mb-4'>Our business is built on trust, transparency, precision sourcing, and long-term strategic partnerships. Every diamond we deliver represents not only brilliance and rarity, but reliability and professional integrity.</p><p>With decades of family expertise and a global sourcing network, we ensure consistent quality, competitive pricing, and secure international logistics.</p>",
-      imageSrc: "/b2b/looseround.WEBP",
+      imageSrc: "/b2b/looseround.webp",
       imageAlt: "Dalila Diamonds Antwerp",
       imagePosition: "right",
     },

@@ -7,6 +7,39 @@ const nextConfig = {
     },
 
     outputFileTracingRoot: __dirname,
+    
+    async redirects() {
+        return [
+            // Redirect URLs with special characters to home page
+            {
+                source: '/:path*\\$',
+                destination: '/',
+                permanent: true,
+            },
+            {
+                source: '/:path*\\&',
+                destination: '/',
+                permanent: true,
+            },
+            {
+                source: '/\\$',
+                destination: '/',
+                permanent: true,
+            },
+            {
+                source: '/\\&',
+                destination: '/',
+                permanent: true,
+            },
+            // Catch other invalid special character URLs
+            {
+                source: '/:path*[\\#\\%\\^\\*\\(\\)\\+\\=\\[\\]\\{\\}\\|\\\\]',
+                destination: '/',
+                permanent: true,
+            },
+        ];
+    },
+    
     images: {
         unoptimized: true,
         remotePatterns: [

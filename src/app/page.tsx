@@ -2,6 +2,15 @@ import dynamic from "next/dynamic";
 import HeroSection from "@/components/pages/HeroSection";
 import AboutDalila from "@/components/pages/homecomponents/AboutDalila";
 import InstaSection from "@/components/InstagramSection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Primium B2B Daimond Supplier In Belgium | Dalila Daimond",
+    description: "Dalila Diamonds is a trusted B2B diamond supplier in Belgium, offering premium quality, certified diamonds for businesses worldwide. Exceptional service & reliability.",
+    alternates: {
+        canonical: "https://www.daliladiamonds.com/",
+    },
+};
 // Lazy load below-the-fold components
 const DiamondShapes = dynamic(() => import("@/components/pages/homecomponents/DiamondShapes"), {
   loading: () => <div className="h-screen bg-gradient-to-b from-white to-gray-50" />,
