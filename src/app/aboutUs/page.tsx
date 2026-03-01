@@ -7,6 +7,8 @@ import DiamondExperience from "@/components/pages/homecomponents/experience";
 import AboutMilestone from "@/components/pages/aboutus/MileStone";
 import { Metadata } from "next";
 export const metadata: Metadata = {
+    title: "About Us | Dalila Diamonds – Top B2B Diamond Supplier",
+    description: "Learn about Dalila Diamonds — trusted B2B diamond supplier in Belgium with expert sourcing, quality assurance, and exceptional service for global businesses.",
     alternates: {
         canonical: "https://www.daliladiamonds.com/aboutUs",
     },

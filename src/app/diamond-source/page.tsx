@@ -5,6 +5,8 @@ import DiamondSourceAdvantages from "@/components/pages/diamond-source/Advantage
 import DiamondContact from "@/components/pages/diamond-source/DiamondContact";
 import { Metadata } from "next";
 export const metadata: Metadata = {
+    title: "Diamond Source Services | Dalila Diamonds Belgium",
+    description: "Discover diamond sourcing expertise with Dalila Diamonds — trusted B2B supplier in Belgium offering premium certified stones and reliable services worldwide.",
     alternates: {
         canonical: "https://www.daliladiamonds.com/diamond-source",
     },

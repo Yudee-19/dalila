@@ -2,6 +2,15 @@ import { Marcellus, Jost } from "next/font/google";
 import SeoPageBanner from "@/components/pages/seopage/SeoPageBanner";
 import SeoPageShowcase, { ShowcaseSection } from "@/components/pages/seopage/SeoPageShowcase";
 import SeoPageContent, { ContentSection } from "@/components/pages/seopage/SeoPageContent";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Sell Your Diamond Safely in Belgium | Dalila Diamonds",
+    description: "Sell your diamond safely with Dalila Diamonds in Belgium — trusted B2B buyer offering secure transactions, fair value, and expert service for businesses.",
+    alternates: {
+        canonical: "https://www.daliladiamonds.com/sell-your-diamond-safely",
+    },
+};
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
