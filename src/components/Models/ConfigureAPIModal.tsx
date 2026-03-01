@@ -232,10 +232,10 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
         isFilterEnabled: true,
         shapes: selectedShapes.length > 0 ? selectedShapes : undefined,
         colors: selectedColors.length > 0 ? selectedColors : undefined,
-        carats: {
+        carats: selectedCaratRanges.length > 0 ? {
           min: minCarat,
           max: maxCarat,
-        },
+        } : undefined,
         cuts:
           selectedCutsForPayload.length > 0
             ? selectedCutsForPayload

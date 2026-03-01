@@ -28,9 +28,11 @@ export function generateSlug(text: string): string {
  * @returns The slug to use for the blog
  */
 export function getBlogSlug(blog: { title: string; customSlug?: string }): string {
-  if (blog.customSlug) {
+  // Use customSlug only if it's a non-empty string
+  if (blog.customSlug && blog.customSlug.trim()) {
     // Remove leading/trailing slashes from customSlug
     return blog.customSlug.replace(/^\/+|\/+$/g, '');
   }
+  // Otherwise generate slug from title
   return generateSlug(blog.title);
 }

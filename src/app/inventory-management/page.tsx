@@ -270,28 +270,31 @@ export default function InventoryManagement() {
 
   const fetchSupplierCounts = async () => {
     try {
-      // Check localStorage for supplier visibility status
-      const supplierName = "Dharam Web Api";
-      const storedStatus = localStorage.getItem(`supplier_${supplierName}_visible`);
+      // Check localStorage for supplier visibility status for both suppliers
+      const suppliers = ["Dharam Web Api", "Finestar"];
       
-      // Set total suppliers to 1 (we have one supplier)
-      setTotalSuppliers(1);
+      // Set total suppliers to the count of suppliers we have
+      setTotalSuppliers(suppliers.length);
       
-      if (storedStatus !== null) {
-        // Use localStorage value if available
-        const isVisible = storedStatus === 'true';
-        setActiveSuppliers(isVisible ? 1 : 0);
-      } else {
-        // Default to 1 active supplier if not in localStorage
-        // API endpoint for supplier settings is not available, so we default to active
-        setActiveSuppliers(1);
-        localStorage.setItem(`supplier_${supplierName}_visible`, 'true');
-      }
+      // Count how many suppliers are visible
+      let visibleCount = 0;
+      suppliers.forEach(supplierName => {
+        const storedStatus = localStorage.getItem(`supplier_${supplierName}_visible`);
+        if (storedStatus === 'true') {
+          visibleCount++;
+        } else if (storedStatus === null) {
+          // Default to visible if not set
+          visibleCount++;
+          localStorage.setItem(`supplier_${supplierName}_visible`, 'true');
+        }
+      });
+      
+      setActiveSuppliers(visibleCount);
     } catch (err) {
       console.error('Error fetching supplier counts:', err);
       // Default values on error
-      setTotalSuppliers(1);
-      setActiveSuppliers(1);
+      setTotalSuppliers(2);
+      setActiveSuppliers(2);
     }
   };
 
