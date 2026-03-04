@@ -1,8 +1,10 @@
 import { Marcellus, Jost } from "next/font/google";
-import SeoPageBanner from "@/components/pages/seopage/SeoPageBanner";
+import PremiumB2BBanner from "@/components/pages/resources/PremiumB2BBanner";
+import ResourceSidebar from "@/components/pages/resources/ResourceSidebar";
 import SeoPageShowcase, { ShowcaseSection } from "@/components/pages/seopage/SeoPageShowcase";
-import SeoPageContent, { ContentSection } from "@/components/pages/seopage/SeoPageContent";
+import { ContentSection } from "@/components/pages/seopage/SeoPageContent";
 import { Metadata } from "next";
+import AnimatedContainer from "@/components/shared/AnimatedContainer";
 
 export const metadata: Metadata = {
     title: "Premium B2B Diamond Supplier Belgium | Dalila Diamonds",
@@ -31,6 +33,22 @@ export default function PremiumB2BDiamondSupplierPage() {
     {
       title: "Dalila Diamonds | Trusted B2B Diamond Sourcing from Antwerp",
       content: "Dalila Diamonds is a premium B2B diamond supplier based in Antwerp, Belgium — the historic and globally recognized heart of the international diamond trade.\n\nWe specialize in supplying certified natural diamonds to jewelers, manufacturers, wholesalers, luxury retailers, and investment buyers worldwide. Our business is built on trust, transparency, precision sourcing, and long-term strategic partnerships.\n\nEvery diamond we deliver represents not only brilliance and rarity, but reliability and professional integrity backed by decades of expertise in the global diamond market.",
+    },
+  ];
+
+  // Executive Overview
+  const executiveOverviewSection: ContentSection[] = [
+    {
+      title: "Premium B2B Diamond Supplier in Belgium",
+      content: "Dalila Diamonds is a premium B2B diamond supplier based in Antwerp, Belgium — the historic and globally recognized heart of the international diamond trade.\n\nWe specialize in supplying certified natural diamonds to jewelers, manufacturers, wholesalers, luxury retailers, and investment buyers worldwide.\n\nOur business is built on trust, transparency, precision sourcing, and long-term strategic partnerships. Every diamond we deliver represents not only brilliance and rarity, but reliability and professional integrity.\n\nWith decades of family expertise and a global sourcing network, we ensure consistent quality, competitive pricing, and secure international logistics.",
+    },
+  ];
+
+  // Strategic Sourcing Partner
+  const strategicPartnerSection: ContentSection[] = [
+    {
+      title: "Strategic Sourcing Partner for Professional Buyers",
+      content: "Dalila Diamonds was founded with a clear mission: to simplify diamond sourcing for professional B2B buyers.\n\nWe understand that in the diamond industry, reliability and consistency are critical. Production schedules, inventory planning, and customer expectations depend on accurate grading, competitive pricing, and secure supply.\n\nOperating from Antwerp provides us direct access to one of the world's largest polished diamond inventories and established diamond exchanges. This allows us to work closely with manufacturers and primary suppliers, ensuring better pricing structures and priority access to premium goods.\n\nWe are not a transactional trading company — we are a strategic sourcing partner committed to supporting your long-term growth.",
     },
   ];
 
@@ -81,6 +99,39 @@ export default function PremiumB2BDiamondSupplierPage() {
   ];
 
   // Certification & Quality Sections
+  const certificationSection: ContentSection[] = [
+    {
+      title: "International Laboratory Certification Standards",
+      content: "We supply diamonds certified by leading international gemological laboratories including GIA, IGI, HRD, and AGS.\n\nCertification ensures independent verification of:",
+      bulletPoints: [
+        "Carat weight",
+        "Color grade",
+        "Clarity grade",
+        "Cut quality",
+        "Proportions and symmetry",
+        "Fluorescence levels",
+      ],
+    },
+  ];
+
+  // Our Diamond Collection
+  const diamondCollectionSection: ContentSection[] = [
+    {
+      title: "Complete Range of Certified Natural Diamonds",
+      content: "Dalila Diamonds supplies polished natural diamonds across all major shapes including Round Brilliant, Princess, Cushion, Emerald, Oval, Pear, Radiant, Marquise, Asscher, and Heart.\n\nAvailable across all quality grades:",
+      bulletPoints: [
+        "Commercial goods (SI–I clarity, H–K color)",
+        "Triple Excellent cut diamonds",
+        "No fluorescence diamonds",
+        "Premium colorless stones (D–F)",
+        "High clarity diamonds (IF–VVS)",
+        "Large certified solitaires (2ct+)",
+        "Investment-grade diamonds",
+      ],
+    },
+  ];
+
+  // Certification Showcase Sections
   const certificationSections: ShowcaseSection[] = [
     {
       label: "CERTIFIED DIAMONDS & LABORATORY STANDARDS",
@@ -118,7 +169,39 @@ export default function PremiumB2BDiamondSupplierPage() {
     },
   ];
 
-  // Services Sections
+  // Services Sections - S2S
+  const s2sServiceSection: ContentSection[] = [
+    {
+      title: "S2S – Secure To Source: Structured Diamond Procurement Solution",
+      content: "Secure To Source (S2S) is our core B2B procurement solution designed for jewelers, wholesalers, and manufacturers seeking reliability and reduced sourcing risk.",
+      bulletPoints: [
+        "Direct access to Antwerp inventories",
+        "Certified stones with full documentation",
+        "Competitive wholesale pricing",
+        "Full quality control verification",
+        "Insured international logistics",
+        "Transparent documentation and invoicing",
+      ],
+    },
+  ];
+
+  // Diamond Source For You Service
+  const ds4uServiceSection: ContentSection[] = [
+    {
+      title: "DS4U – Diamond Source For You: Customized Sourcing for Rare Requirements",
+      content: "Diamond Source For You (DS4U) is our fully customized sourcing program for specific, rare, or high-value diamond requirements that require specialized search and procurement.",
+      bulletPoints: [
+        "Exact carat ranges and weight specifications",
+        "Specific color and clarity combinations",
+        "Matched pairs for earrings and layouts",
+        "Bridal collections with consistent grading",
+        "Rare fancy shapes and cuts",
+        "High-value investment-grade stones (5ct+)",
+      ],
+    },
+  ];
+
+  // Services Showcase Sections
   const servicesSections: ShowcaseSection[] = [
     {
       label: "S2S – SECURE TO SOURCE",
@@ -173,6 +256,34 @@ export default function PremiumB2BDiamondSupplierPage() {
   ];
 
   // Logistics & Market Sections
+  const logisticsSection: ContentSection[] = [
+    {
+      title: "Secure International Shipping Solutions",
+      content: "We provide fully insured international shipping through specialized diamond logistics partners with proven security protocols.\n\nOur logistics services include:",
+      bulletPoints: [
+        "Tamper-proof secure packaging",
+        "Full insurance coverage at declared value",
+        "Customs documentation and duty calculation",
+        "Express global delivery (24-72 hours)",
+        "Real-time tracking and communication",
+      ],
+    },
+  ];
+
+  const marketPricingSection: ContentSection[] = [
+    {
+      title: "Competitive Pricing Strategy & Market Analysis",
+      content: "The diamond market is dynamic and influenced by global supply, demand, mining output, and pricing indices such as IDEX and Rapaport.\n\nWe continuously monitor:",
+      bulletPoints: [
+        "Wholesale market fluctuations and pricing trends",
+        "Supply chain availability and inventory levels",
+        "Global demand trends across regions",
+        "Currency movements (USD/EUR/INR)",
+      ],
+    },
+  ];
+
+  // Logistics & Market Showcase Sections
   const logisticsMarketSections: ShowcaseSection[] = [
     {
       label: "GLOBAL LOGISTICS & SECURE SHIPPING",
@@ -228,25 +339,92 @@ export default function PremiumB2BDiamondSupplierPage() {
     },
   ];
 
+  // Helper function to render content sections
+  const renderContentSection = (section: ContentSection) => {
+    return (
+      <div className="mb-12">
+        <AnimatedContainer direction="up">
+          <div className="bg-white">
+            {/* Decorative Top Border */}
+            <div className="w-24 h-1.5 bg-linear-to-r from-[#c89e3a] to-[#e4c75f] mb-6 rounded-full"></div>
+            
+            <h2
+              className={`text-3xl md:text-4xl lg:text-4xl font-bold text-[#1a1a1a] mb-6 leading-tight ${marcellus.className}`}
+            >
+              {section.title}
+            </h2>
+            
+            {section.content && (
+              <div
+                className={`text-gray-700 text-base md:text-lg leading-relaxed mb-6 whitespace-pre-line ${jost.className}`}
+              >
+                {section.content}
+              </div>
+            )}
+
+            {section.bulletPoints && section.bulletPoints.length > 0 && (
+              <ul className={`space-y-4 ${jost.className}`}>
+                {section.bulletPoints.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-gray-700 text-base md:text-lg leading-relaxed">
+                    <span className="text-[#c89e3a] mt-1 font-bold text-xl shrink-0">•</span>
+                    <span className="flex-1">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </AnimatedContainer>
+      </div>
+    );
+  };
+
   return (
     <div className="bg-white min-h-screen">
-      <SeoPageBanner
-        title="Premium B2B Diamond Supplier in Belgium"
-        category="Business"
-        breadcrumb="Dalila Diamonds | Trusted Diamond Sourcing from Antwerp"
-      />
-      <SeoPageContent sections={trustedSupplierSection} />
-      <SeoPageShowcase sections={initialSections} />
-      <SeoPageContent sections={familyExpertiseSection} />
-      <SeoPageContent sections={antwerpAuthoritySection} />
-      <SeoPageShowcase sections={certificationSections} />
-      <SeoPageContent sections={processSection} />
-      <SeoPageShowcase sections={servicesSections} />
-      <SeoPageContent sections={sellDiamondsSection} />
-      <SeoPageContent sections={ethicsQualitySection} />
-      <SeoPageShowcase sections={logisticsMarketSections} />
-      <SeoPageContent sections={whyChooseUsSection} />
-      <SeoPageContent sections={contactSection} />
+      <PremiumB2BBanner />
+      
+      {/* Initial Content Section with Sidebar */}
+      <div className="container mx-auto max-w-7xl px-4 py-16">
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Left Sidebar */}
+          <aside className="lg:w-56 w-full shrink-0">
+            <AnimatedContainer direction="left">
+              <div className="sticky top-4">
+                <ResourceSidebar currentPage="premium-b2b" />
+              </div>
+            </AnimatedContainer>
+          </aside>
+
+          {/* Right Content Area */}
+          <main className="flex-1 w-full">
+            <article className="pb-8">
+              {renderContentSection(trustedSupplierSection[0])}
+            </article>
+          </main>
+        </div>
+      </div>
+
+      {/* Full Width Content Sections */}
+      <div className="w-full">
+        <SeoPageShowcase sections={initialSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(familyExpertiseSection[0])}
+          {renderContentSection(antwerpAuthoritySection[0])}
+        </div>
+        <SeoPageShowcase sections={certificationSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(processSection[0])}
+        </div>
+        <SeoPageShowcase sections={servicesSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(sellDiamondsSection[0])}
+          {renderContentSection(ethicsQualitySection[0])}
+        </div>
+        <SeoPageShowcase sections={logisticsMarketSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(whyChooseUsSection[0])}
+          {renderContentSection(contactSection[0])}
+        </div>
+      </div>
     </div>
   );
 }

@@ -36,7 +36,7 @@ export const diamondApi = {
     email: diamondService.emailDiamonds,
     getLimitedEdition: diamondService.getLimitedEditionDiamonds,
     saveLimitedEditionFilters: diamondService.saveLimitedEditionFilters,
-    getPublic: diamondService.getPublicDiamonds, // Add this line
+    getPublic: diamondService.getPublicDiamonds,
 
     // From diamondFilterService
     getFilterOptions: diamondFilterService.getFilterOptions,
@@ -145,10 +145,3 @@ export const inventoryApi = {
     applySupplierFilters: inventoryService.applySupplierFilters,
     getSupplierFilters: inventoryService.getSupplierFilters,
 };
-
-import { apiClient, API_URL, UNAUTHORIZED_EVENT } from "../services/api";
-
-// Re-export commonly used items
-export { apiClient, API_URL, UNAUTHORIZED_EVENT };
-
-export default apiClient;

@@ -180,6 +180,12 @@ const DiamondGridView: React.FC<GridViewProps> = ({
                             const videoUrl =
                                 (diamond as DiamondData & { MP4?: string })
                                     .MP4 || "";
+                            
+                            // Check if MP4 is actually a Vision360 HTML page (not a real video file)
+                            const isVision360 = videoUrl.includes('Vision360.html') || videoUrl.includes('.html');
+                            // Only use video if it's an actual video file (.mp4, .webm, etc.)
+                            const actualVideoUrl = !isVision360 && videoUrl.match(/\.(mp4|webm|ogg)(\?|$)/i) ? videoUrl : "";
+                            
                             const ratio = diamond.MEASUREMENTS
                                 ? (() => {
                                       const parts =
@@ -235,27 +241,38 @@ const DiamondGridView: React.FC<GridViewProps> = ({
                                             }
                                         }}
                                     >
-                                        {videoUrl ? (
+                                        {actualVideoUrl ? (
                                             <video
-                                                src={videoUrl}
+                                                src={actualVideoUrl}
                                                 muted
                                                 loop
                                                 playsInline
+                                                preload="metadata"
                                                 className="w-full h-full object-cover"
                                                 style={{ display: "block" }}
+                                                onError={(e) => {
+                                                    console.error("Video load error:", actualVideoUrl);
+                                                    e.currentTarget.style.display = "none";
+                                                }}
                                             />
-                                        ) : diamond.REAL_IMAGE ? (
-                                            <Image
-                                                src={diamond.REAL_IMAGE}
-                                                alt={diamond.STONE_NO}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        ) : (
+                                        ) : null}
+                                        {diamond.REAL_IMAGE ? (
+                                            <div 
+                                                className="absolute inset-0"
+                                                style={{ display: actualVideoUrl ? "none" : "block" }}
+                                            >
+                                                <Image
+                                                    src={diamond.REAL_IMAGE}
+                                                    alt={diamond.STONE_NO}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        ) : !actualVideoUrl ? (
                                             <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
                                                 No Media
                                             </div>
-                                        )}
+                                        ) : null}
                                     </div>
 
                                     {/* Diamond Info */}
@@ -366,6 +383,12 @@ const DiamondGridView: React.FC<GridViewProps> = ({
                             const videoUrl =
                                 (diamond as DiamondData & { MP4?: string })
                                     .MP4 || "";
+                            
+                            // Check if MP4 is actually a Vision360 HTML page (not a real video file)
+                            const isVision360 = videoUrl.includes('Vision360.html') || videoUrl.includes('.html');
+                            // Only use video if it's an actual video file (.mp4, .webm, etc.)
+                            const actualVideoUrl = !isVision360 && videoUrl.match(/\.(mp4|webm|ogg)(\?|$)/i) ? videoUrl : "";
+                            
                             const ratio = diamond.MEASUREMENTS
                                 ? (() => {
                                       const parts =
@@ -421,27 +444,38 @@ const DiamondGridView: React.FC<GridViewProps> = ({
                                             }
                                         }}
                                     >
-                                        {videoUrl ? (
+                                        {actualVideoUrl ? (
                                             <video
-                                                src={videoUrl}
+                                                src={actualVideoUrl}
                                                 muted
                                                 loop
                                                 playsInline
+                                                preload="metadata"
                                                 className="w-full h-full object-cover"
                                                 style={{ display: "block" }}
+                                                onError={(e) => {
+                                                    console.error("Video load error:", actualVideoUrl);
+                                                    e.currentTarget.style.display = "none";
+                                                }}
                                             />
-                                        ) : diamond.REAL_IMAGE ? (
-                                            <Image
-                                                src={diamond.REAL_IMAGE}
-                                                alt={diamond.STONE_NO}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        ) : (
+                                        ) : null}
+                                        {diamond.REAL_IMAGE ? (
+                                            <div 
+                                                className="absolute inset-0"
+                                                style={{ display: actualVideoUrl ? "none" : "block" }}
+                                            >
+                                                <Image
+                                                    src={diamond.REAL_IMAGE}
+                                                    alt={diamond.STONE_NO}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        ) : !actualVideoUrl ? (
                                             <div className="w-full h-full flex items-center justify-center text-gray-400" style={{ fontSize: "10px" }}>
                                                 No Media
                                             </div>
-                                        )}
+                                        ) : null}
                                     </div>
 
                                     {/* Diamond Info - Compact */}

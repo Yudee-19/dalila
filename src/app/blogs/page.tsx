@@ -17,6 +17,7 @@ import AnimatedContainer from "@/components/shared/AnimatedContainer";
 import RichTextEditor from "@/components/shared/RichTextEditor";
 import { blogApi, type Blog } from "@/lib/api";
 import { getBlogSlug } from "@/utils/helpers";
+import ArticlesBanner from "@/components/pages/blogs/ArticlesBanner";
 
 const marcellus = Marcellus({
   variable: "--font-marcellus",
@@ -393,160 +394,120 @@ export default function BlogsPage() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-white to-gray-50">
+    <div className="bg-white min-h-screen">
+      {/* Banner Section */}
+      <ArticlesBanner />
+
+      {/* Main Content Section */}
+      <section className="py-12 px-4">
         <div className="container mx-auto max-w-7xl">
-          <AnimatedContainer direction="up">
-            <div className="text-center mb-4">
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-32"></div>
-
-                <h1
-                  className={`text-4xl md:text-5xl lg:text-6xl text-[#1a1a1a] font-bold tracking-tight ${marcellus.className}`}
-                >
-                  Articles
-                </h1>
-
-                <div className="w-32 flex justify-end">
-                  {isAdmin && (
-                    <button
-                      onClick={() => setShowAddModal(true)}
-                      className="flex items-center cursor-pointer gap-2 px-5 py-2.5 bg-[#c89e3a] text-white hover:bg-[#b8922e] transition-all shadow-md hover:shadow-lg"
-                      title="Add New Blog"
-                    >
-                      <Plus size={20} />
-                      <span
-                        className={`text-sm font-semibold ${jost.className}`}
-                      >
-                        Add Article
-                      </span>
-                    </button>
-                  )}
-                </div>
-              </div>
-              <div className="w-24 h-1 bg-[#c89e3a] mx-auto mb-8"></div>
-              <p
-                className={`text-gray-600 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${jost.className}`}
+          {/* Admin Add Button - Only visible for Admin */}
+          {isAdmin && (
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="flex items-center cursor-pointer gap-2 px-5 py-2.5 bg-[#c89e3a] text-white hover:bg-[#b8922e] transition-all shadow-md hover:shadow-lg"
+                title="Add New Blog"
               >
-                Insights, trends, and knowledge about diamonds and the jewelry
-                industry
-              </p>
+                <Plus size={20} />
+                <span className={`text-sm font-semibold ${jost.className}`}>
+                  Add Article
+                </span>
+              </button>
             </div>
-          </AnimatedContainer>
-        </div>
-      </section>
+          )}
 
-      {/* Blogs Grid Section */}
-      <section className="py-16 px-4 bg-white">
-        <div className="container mx-auto max-w-7xl">
           {loading ? (
             <div className="flex justify-center items-center py-20">
-              <Loader2 className="w-12 h-12 animate-spin text-[#c89e3a] mx-auto mb-4" />
+              <Loader2 className="w-12 h-12 animate-spin text-[#c89e3a]" />
             </div>
           ) : blogs.length === 0 ? (
-            <div className="text-center py-20">
+            <div className="text-center py-20 bg-gray-50 border border-gray-200">
               <p className={`text-gray-600 text-xl ${jost.className}`}>
                 No blogs available at the moment.
               </p>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {blogs.map((blog, index) => (
-                  <AnimatedContainer
-                    key={blog._id}
-                    direction="up"
-                    delay={index * 0.1}
-                  >
-                    <div
-                      className="bg-white border border-gray-200 hover:border-[#c89e3a] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col relative group overflow-hidden"
-                      onClick={() => router.push(`/blogs/${getBlogSlug(blog)}`)}
-                    >
-                      {/* Featured Image */}
-                      {blog.featuredImage && (
-                        <div className="w-full h-56 overflow-hidden">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={blog.featuredImage}
-                            alt={blog.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = "none";
-                            }}
-                          />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {blogs.map((blog, index) => (
+                      <AnimatedContainer
+                        key={blog._id}
+                        direction="up"
+                        delay={index * 0.1}
+                      >
+                        <div
+                          className="bg-white border border-gray-200 hover:border-[#c89e3a] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col relative group overflow-hidden"
+                          onClick={() =>
+                            router.push(`/blogs/${getBlogSlug(blog)}`)
+                          }
+                        >
+                          {/* Featured Image */}
+                          {blog.featuredImage && (
+                            <div className="w-full h-56 overflow-hidden">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={blog.featuredImage}
+                                alt={blog.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).style.display =
+                                    "none";
+                                }}
+                              />
+                            </div>
+                          )}
+
+                          {/* Admin Action Buttons - Only visible for Admin */}
+                          {isAdmin && (
+                            <div className="absolute top-3 right-3 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={(e) => handleEditClick(blog, e)}
+                                className="cursor-pointer p-2 bg-white/90 backdrop-blur shadow-md hover:bg-[#c89e3a] hover:text-white transition-all group/btn"
+                                title="Edit Blog"
+                              >
+                                <Edit2
+                                  size={16}
+                                  className="text-[#c89e3a] group-hover/btn:text-white"
+                                />
+                              </button>
+                              <button
+                                onClick={(e) =>
+                                  handleDeleteBlog(blog._id, blog.title, e)
+                                }
+                                className="cursor-pointer p-2 bg-white/90 backdrop-blur shadow-md hover:bg-red-600 hover:text-white transition-all group/btn"
+                                title="Delete Blog"
+                              >
+                                <Trash2
+                                  size={16}
+                                  className="text-red-600 group-hover/btn:text-white"
+                                />
+                              </button>
+                            </div>
+                          )}
+
+                          <div className="p-6 flex-1 flex flex-col justify-center">
+                            <h3
+                              className={`text-xl md:text-2xl font-bold text-[#1a1a1a] group-hover:text-[#c89e3a] transition-colors line-clamp-3 ${marcellus.className}`}
+                            >
+                              {blog.title}
+                            </h3>
+                          </div>
                         </div>
-                      )}
+                      </AnimatedContainer>
+                    ))}
+                  </div>
 
-                      {/* Admin Action Buttons - Only visible for Admin */}
-                      {isAdmin && (
-                        <div className="absolute top-3 right-3 z-10 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <button
-                            onClick={(e) => handleEditClick(blog, e)}
-                            className="cursor-pointer p-2 bg-white/90 backdrop-blur shadow-md hover:bg-[#c89e3a] hover:text-white transition-all group/btn"
-                            title="Edit Blog"
-                          >
-                            <Edit2
-                              size={16}
-                              className="text-[#c89e3a] group-hover/btn:text-white"
-                            />
-                          </button>
-                          <button
-                            onClick={(e) => handleDeleteBlog(blog._id, blog.title, e)}
-                            className="cursor-pointer p-2 bg-white/90 backdrop-blur shadow-md hover:bg-red-600 hover:text-white transition-all group/btn"
-                            title="Delete Blog"
-                          >
-                            <Trash2
-                              size={16}
-                              className="text-red-600 group-hover/btn:text-white"
-                            />
-                          </button>
-                        </div>
-                      )}
+                  {renderPagination()}
 
-                      <div className="p-6 flex-1 flex flex-col">
-                        <h3
-                          className={`text-xl md:text-2xl font-bold text-[#1a1a1a] mb-3 group-hover:text-[#c89e3a] transition-colors line-clamp-2 ${marcellus.className}`}
-                        >
-                          {blog.title}
-                        </h3>
-
-                        {blog.h2Subtitle && (
-                          <h4
-                            className={`text-base text-gray-600 mb-4 line-clamp-2 ${jost.className}`}
-                          >
-                            {blog.h2Subtitle}
-                          </h4>
-                        )}
-
-                        <p
-                          className={`text-gray-600 mb-6 flex-1 line-clamp-3 leading-relaxed ${jost.className}`}
-                        >
-                          {getExcerpt(blog.content || blog.description)}
-                        </p>
-
-                        <button
-                          className={`mt-4 text-[#c89e3a] hover:text-[#b8922e] font-semibold text-sm transition-all flex items-center gap-2 group-hover:gap-3 ${jost.className}`}
-                        >
-                          Read More
-                          <span className="text-lg">→</span>
-                        </button>
-                      </div>
-                    </div>
-                  </AnimatedContainer>
-                ))}
-              </div>
-
-              {renderPagination()}
-
-              <div className="text-center mt-8">
-                <p className={`text-gray-600 text-sm ${jost.className}`}>
-                  Showing {blogs.length} of {totalRecords} blog
-                  {totalRecords !== 1 ? "s" : ""}
-                </p>
-              </div>
-            </>
-          )}
+                  <div className="text-center mt-8">
+                    <p className={`text-gray-600 text-sm ${jost.className}`}>
+                      Showing {blogs.length} of {totalRecords} article
+                      {totalRecords !== 1 ? "s" : ""}
+                    </p>
+                  </div>
+                </>
+              )}
         </div>
       </section>
 
