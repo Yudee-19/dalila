@@ -121,6 +121,7 @@ interface InventoryTableProps {
   filterSource?: string;
   noPagination?: boolean;
   filterProps?: FilterProps;
+  onDiamondSelect?: (diamond: InventoryDiamond) => void;
 }
 
 const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
@@ -134,6 +135,7 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
   filterSource,
   noPagination = false,
   filterProps,
+  onDiamondSelect,
 }) => {
   // Track if component is being used with external data (from props)
   const isExternalData = propData !== undefined;
@@ -252,8 +254,12 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
   };
 
   const handleStockClick = (diamond: InventoryDiamond) => {
-    // Show diamond detail view
-    setSelectedDiamond(diamond);
+    // If parent provides onDiamondSelect, use it; otherwise show detail view internally
+    if (onDiamondSelect) {
+      onDiamondSelect(diamond);
+    } else {
+      setSelectedDiamond(diamond);
+    }
   };
 
   if (loading && data.length === 0 && !hasLoadedOnce) {
@@ -402,7 +408,7 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
           )}
         </div>
       </div>
-      {selectedDiamond && (
+      {selectedDiamond && !onDiamondSelect && (
         <DiamondDetailView
           diamond={{
             ...selectedDiamond,
@@ -595,7 +601,7 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
         )}
       </div>
     </div>
-    {selectedDiamond && (
+    {selectedDiamond && !onDiamondSelect && (
       <DiamondDetailView
         diamond={{
           ...selectedDiamond,

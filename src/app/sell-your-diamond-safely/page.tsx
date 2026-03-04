@@ -1,8 +1,10 @@
 import { Marcellus, Jost } from "next/font/google";
-import SeoPageBanner from "@/components/pages/seopage/SeoPageBanner";
+import SellDiamondBanner from "@/components/pages/resources/SellDiamondBanner";
+import ResourceSidebar from "@/components/pages/resources/ResourceSidebar";
 import SeoPageShowcase, { ShowcaseSection } from "@/components/pages/seopage/SeoPageShowcase";
-import SeoPageContent, { ContentSection } from "@/components/pages/seopage/SeoPageContent";
+import { ContentSection } from "@/components/pages/seopage/SeoPageContent";
 import { Metadata } from "next";
+import AnimatedContainer from "@/components/shared/AnimatedContainer";
 
 export const metadata: Metadata = {
     title: "Sell Your Diamond Safely in Belgium | Dalila Diamonds",
@@ -35,7 +37,44 @@ export default function SellYourDiamondSafelyPage() {
     },
   ];
 
-  // Diamond Value Sections
+  // Understanding Diamond Value
+  const understandingValueSection: ContentSection[] = [
+    {
+      title: "Understanding the Real Value of Your Diamond",
+      content: "Every diamond's value depends on the famous 4Cs:\n\nCut – Determines sparkle and brilliance\n\nColor – The less color, the higher the value\n\nClarity – Fewer inclusions mean better quality\n\nCarat – The weight of the diamond\n\nThink of the 4Cs like a diamond's report card. The stronger the grades, the higher the resale value.\n\nMarket Demand and Pricing Trends: Diamond prices aren't fixed forever. Market demand, design trends, and global supply chains influence resale value. For example, classic round diamonds usually sell faster than unusual cuts.",
+    },
+  ];
+
+  // Choosing a Trusted Buyer
+  const trustedBuyerSection: ContentSection[] = [
+    {
+      title: "Choosing a Trusted Diamond Buyer",
+      content: "A trustworthy buyer should offer:",
+      bulletPoints: [
+        "Transparent pricing process",
+        "Professional evaluation",
+        "Secure shipping or in-person inspection",
+        "Clear payment terms",
+        "Positive customer reputation",
+      ],
+    },
+  ];
+
+  // Risks of Unverified Buyers
+  const risksSection: ContentSection[] = [
+    {
+      title: "Risks of Selling to Unverified Buyers",
+      content: "Selling to unknown individuals or unverified dealers can lead to:",
+      bulletPoints: [
+        "Underpricing",
+        "Payment delays",
+        "Fraud risks",
+        "No documentation",
+      ],
+    },
+  ];
+
+  // Diamond Value Showcase Sections
   const valueSections: ShowcaseSection[] = [
     {
       label: "UNDERSTANDING DIAMOND VALUE",
@@ -73,7 +112,36 @@ export default function SellYourDiamondSafelyPage() {
     },
   ];
 
-  // Why Dalila Diamonds & Online Selling Sections
+  // Why Dalila Diamonds
+  const whyDalilaSection: ContentSection[] = [
+    {
+      title: "Why Dalila Diamonds is a Premium Diamond Supplier",
+      content: "Global Industry Network: A strong global network allows diamond companies to offer competitive prices. Buyers connected with international jewelers and retailers can resell diamonds efficiently, which means better offers for sellers.\n\nTrusted by Retailers and Jewelers: Being recognized as a premium diamond supplier for B2B business in Brazil means working with:",
+      bulletPoints: [
+        "Jewelry retailers",
+        "Diamond wholesalers",
+        "Manufacturers",
+        "Luxury brands",
+      ],
+    },
+  ];
+
+  // Online Selling Benefits
+  const onlineSellingSection: ContentSection[] = [
+    {
+      title: "Benefits of Selling Diamonds Online vs Offline",
+      content: "Selling online through a trusted company offers:",
+      bulletPoints: [
+        "Convenience from home",
+        "Professional remote evaluation",
+        "Access to global buyers",
+        "Faster offers",
+        "Secure insured shipping",
+      ],
+    },
+  ];
+
+  // Why Dalila Diamonds & Online Selling Showcase Sections
   const servicesSections: ShowcaseSection[] = [
     {
       label: "WHY DALILA DIAMONDS",
@@ -119,7 +187,35 @@ export default function SellYourDiamondSafelyPage() {
     },
   ];
 
-  // Who Can Sell & Types of Diamonds Sections
+  // Who Can Sell Diamonds
+  const whoCanSellSection: ContentSection[] = [
+    {
+      title: "Who Can Sell Diamonds to Dalila Diamonds",
+      content: "Almost anyone can sell:",
+      bulletPoints: [
+        "Individuals with old jewelry",
+        "People upgrading rings",
+        "Families selling heirlooms",
+        "Investors liquidating assets",
+        "Retailers clearing inventory",
+      ],
+    },
+  ];
+
+  // Types of Diamonds
+  const typesOfDiamondsSection: ContentSection[] = [
+    {
+      title: "Selling Engagement Rings, Heirlooms, and Loose Diamonds",
+      content: "Different types of diamonds require different evaluation approaches:",
+      bulletPoints: [
+        "Engagement rings – Value depends on stone + setting",
+        "Heirlooms – Antique value may increase price",
+        "Loose diamonds – Easier to grade and often faster to sell",
+      ],
+    },
+  ];
+
+  // Who Can Sell & Types of Diamonds Showcase Sections
   const sellerSections: ShowcaseSection[] = [
     {
       label: "WHO CAN SELL DIAMONDS",
@@ -165,25 +261,90 @@ export default function SellYourDiamondSafelyPage() {
     },
   ];
 
+  // Helper function to render content sections
+  const renderContentSection = (section: ContentSection) => {
+    return (
+      <div className="mb-12">
+        <AnimatedContainer direction="up">
+          <div className="bg-white">
+            {/* Decorative Top Border */}
+            <div className="w-24 h-1.5 bg-linear-to-r from-[#c89e3a] to-[#e4c75f] mb-6 rounded-full"></div>
+            
+            <h2
+              className={`text-3xl md:text-4xl lg:text-4xl font-bold text-[#1a1a1a] mb-6 leading-tight ${marcellus.className}`}
+            >
+              {section.title}
+            </h2>
+            
+            {section.content && (
+              <div
+                className={`text-gray-700 text-base md:text-lg leading-relaxed mb-6 whitespace-pre-line ${jost.className}`}
+              >
+                {section.content}
+              </div>
+            )}
+
+            {section.bulletPoints && section.bulletPoints.length > 0 && (
+              <ul className={`space-y-4 ${jost.className}`}>
+                {section.bulletPoints.map((point, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-gray-700 text-base md:text-lg leading-relaxed">
+                    <span className="text-[#c89e3a] mt-1 font-bold text-xl shrink-0">•</span>
+                    <span className="flex-1">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </AnimatedContainer>
+      </div>
+    );
+  };
+
   return (
     <div className={`${marcellus.variable} ${jost.variable} bg-white min-h-screen`}>
-      <SeoPageBanner
-        title="How to Sell Your Diamond Safely and Seamlessly"
-        category="Resources"
-        breadcrumb="Complete Guide to Selling Your Diamond"
-      />
-      <SeoPageContent sections={whySellingSection} />
-      <SeoPageShowcase sections={valueSections} />
-      <SeoPageContent sections={preparingSection} />
-      <SeoPageContent sections={sellingProcessSection} />
-      <SeoPageShowcase sections={servicesSections} />
-      <SeoPageContent sections={safetyTipsSection} />
-      <SeoPageContent sections={commonMistakesSection} />
-      <SeoPageContent sections={bestPriceSection} />
-      <SeoPageShowcase sections={sellerSections} />
-      <SeoPageContent sections={finalChecklistSection} />
-      <SeoPageContent sections={conclusionSection} />
-      <SeoPageContent sections={faqsSection} />
+      <SellDiamondBanner />
+      
+      {/* Initial Content Section with Sidebar */}
+      <div className="container mx-auto max-w-7xl px-4 py-16">
+        <div className="flex flex-col lg:flex-row gap-12">
+          {/* Left Sidebar */}
+          <aside className="lg:w-56 w-full shrink-0">
+            <AnimatedContainer direction="left">
+              <div className="sticky top-4">
+                <ResourceSidebar currentPage="sell-diamond" />
+              </div>
+            </AnimatedContainer>
+          </aside>
+
+          {/* Right Content Area */}
+          <main className="flex-1 w-full">
+            <article className="pb-8">
+              {renderContentSection(whySellingSection[0])}
+            </article>
+          </main>
+        </div>
+      </div>
+
+      {/* Full Width Content Sections */}
+      <div className="w-full">
+        <SeoPageShowcase sections={valueSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(preparingSection[0])}
+          {renderContentSection(sellingProcessSection[0])}
+        </div>
+        <SeoPageShowcase sections={servicesSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(safetyTipsSection[0])}
+          {renderContentSection(commonMistakesSection[0])}
+          {renderContentSection(bestPriceSection[0])}
+        </div>
+        <SeoPageShowcase sections={sellerSections} />
+        <div className="container mx-auto max-w-7xl px-4 py-8">
+          {renderContentSection(finalChecklistSection[0])}
+          {renderContentSection(conclusionSection[0])}
+          {renderContentSection(faqsSection[0])}
+        </div>
+      </div>
     </div>
   );
 }

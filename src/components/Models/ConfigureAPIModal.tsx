@@ -9,6 +9,7 @@ import ColorFilter from "../Filters/ColorFilter";
 import InventoryDiamondTable from "../InventoryDiamondTable";
 import { inventoryApi } from "@/lib/api";
 import toast from "react-hot-toast";
+import DiamondDetailView from "../DiamondDetailView";
 
 interface InventoryDiamond {
   _id: string;
@@ -34,9 +35,34 @@ interface InventoryDiamond {
   REPORT_NO: string;
   REAL_IMAGE: string;
   MP4: string;
-  CERTI_PDF: string;
-  createdAt: string;
-  updatedAt: string;
+  CERTI_PDF?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  REPORT_COMMENTS?: string;
+  REPORT_DATE?: string;
+  CROWN_ANGLE?: string;
+  CROWN_HEIGHT?: string;
+  PAVILLION_ANGLE?: string;
+  PAVILLION_HEIGHT?: string;
+  CN?: string;
+  CW?: string;
+  SN?: string;
+  SW?: string;
+  TINGE?: string;
+  LENGTH?: string;
+  WIDTH?: string;
+  DEPTH?: string;
+  GIRDLE?: string;
+  GIRDLE_PER?: string;
+  STAR?: string;
+  RATIO?: string;
+  KEY_TO_SYMBOLS?: string | string[];
+  ARROW_IMAGE?: string;
+  HEART_IMAGE?: string;
+  DNA?: string;
+  HA?: string;
+  BRANCH?: string;
+  STAGE?: string;
 }
 
 interface ConfigureAPIModalProps {
@@ -81,6 +107,7 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
   } | undefined>(undefined);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedDiamond, setSelectedDiamond] = useState<InventoryDiamond | null>(null);
 
   // For Check button and dropdown
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
@@ -124,6 +151,7 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
       setDiamondData([]);
       setCurrentPage(1);
       setPaginationInfo(undefined);
+      setSelectedDiamond(null);
     }
   }, [isOpen]);
 
@@ -267,6 +295,33 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
   };
 
   if (!isOpen) return null;
+
+  // If a diamond is selected, show DiamondDetailView instead of modal
+  if (selectedDiamond) {
+    return (
+      <DiamondDetailView
+        diamond={{
+          ...selectedDiamond,
+          CARATS: parseFloat(selectedDiamond.CARATS) || 0,
+          RAP_PRICE: parseFloat(selectedDiamond.RAP_PRICE) || 0,
+          DISC_PER: parseFloat(selectedDiamond.DISC_PER) || 0,
+          NET_VALUE: parseFloat(selectedDiamond.NET_VALUE) || 0,
+          NET_RATE: selectedDiamond.NET_RATE,
+          TABLE_PER: selectedDiamond.TABLE_PER ? parseFloat(selectedDiamond.TABLE_PER) : undefined,
+          DEPTH_PER: selectedDiamond.DEPTH_PER ? parseFloat(selectedDiamond.DEPTH_PER) : undefined,
+          CROWN_ANGLE: selectedDiamond.CROWN_ANGLE ? parseFloat(selectedDiamond.CROWN_ANGLE) : undefined,
+          CROWN_HEIGHT: selectedDiamond.CROWN_HEIGHT ? parseFloat(selectedDiamond.CROWN_HEIGHT) : undefined,
+          PAVILLION_ANGLE: selectedDiamond.PAVILLION_ANGLE ? parseFloat(selectedDiamond.PAVILLION_ANGLE) : undefined,
+          PAVILLION_HEIGHT: selectedDiamond.PAVILLION_HEIGHT ? parseFloat(selectedDiamond.PAVILLION_HEIGHT) : undefined,
+          KEY_TO_SYMBOLS: Array.isArray(selectedDiamond.KEY_TO_SYMBOLS) 
+            ? selectedDiamond.KEY_TO_SYMBOLS.join(", ") 
+            : selectedDiamond.KEY_TO_SYMBOLS,
+          STAGE: selectedDiamond.STAGE || 'inventory',
+        }}
+        onClose={() => setSelectedDiamond(null)}
+      />
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50 p-4">
@@ -424,6 +479,7 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
                   externalPagination={paginationInfo}
                   onPageChange={handlePageChange}
                   pageSize={rowsPerPage}
+                  onDiamondSelect={(diamond) => setSelectedDiamond(diamond)}
                 />
                 {/* Diamond count summary */}
                 {paginationInfo && (
