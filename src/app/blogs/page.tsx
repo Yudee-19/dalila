@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Marcellus, Jost } from "next/font/google";
 import {
   ChevronLeft,
@@ -196,6 +197,7 @@ export default function BlogsPage() {
   };
 
   const handleEditClick = (blog: Blog, e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent Link navigation
     e.stopPropagation(); // Prevent card click navigation
     setEditBlog({
       id: blog._id,
@@ -255,6 +257,7 @@ export default function BlogsPage() {
   };
 
   const handleDeleteBlog = async (blogId: string, blogTitle: string, e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent Link navigation
     e.stopPropagation(); // Prevent card click navigation
     
     const confirmed = window.confirm(
@@ -417,30 +420,29 @@ export default function BlogsPage() {
             </div>
           )}
 
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <Loader2 className="w-12 h-12 animate-spin text-[#c89e3a]" />
-            </div>
-          ) : blogs.length === 0 ? (
-            <div className="text-center py-20 bg-gray-50 border border-gray-200">
-              <p className={`text-gray-600 text-xl ${jost.className}`}>
-                No blogs available at the moment.
-              </p>
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {loading ? (
+                <div className="flex justify-center items-center py-20">
+                  <Loader2 className="w-12 h-12 animate-spin text-[#c89e3a]" />
+                </div>
+              ) : blogs.length === 0 ? (
+                <div className="text-center py-20 bg-gray-50 border border-gray-200">
+                  <p className={`text-gray-600 text-xl ${jost.className}`}>
+                    No blogs available at the moment.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {/* Articles Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogs.map((blog, index) => (
                       <AnimatedContainer
                         key={blog._id}
                         direction="up"
                         delay={index * 0.1}
                       >
-                        <div
+                        <Link
+                          href={`/blogs/${getBlogSlug(blog)}`}
                           className="bg-white border border-gray-200 hover:border-[#c89e3a] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer h-full flex flex-col relative group overflow-hidden"
-                          onClick={() =>
-                            router.push(`/blogs/${getBlogSlug(blog)}`)
-                          }
                         >
                           {/* Featured Image */}
                           {blog.featuredImage && (
@@ -493,7 +495,7 @@ export default function BlogsPage() {
                               {blog.title}
                             </h3>
                           </div>
-                        </div>
+                        </Link>
                       </AnimatedContainer>
                     ))}
                   </div>
