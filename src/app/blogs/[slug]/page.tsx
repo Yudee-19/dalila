@@ -5,8 +5,7 @@ import Link from "next/link";
 import { Marcellus, Jost } from "next/font/google";
 import { ArrowLeft, Loader2, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
-import AnimatedContainer from "@/components/shared/AnimatedContainer";
-import { blogApi, inventoryApi, type Blog } from "@/lib/api";
+import { blogApi, type Blog } from "@/lib/api";
 import { getBlogSlug } from "@/utils/helpers";
 import DiamondDetailView from "@/components/DiamondDetailView";
 import type { DiamondData } from "@/types/diamond.types";
@@ -149,6 +148,10 @@ export default function BlogDetailPage() {
       console.log('========== BLOG SLUG MATCHING DEBUG ==========');
       console.log('URL Slug received:', slug);
       
+      // Clean the slug by removing any query parameters (e.g., ?_rsc=xxx)
+      const cleanSlug = slug.split('?')[0].split('#')[0];
+      console.log('Cleaned slug:', cleanSlug);
+      
       // Fetch all blogs using existing API
       const response = await blogApi.getAll({
         page: 1,
@@ -175,8 +178,8 @@ export default function BlogDetailPage() {
           console.log(`  ${index + 1}. "${blog.title}" -> slug: "${blogSlug}", customSlug: "${blog.customSlug || 'none'}"`);
         });
 
-        // Normalize the slug from URL (remove leading/trailing slashes)
-        const normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
+        // Normalize the cleaned slug from URL (remove leading/trailing slashes)
+        const normalizedSlug = cleanSlug.replace(/^\/+|\/+$/g, '');
         console.log('Normalized URL slug:', normalizedSlug);
         
         // Find the blog that matches the slug
@@ -237,33 +240,41 @@ export default function BlogDetailPage() {
 
   const fetchInventoryDiamonds = async () => {
     try {
-      console.log("Fetching inventory diamonds for blog...");
-      // Fetch top 10 diamonds from inventory search API
-      const response = await inventoryApi.searchDiamonds({
-        page: 1,
-        limit: 10
-      });
+      console.log("Fetching featured diamonds for blog from safe endpoint...");
       
-      console.log("Inventory API response:", response);
+      // Fetch diamonds from the safe public endpoint
+      const response = await fetch(
+        'https://dalila-inventory-service-dev.caratlogic.com/api/diamonds/safe?page=1&limit=10'
+      );
       
-      if (response && response.success) {
-        // The inventory search API returns data as the array directly
-        const diamonds = Array.isArray(response.data) ? response.data : [];
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log("Safe API response:", data);
+      
+      if (data && data.success && Array.isArray(data.data)) {
+        const diamonds = data.data;
         console.log(`Total diamonds received: ${diamonds.length}`);
         
         // Filter diamonds that have images
         const diamondsWithImages = diamonds.filter((d: InventoryDiamond) => 
           d.REAL_IMAGE && d.REAL_IMAGE.trim()
         );
-        console.log(`Loaded ${diamondsWithImages.length} inventory diamonds with images`);
+        console.log(`Loaded ${diamondsWithImages.length} featured diamonds with images`);
         setInventoryDiamonds(diamondsWithImages);
         setDiamondsFetched(true);
       } else {
-        console.error("Invalid response structure:", response);
+        console.error("Invalid response structure:", data);
+        // Still set as fetched even if no data, so the section shows
+        setInventoryDiamonds([]);
         setDiamondsFetched(true);
       }
     } catch (err) {
-      console.error("Inventory diamonds fetch error:", err);
+      console.error("Featured diamonds fetch error:", err);
+      // Set as fetched even on error, so the section shows with message
+      setInventoryDiamonds([]);
       setDiamondsFetched(true);
     }
   };
@@ -327,131 +338,127 @@ export default function BlogDetailPage() {
       </div>
 
       {/* Main Content Section with Sidebar */}
-      <div className="container mx-auto max-w-7xl px-4 pb-16">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Sidebar */}
-          <aside className="lg:w-1/4 w-full">
-            <AnimatedContainer direction="left">
-              {/* Our Articles Section */}
-              <div className="bg-white border border-gray-200 p-6 mb-6 shadow-sm sticky top-4">
-                <h2
-                  className={`text-2xl font-bold text-[#1a1a1a] mb-4 pb-3 border-b-2 border-[#c89e3a] ${marcellus.className}`}
-                >
-                  Our Articles
-                </h2>
-                {loading && allBlogs.length === 0 ? (
-                  <div className="flex justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-[#c89e3a]" />
-                  </div>
-                ) : allBlogs.length === 0 ? (
-                  <p className={`text-gray-600 text-sm ${jost.className}`}>
-                    No articles available
-                  </p>
-                ) : (
-                  <div className="space-y-4">
-                    {allBlogs.slice(0, 8).map((articleItem) => (
+      <section className="max-w-7xl mx-auto px-6 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-12 items-start">
+          {/* Left Sidebar - Sticky on Desktop */}
+          <aside className="sticky-sidebar">
+            {/* Our Articles Section */}
+            <div className="mb-6">
+              <h3 className={`text-xl font-bold text-[#2d2d2d] mb-5 ${marcellus.className}`}>
+                Our Articles
+              </h3>
+              {allBlogs.length === 0 ? (
+                <div className="flex justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-[#c89e3a]" />
+                </div>
+              ) : (
+                <ul className="space-y-4">
+                  {allBlogs.map((articleItem, index) => (
+                    <li key={articleItem._id}>
                       <Link
-                        key={articleItem._id}
                         href={`/blogs/${getBlogSlug(articleItem)}`}
-                        scroll={false}
-                        className={`group cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded transition-colors block ${
-                          blog?._id === articleItem._id ? 'bg-amber-50' : ''
+                        className={`text-left hover:text-[#c89e3a] transition-colors group w-full flex items-start justify-between gap-3 py-1 ${
+                          blog?._id === articleItem._id ? 'text-[#c89e3a]' : 'text-gray-700'
                         }`}
                       >
-                        <div className="flex items-start justify-between gap-2">
-                          <h3
-                            className={`text-sm group-hover:text-[#c89e3a] transition-colors line-clamp-2 flex-1 ${
-                              blog?._id === articleItem._id 
-                                ? 'text-[#c89e3a] font-semibold' 
-                                : 'text-gray-700'
-                            } ${jost.className}`}
-                          >
-                            {articleItem.title}
-                          </h3>
-                          <ArrowRight
-                            size={16}
-                            className={`group-hover:text-[#c89e3a] group-hover:translate-x-1 transition-all shrink-0 mt-0.5 ${
-                              blog?._id === articleItem._id 
-                                ? 'text-[#c89e3a]' 
-                                : 'text-gray-400'
-                            }`}
-                          />
-                        </div>
+                        <span className={`text-base flex-1 ${index === 0 ? '' : 'line-clamp-2'} ${jost.className}`}>
+                          {articleItem.title}
+                        </span>
+                        <ArrowRight
+                          size={16}
+                          className={`shrink-0 -mt-0.5 transition-transform group-hover:translate-x-1 ${
+                            blog?._id === articleItem._id 
+                              ? 'text-[#c89e3a]' 
+                              : 'text-gray-400 group-hover:text-[#c89e3a]'
+                          }`}
+                        />
                       </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
 
-              {/* Browse Our Inventory Section */}
-              <div className="bg-linear-to-br from-slate-900 to-slate-800 p-6 shadow-lg sticky top-4">
-                <h2
-                  className={`text-xl font-bold text-white mb-3 ${marcellus.className}`}
-                >
+            {/* Find Us Section */}
+            <div className="mb-6">
+              <div className="bg-gradient-to-br from-[#2d2d2d] to-[#1a1a1a] text-white p-6 shadow-lg">
+                <h3 className={`text-xl font-bold mb-4 ${marcellus.className}`}>
+                  Find Us
+                </h3>
+                <div className={`space-y-3 text-sm text-gray-200 ${jost.className}`}>
+                  <div className="flex items-start gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#c89e3a] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <div>
+                      <p className="font-medium text-white mb-1">Dalila Diamonds</p>
+                      <p className="leading-relaxed">
+                        Hoveniersstraat 30, Box - 105<br />
+                        Suite 326, 2018 Antwerpen<br />
+                        Belgium
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#c89e3a] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <a href="mailto:business@daliladiamonds.com" className="hover:text-[#c89e3a] transition-colors">
+                      business@daliladiamonds.com
+                    </a>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#c89e3a] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <a href="tel:+32487939351" className="hover:text-[#c89e3a] transition-colors">
+                      +32 487 93 93 51
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Browse Our Inventory Section */}
+            <div>
+              <div className="bg-[#c89e3a] text-white p-6 shadow-lg">
+                <h3 className={`text-xl font-bold mb-3 ${marcellus.className}`}>
                   Browse Our Inventory
-                </h2>
-                <p className={`text-gray-300 text-sm mb-4 ${jost.className}`}>
+                </h3>
+                <p className={`text-sm mb-4 text-white/90 ${jost.className}`}>
                   Discover our exquisite collection of premium diamonds
                 </p>
                 <button
                   onClick={() => router.push("/inventory")}
-                  className={`w-full bg-[#c89e3a] text-white py-2.5 px-4 hover:bg-[#b8922e] transition-colors flex items-center justify-center gap-2 group ${jost.className}`}
+                  className={`w-full bg-white text-[#2d2d2d] py-2.5 px-4 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 group font-semibold ${jost.className}`}
                 >
-                  <span className="font-semibold">View Inventory</span>
+                  <span>View Inventory</span>
                   <ArrowRight
                     size={18}
                     className="group-hover:translate-x-1 transition-transform"
                   />
                 </button>
               </div>
-            </AnimatedContainer>
+            </div>
           </aside>
 
-          {/* Right Content Area - Blog Content */}
-          <main id="blog-content-area" className="lg:w-3/4 w-full">
+          {/* Right Content Area - Blog Article */}
+          <article className="flex-1">
+            <h1 className={`text-3xl md:text-4xl lg:text-5xl text-[#1a1a1a] font-bold leading-tight mb-6 ${marcellus.className}`}>
+              {blog.title}
+            </h1>
 
-      {/* Blog Content */}
-      <article className="pb-8">
-        <AnimatedContainer direction="up">
-          <div className="bg-white">
-            <div className="max-w-4xl mx-auto">
-              {/* Featured Image - At Top */}
-              {/* {blog.featuredImage && (
-                <div className="w-full h-72 md:h-[500px] overflow-hidden rounded-lg mb-8">
-                 
-                  <img
-                    src={blog.featuredImage}
-                    alt={blog.title}
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = "none";
-                    }}
-                  />
-                </div>
-              )} */}
-
-             
-              <h1
-                className={`text-3xl md:text-4xl lg:text-5xl text-[#1a1a1a] font-bold leading-tight mb-6 ${marcellus.className}`}
-              >
-                {blog.title}
-              </h1>
-
-              {/* Blog Content (Rich Text HTML) */}
-              <div
-                className={`blog-content ${jost.className}`}
-                dangerouslySetInnerHTML={{ __html: blog.content || blog.description }}
-              />
-            </div>
-          </div>
-        </AnimatedContainer>
-      </article>
-
-          </main>
+            {/* Blog Content (Rich Text HTML) */}
+            <div
+              className={`blog-content ${jost.className}`}
+              dangerouslySetInnerHTML={{ __html: blog.content || blog.description }}
+            />
+          </article>
         </div>
-      </div>
+      </section>
 
-      {/* Inventory Diamond Carousel - Full Width Outside Sidebar */}
+      {/* Inventory Diamond Carousel - Full Width Outside Sidebar - Always Visible */}
       <div className="w-full py-16 bg-gray-50">
         <div className="mb-10">
           <h2
@@ -465,11 +472,20 @@ export default function BlogDetailPage() {
         {!diamondsFetched ? (
           <div className="container mx-auto px-4 text-center">
             <Loader2 className="w-12 h-12 text-[#c89e3a] animate-spin mx-auto" />
-            <p className="mt-4 text-gray-600">Loading diamonds...</p>
+            <p className={`mt-4 text-gray-600 ${jost.className}`}>Loading diamonds...</p>
           </div>
         ) : inventoryDiamonds.length === 0 ? (
           <div className="container mx-auto px-4 text-center">
-            <p className="text-gray-600">No diamonds available at the moment.</p>
+            <p className={`text-gray-600 text-lg ${jost.className}`}>
+              No featured diamonds available at the moment. Please check back later or{" "}
+              <button
+                onClick={() => router.push('/inventory')}
+                className="text-[#c89e3a] hover:text-[#b8922e] underline font-semibold"
+              >
+                browse our full inventory
+              </button>
+              .
+            </p>
           </div>
         ) : (
           <div className="container mx-auto px-4 md:px-8 lg:px-12">
