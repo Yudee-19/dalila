@@ -1,34 +1,5 @@
 User-agent: *
 Allow: /
-
-# Important pages
-Allow: /contact
-Allow: /diamond-knowledge
-Allow: /services
-
-# Block system folders if they exist
 Disallow: /admin/
-Disallow: /login/
-Disallow: /dashboard/
 Disallow: /wp-admin/
-Disallow: /cgi-bin/
-
-# Block temporary or sensitive files
-Disallow: /*?*
-Disallow: /search
-
-# Block URLs with special characters
-Disallow: /*$
-Disallow: /*&
-Disallow: /*#
-Disallow: /*%
-Disallow: /*^
-Disallow: /**
-Disallow: /*(
-Disallow: /*[
-Disallow: /*{
-Disallow: /*|
-Disallow: /*\
-
-# Sitemap (update if you have one)
 Sitemap: https://www.daliladiamonds.com/sitemap.xml
