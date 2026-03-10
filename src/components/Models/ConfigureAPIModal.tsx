@@ -113,6 +113,15 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [filterData, setFilterData] = useState<Record<string, string[]> | null>(null);
   const [isChecking, setIsChecking] = useState(false);
+
+  // For Discount management
+  const [showDiscountDropdown, setShowDiscountDropdown] = useState(false);
+  const [discountData, setDiscountData] = useState<any>(null);
+  const [isGettingDiscount, setIsGettingDiscount] = useState(false);
+  const [isApplyingDiscount, setIsApplyingDiscount] = useState(false);
+  const [showDiscountModal, setShowDiscountModal] = useState(false);
+  const [discountValue, setDiscountValue] = useState("");
+
   // Handle Check button click
   const handleCheckFilters = async () => {
     setIsChecking(true);
@@ -141,6 +150,101 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
       toast.error(err instanceof Error ? err.message : "Failed to fetch filter data");
     } finally {
       setIsChecking(false);
+    }
+  };
+
+  // Handle Get Discount button click
+  const handleGetDiscount = async () => {
+    setIsGettingDiscount(true);
+    setShowDiscountDropdown(false);
+    setDiscountData(null);
+    try {
+      const response = await inventoryApi.getDiscountRules(supplierName);
+      if (response.success && response.data) {
+        setDiscountData(response.data);
+        setShowDiscountDropdown(true);
+        toast.success("Discount rules fetched successfully");
+      } else {
+        toast.error(response.message || "No discount rules found");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to fetch discount rules");
+    } finally {
+      setIsGettingDiscount(false);
+    }
+  };
+
+  // Handle Apply Discount button click - Opens modal
+  const handleOpenDiscountModal = () => {
+    // Convert selectedCut string to array
+    const cutArray = selectedCut ? selectedCut.split(",").map(c => c.trim()) : [];
+
+    // Check if any filters are selected
+    if (selectedShapes.length === 0 && selectedColors.length === 0 && 
+        selectedClarities.length === 0 && selectedCaratRanges.length === 0 &&
+        cutArray.length === 0) {
+      toast.error("Please select at least one filter to apply discount");
+      return;
+    }
+
+    setDiscountValue("");
+    setShowDiscountModal(true);
+  };
+
+  // Handle discount confirmation
+  const handleConfirmDiscount = async () => {
+    const discount = parseFloat(discountValue);
+    if (isNaN(discount) || discount < 0 || discount > 100) {
+      toast.error("Please enter a valid discount percentage between 0 and 100");
+      return;
+    }
+
+    setShowDiscountModal(false);
+    setIsApplyingDiscount(true);
+    
+    // Show loading toast
+    const loadingToast = toast.loading("Applying discount... This may take a moment.");
+    
+    try {
+      // Convert selectedCut string to array
+      const cutArray = selectedCut ? selectedCut.split(",").map(c => c.trim()) : [];
+      
+      // Calculate min and max carat from selected ranges
+      let minCarat: number | undefined;
+      let maxCarat: number | undefined;
+      if (selectedCaratRanges.length > 0) {
+        const mins = selectedCaratRanges.map((r) => parseFloat(r.min));
+        const maxs = selectedCaratRanges.map((r) => parseFloat(r.max));
+        minCarat = Math.min(...mins);
+        maxCarat = Math.max(...maxs);
+      }
+
+      const discountPayload = {
+        discount: discount,
+        shapes: selectedShapes.length > 0 ? selectedShapes : undefined,
+        colors: selectedColors.length > 0 ? selectedColors : undefined,
+        carats: minCarat && maxCarat ? { min: minCarat, max: maxCarat } : undefined,
+        cuts: cutArray.length > 0 ? cutArray : undefined,
+        clarities: selectedClarities.length > 0 ? selectedClarities : undefined,
+      };
+
+      const response = await inventoryApi.applyDiscountRules(supplierName, discountPayload);
+
+      toast.dismiss(loadingToast);
+      
+      if (response.success) {
+        toast.success(response.message || "Discount applied successfully!");
+        // Refresh discount data
+        handleGetDiscount();
+      } else {
+        toast.error(response.message || "Failed to apply discount");
+      }
+    } catch (err) {
+      toast.dismiss(loadingToast);
+      console.error("Error applying discount:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to apply discount");
+    } finally {
+      setIsApplyingDiscount(false);
     }
   };
 
@@ -458,6 +562,147 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
                     </div>
                   )}
                 </div>
+
+                {/* Get Discount Button */}
+                <div className="relative">
+                  <button
+                    onClick={handleGetDiscount}
+                    disabled={isGettingDiscount}
+                    className="bg-[#050C3A] text-white px-6 py-2 rounded-md hover:bg-[#070d4a] transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    {isGettingDiscount ? "Loading..." : "Get Discount"}
+                  </button>
+                  {/* Dropdown for discount data */}
+                  {showDiscountDropdown && discountData && (
+                    <div className="absolute right-0 mt-2 w-80 bg-[#FAF6EB] text-gray-900 border border-gray-300 rounded shadow-lg z-50 p-4 text-sm">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-semibold text-gray-900">Current Discount Rules</span>
+                        <button onClick={() => setShowDiscountDropdown(false)} className="text-gray-600 hover:text-gray-900"><X className="w-4 h-4" /></button>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex gap-2 text-gray-800">
+                          <span className="font-medium min-w-[80px]">Discount:</span>
+                          <span className="font-bold">{discountData.discount}%</span>
+                        </div>
+                        {discountData.shapes && (
+                          <div className="flex gap-2 text-gray-800">
+                            <span className="font-medium min-w-[80px]">Shapes:</span>
+                            <span>{discountData.shapes.join(", ")}</span>
+                          </div>
+                        )}
+                        {discountData.colors && (
+                          <div className="flex gap-2 text-gray-800">
+                            <span className="font-medium min-w-[80px]">Colors:</span>
+                            <span>{discountData.colors.join(", ")}</span>
+                          </div>
+                        )}
+                        {discountData.clarities && (
+                          <div className="flex gap-2 text-gray-800">
+                            <span className="font-medium min-w-[80px]">Clarities:</span>
+                            <span>{discountData.clarities.join(", ")}</span>
+                          </div>
+                        )}
+                        {discountData.cuts && (
+                          <div className="flex gap-2 text-gray-800">
+                            <span className="font-medium min-w-[80px]">Cuts:</span>
+                            <span>{discountData.cuts.join(", ")}</span>
+                          </div>
+                        )}
+                        {discountData.carats && (
+                          <div className="flex gap-2 text-gray-800">
+                            <span className="font-medium min-w-[80px]">Carats:</span>
+                            <span>{discountData.carats.min} - {discountData.carats.max}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Apply Discount Button */}
+                <div className="relative">
+                  <button
+                    onClick={handleOpenDiscountModal}
+                    disabled={isApplyingDiscount}
+                    className="bg-[#050C3A] text-white px-6 py-2 rounded-md hover:bg-[#070d4a] transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                  >
+                    <Check className="w-4 h-4" />
+                    {isApplyingDiscount ? "Applying..." : "Apply Discount"}
+                  </button>
+
+                  {/* Discount Input Modal */}
+                  {showDiscountModal && (
+                    <div className="absolute bottom-full right-0 mb-2 bg-white border-2 border-[#050C3A] rounded-lg shadow-xl p-4 z-50 w-80">
+                      <div className="flex justify-between items-center mb-3">
+                        <h3 className="text-base font-semibold text-[#050C3A]">Enter Discount Percentage</h3>
+                        <button
+                          onClick={() => setShowDiscountModal(false)}
+                          className="text-gray-500 hover:text-gray-700"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                      
+                      <div className="mb-3">
+                        <input
+                          type="number"
+                          value={discountValue}
+                          onChange={(e) => setDiscountValue(e.target.value)}
+                          placeholder="Enter the discount"
+                          min="0"
+                          max="100"
+                          step="0.1"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#050C3A] focus:border-transparent"
+                          autoFocus
+                          onKeyPress={(e) => {
+                            if (e.key === 'Enter') {
+                              handleConfirmDiscount();
+                            }
+                          }}
+                        />
+                      </div>
+
+                      {/* Selected Filters Summary */}
+                      <div className="mb-3 p-2 bg-[#FAF6EB] rounded text-xs">
+                        <p className="font-semibold text-gray-700 mb-1">Selected Filters:</p>
+                        <div className="space-y-0.5 text-gray-600">
+                          {selectedShapes.length > 0 && (
+                            <p><span className="font-medium">Shapes:</span> {selectedShapes.join(", ")}</p>
+                          )}
+                          {selectedColors.length > 0 && (
+                            <p><span className="font-medium">Colors:</span> {selectedColors.join(", ")}</p>
+                          )}
+                          {selectedClarities.length > 0 && (
+                            <p><span className="font-medium">Clarities:</span> {selectedClarities.join(", ")}</p>
+                          )}
+                          {selectedCut && (
+                            <p><span className="font-medium">Cuts:</span> {selectedCut}</p>
+                          )}
+                          {selectedCaratRanges.length > 0 && (
+                            <p><span className="font-medium">Carats:</span> {Math.min(...selectedCaratRanges.map(r => parseFloat(r.min)))} - {Math.max(...selectedCaratRanges.map(r => parseFloat(r.max)))}</p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setShowDiscountModal(false)}
+                          className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors font-medium"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleConfirmDiscount}
+                          className="flex-1 px-4 py-2 bg-[#050C3A] text-white rounded-md hover:bg-[#070d4a] transition-colors font-medium"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 {/* Save Button */}
                 <button
                   onClick={handleApplyFilters}

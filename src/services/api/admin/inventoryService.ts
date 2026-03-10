@@ -171,4 +171,54 @@ export const getSupplierFilters = async (supplierName: string) => {
   }
 };
 
+// Get discount rules for supplier (Admin)
+export const getDiscountRules = async (supplierName: string) => {
+  try {
+    const encodedSupplierName = encodeURIComponent(supplierName);
+    if (!encodedSupplierName) {
+      throw new Error("Supplier name is required");
+    }
+    const response = await apiClient.get(
+      `/api/diamonds/discount-rules/${encodedSupplierName}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Get discount rules error:", error);
+    throw error;
+  }
+};
+
+// Apply discount rules for supplier (Admin)
+export const applyDiscountRules = async (
+  supplierName: string,
+  discountData: {
+    discount: number;
+    shapes?: string[];
+    colors?: string[];
+    carats?: {
+      min: number;
+      max: number;
+    };
+    cuts?: string[];
+    clarities?: string[];
+  }
+) => {
+  try {
+    const encodedSupplierName = encodeURIComponent(supplierName);
+    if (!encodedSupplierName) {
+      throw new Error("Supplier name is required");
+    }
+    // Use longer timeout for discount operations (120 seconds)
+    const response = await apiClient.put(
+      `/api/diamonds/discount-rules/${encodedSupplierName}`,
+      discountData,
+      { timeout: 120000 }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Apply discount rules error:", error);
+    throw error;
+  }
+};
+
 

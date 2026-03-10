@@ -144,4 +144,6 @@ export const inventoryApi = {
     getSuppliers: inventoryService.getSuppliers,
     applySupplierFilters: inventoryService.applySupplierFilters,
     getSupplierFilters: inventoryService.getSupplierFilters,
+    getDiscountRules: inventoryService.getDiscountRules,
+    applyDiscountRules: inventoryService.applyDiscountRules,
 };
