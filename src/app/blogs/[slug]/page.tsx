@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
+import Head from "next/head";
 import { Marcellus, Jost } from "next/font/google";
 import { ArrowLeft, Loader2, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -322,9 +323,15 @@ export default function BlogDetailPage() {
   }
 
   return (
-    <div className="bg-white min-h-screen">
-      {/* Banner Section */}
-      <ArticlesBanner />
+    <>
+      <Head>
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href={`https://www.daliladiamonds.com/blogs/${params.slug}`} />
+      </Head>
+      
+      <div className="bg-white min-h-screen">
+        {/* Banner Section */}
+        <ArticlesBanner />
       
       {/* Back Button */}
       <div className="container mx-auto max-w-7xl px-4 pt-8 pb-6">
@@ -587,5 +594,6 @@ export default function BlogDetailPage() {
         />
       )}
     </div>
+    </>
   );
 }
