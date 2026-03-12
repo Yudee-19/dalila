@@ -103,43 +103,8 @@ export default function BlogDetailPage() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, inventoryDiamonds]);
 
-  // Update document title and meta tags when blog loads
-  useEffect(() => {
-    if (blog) {
-      // Update page title
-      document.title = blog.metaTitle || blog.title || "Blog";
-      
-      // Update meta description
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute(
-          "content",
-          blog.metaDescription || blog.h2Subtitle || blog.title
-        );
-      }
-      
-      // Update Open Graph tags
-      const ogTitle = document.querySelector('meta[property="og:title"]');
-      if (ogTitle) {
-        ogTitle.setAttribute("content", blog.metaTitle || blog.title);
-      }
-      
-      const ogDescription = document.querySelector('meta[property="og:description"]');
-      if (ogDescription) {
-        ogDescription.setAttribute(
-          "content",
-          blog.metaDescription || blog.h2Subtitle || blog.title
-        );
-      }
-      
-      if (blog.featuredImage) {
-        const ogImage = document.querySelector('meta[property="og:image"]');
-        if (ogImage) {
-          ogImage.setAttribute("content", blog.featuredImage);
-        }
-      }
-    }
-  }, [blog]);
+  // Note: Meta tags including canonical are now handled server-side
+  // in layout.tsx using generateMetadata for better SEO
 
   const fetchBlogDetail = async (slug: string) => {
     try {

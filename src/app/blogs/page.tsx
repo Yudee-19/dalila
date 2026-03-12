@@ -75,20 +75,8 @@ export default function BlogsPage() {
   });
   const itemsPerPage = 9;
 
-  // Set page title and meta description for blog listing page
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      document.title = "Blogs & Articles - Dalila Diamonds | Diamond Industry Insights";
-      
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute(
-          "content",
-          "Explore expert insights, industry trends, and educational articles about diamonds. Learn about diamond quality, certification, and the latest in the diamond industry."
-        );
-      }
-    }
-  }, []);
+  // Note: Page title, meta description, and canonical tag are now handled
+  // server-side in layout.tsx for better SEO
 
   useEffect(() => {
     fetchBlogs();
