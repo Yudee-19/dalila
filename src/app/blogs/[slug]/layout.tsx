@@ -1,84 +1,128 @@
 import { Metadata } from 'next';
+import { cache } from 'react';
+import { getBlogSlug } from '@/utils/helpers';
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-type BlogSeoConfig = {
+type BlogSeoData = {
   title: string;
   description: string;
   url: string;
 };
 
-type BlogSchemaConfig = {
+type BlogSchemaData = {
   headline: string;
   description: string;
   url: string;
   image: string;
 };
 
-const BLOG_SEO_CONFIG: Record<string, BlogSeoConfig> = {
-  'how-are-diamonds-formed-dalila-diamond': {
-    title: 'How Are Diamonds Formed? Natural Diamond Formation Guide',
-    description:
-      'Learn how diamonds are formed deep inside the Earth under extreme heat and pressure. Discover the natural process behind diamond creation and their journey to the surface.',
-    url: 'https://www.daliladiamonds.com/blogs/how-are-diamonds-formed-dalila-diamond',
-  },
-  'diamond-sizes-in-mm-complete-ct-to-mm-diamond-conversion-guide': {
-    title: 'Diamond Sizes in MM: Complete Carat to MM Conversion Guide',
-    description:
-      'Explore diamond sizes in mm with our complete carat to mm conversion guide. Learn how diamond carat weight relates to actual size and choose the perfect diamond.',
-    url: 'https://www.daliladiamonds.com/blogs/diamond-sizes-in-mm-complete-ct-to-mm-diamond-conversion-guide',
-  },
-  'top-5-popular-diamond-trading-markets-around-the-world': {
-    title: 'Top 5 Popular Diamond Trading Markets Around the World',
-    description:
-      'Discover the top 5 global diamond trading markets including Antwerp, Dubai, and Mumbai. Learn where diamonds are bought, sold, and traded worldwide.',
-    url: 'https://www.daliladiamonds.com/blogs/top-5-popular-diamond-trading-markets-around-the-world',
-  },
-  'diamond-price-guide': {
-    title: 'Diamond Price Guide: Factors That Affect Diamond Prices',
-    description:
-      'Complete diamond price guide explaining the 4Cs, market trends, and factors that influence diamond value to help you understand how diamonds are priced.',
-    url: 'https://www.daliladiamonds.com/blogs/diamond-price-guide',
-  },
+type BackendBlog = {
+  title: string;
+  customSlug?: string;
+  metaTitle?: string;
+  metaDescription?: string;
+  description?: string;
+  content?: string;
+  featuredImage?: string;
 };
 
-const BLOG_SCHEMA_CONFIG: Record<string, BlogSchemaConfig> = {
-  'how-are-diamonds-formed-dalila-diamond': {
-    headline: 'How Are Diamonds Formed? Natural Diamond Formation Guide',
-    description:
-      'Learn how diamonds are formed deep inside the Earth under extreme heat and pressure. Discover the natural process behind diamond creation and their journey to the surface.',
-    url: 'https://www.daliladiamonds.com/blogs/how-are-diamonds-formed-dalila-diamond',
-    image: 'https://www.daliladiamonds.com/dalila_img/Dalila_Logo.png',
-  },
-  'diamond-sizes-in-mm-complete-ct-to-mm-diamond-conversion-guide': {
-    headline: 'Diamond Sizes in MM: Complete Carat to MM Conversion Guide',
-    description:
-      'Explore diamond sizes in mm with a complete carat to mm conversion guide. Learn how diamond carat weight relates to actual size and measurements.',
-    url: 'https://www.daliladiamonds.com/blogs/diamond-sizes-in-mm-complete-ct-to-mm-diamond-conversion-guide',
-    image: 'https://www.daliladiamonds.com/dalila_img/Dalila_Logo.png',
-  },
-  'top-5-popular-diamond-trading-markets-around-the-world': {
-    headline: 'Top 5 Popular Diamond Trading Markets Around the World',
-    description:
-      'Discover the top diamond trading markets around the world including Antwerp, Dubai, Mumbai, Israel, and Shanghai and their role in the global diamond industry.',
-    url: 'https://www.daliladiamonds.com/blogs/top-5-popular-diamond-trading-markets-around-the-world',
-    image: 'https://www.daliladiamonds.com/dalila_img/Dalila_Logo.png',
-  },
-  'diamond-price-guide': {
-    headline: 'Diamond Price Guide: Factors That Affect Diamond Prices',
-    description:
-      'Complete diamond price guide explaining the 4Cs, market trends, and factors that influence diamond value and pricing.',
-    url: 'https://www.daliladiamonds.com/blogs/diamond-price-guide',
-    image: 'https://www.daliladiamonds.com/dalila_img/Dalila_Logo.png',
-  },
+type BlogsApiResponse = {
+  data?: BackendBlog[];
 };
+
+type BlogSeoSchemaEntry = {
+  seo: BlogSeoData;
+  schema: BlogSchemaData;
+};
+
+const SITE_BASE_URL = 'https://www.daliladiamonds.com';
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'https://dalila-inventory-service-dev.caratlogic.com';
+const DEFAULT_IMAGE = `${SITE_BASE_URL}/dalila_img/Dalila_Logo.png`;
+const DEFAULT_DESCRIPTION = 'Read our latest insights about diamonds and the diamond industry.';
+
+function stripHtml(input: string): string {
+  return input
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function getBestDescription(blog: BackendBlog): string {
+  if (blog.metaDescription && blog.metaDescription.trim()) {
+    return blog.metaDescription.trim();
+  }
+
+  const plain = stripHtml(blog.description || blog.content || '');
+  if (!plain) {
+    return DEFAULT_DESCRIPTION;
+  }
+
+  return plain.length > 200 ? `${plain.slice(0, 197)}...` : plain;
+}
+
+const getBlogs = cache(async (): Promise<BackendBlog[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/blogs`, {
+      next: { revalidate: 600 },
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const payload = (await response.json()) as BlogsApiResponse;
+    return Array.isArray(payload.data) ? payload.data : [];
+  } catch {
+    return [];
+  }
+});
+
+const getBlogSeoSchemaBySlug = cache(async (): Promise<Record<string, BlogSeoSchemaEntry>> => {
+  const blogs = await getBlogs();
+  const entries: Record<string, BlogSeoSchemaEntry> = {};
+
+  for (const blog of blogs) {
+    const slug = getBlogSlug({ title: blog.title, customSlug: blog.customSlug }).replace(/^\/+|\/+$/g, '');
+    const url = `${SITE_BASE_URL}/blogs/${slug}`;
+    const title = blog.metaTitle?.trim() || blog.title || 'Blog Article - Dalila Diamonds';
+    const description = getBestDescription(blog);
+
+    entries[slug] = {
+      seo: {
+        title,
+        description,
+        url,
+      },
+      schema: {
+        headline: blog.title || title,
+        description,
+        url,
+        image: blog.featuredImage?.trim() || DEFAULT_IMAGE,
+      },
+    };
+  }
+
+  return entries;
+});
+
+export async function generateStaticParams() {
+  const blogs = await getBlogs();
+
+  return blogs.map((blog) => ({
+    slug: getBlogSlug({ title: blog.title, customSlug: blog.customSlug }).replace(/^\/+|\/+$/g, ''),
+  }));
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
-  const matchedSeo = BLOG_SEO_CONFIG[normalizedSlug];
+  const blogEntries = await getBlogSeoSchemaBySlug();
+  const matchedSeo = blogEntries[normalizedSlug]?.seo;
 
   if (matchedSeo) {
     return {
@@ -132,7 +176,8 @@ export default async function BlogDetailLayout({
 }) {
   const { slug } = await params;
   const normalizedSlug = slug.replace(/^\/+|\/+$/g, '');
-  const schemaConfig = BLOG_SCHEMA_CONFIG[normalizedSlug];
+  const blogEntries = await getBlogSeoSchemaBySlug();
+  const schemaConfig = blogEntries[normalizedSlug]?.schema;
 
   const blogPostingSchema = schemaConfig
     ? {
