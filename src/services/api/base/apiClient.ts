@@ -36,6 +36,16 @@ apiClient.interceptors.request.use(
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    // Prevent stale cached GET responses without adding custom headers that may cause CORS preflight issues.
+    if (config.method?.toLowerCase() === "get") {
+      const existingParams = (config.params as Record<string, unknown>) || {};
+      config.params = {
+        ...existingParams,
+        _ts: Date.now(),
+      };
+    }
+
     return config;
   },
   (error: AxiosError) => {

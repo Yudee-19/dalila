@@ -10,7 +10,7 @@ interface UseDiamondDataProps {
     filters: FilterParams;
     currentPage: number;
     rowsPerPage: number;
-    isLoggedIn?: boolean; // Add this prop
+    isLoggedIn?: boolean | null;
 }
 
 interface UseDiamondDataReturn {
@@ -32,7 +32,7 @@ export const useDiamondData = ({
     filters,
     currentPage,
     rowsPerPage,
-    isLoggedIn = false,
+    isLoggedIn = null,
 }: UseDiamondDataProps): UseDiamondDataReturn => {
     const [data, setData] = useState<DiamondData[]>([]);
     const [loading, setLoading] = useState(true);
@@ -43,9 +43,17 @@ export const useDiamondData = ({
 
     const prevFetchParamsRef = useRef<string>("");
     const hasLoadedOnce = useRef(false);
+    const activeRequestIdRef = useRef(0);
 
     useEffect(() => {
+        // Wait until auth state is known to avoid firing a public request first.
+        if (isLoggedIn === null) {
+            return;
+        }
+
         const fetchDiamonds = async () => {
+            const requestId = ++activeRequestIdRef.current;
+
             try {
                 setLoading(true);
                 setError(null);
@@ -78,6 +86,11 @@ export const useDiamondData = ({
                 const response = isLoggedIn
                     ? await diamondApi.search(apiFilters)
                     : await diamondApi.getPublic(apiFilters);
+
+                // Ignore outdated responses from earlier requests.
+                if (requestId !== activeRequestIdRef.current) {
+                    return;
+                }
 
                 if (response?.success && response.data) {
                     // Parse response data
@@ -141,6 +154,9 @@ export const useDiamondData = ({
                     hasLoadedOnce.current = true;
                 }
             } catch (err) {
+                if (requestId !== activeRequestIdRef.current) {
+                    return;
+                }
                 console.error("Error fetching diamonds:", err);
                 setError(
                     err instanceof Error
@@ -149,7 +165,9 @@ export const useDiamondData = ({
                 );
                 setData([]);
             } finally {
-                setLoading(false);
+                if (requestId === activeRequestIdRef.current) {
+                    setLoading(false);
+                }
             }
         };
 

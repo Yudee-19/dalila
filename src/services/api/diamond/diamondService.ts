@@ -325,6 +325,7 @@ export const getPublicDiamonds = async (params?: {
 
         const response = await fetch(url, {
             method: "GET",
+            cache: "no-store",
             headers: {
                 "Content-Type": "application/json",
             },

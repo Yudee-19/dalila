@@ -39,22 +39,38 @@ export default function DiamondStockTableWithFilter() {
   const [refreshMessage, setRefreshMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const syncAuthState = () => {
+      if (typeof window === "undefined") return;
+
       const userStr = localStorage.getItem("user");
       const token = localStorage.getItem("authToken");
+
       if (userStr && token) {
         try {
           const user = JSON.parse(userStr);
           setIsAdmin(user.role === "ADMIN" || user.role === "SUPER_ADMIN");
           setIsLoggedIn(true);
+          return;
         } catch {
-          setIsAdmin(false);
-          setIsLoggedIn(false);
+          // fall through to logged-out state
         }
-      } else {
-        setIsLoggedIn(false);
       }
-    }
+
+      setIsAdmin(false);
+      setIsLoggedIn(false);
+    };
+
+    syncAuthState();
+
+    window.addEventListener("storage", syncAuthState);
+    window.addEventListener("user-logged-in", syncAuthState);
+    window.addEventListener("user-logged-out", syncAuthState);
+
+    return () => {
+      window.removeEventListener("storage", syncAuthState);
+      window.removeEventListener("user-logged-in", syncAuthState);
+      window.removeEventListener("user-logged-out", syncAuthState);
+    };
   }, []);
     // Refresh handler
     const handleRefresh = async () => {
