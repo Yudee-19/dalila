@@ -47,22 +47,28 @@ const DiamondStockTable: React.FC<TableProps> = ({
     onSelectionChange,
     clearSelectionTrigger,
 }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
+        const syncAuthState = () => {
+            if (typeof window === "undefined") return;
+
             const userStr = localStorage.getItem("user");
             const token = localStorage.getItem("authToken");
-            if (userStr && token) {
-                try {
-                    setIsLoggedIn(true);
-                } catch {
-                    setIsLoggedIn(false);
-                }
-            } else {
-                setIsLoggedIn(false);
-            }
-        }
+            setIsLoggedIn(Boolean(userStr && token));
+        };
+
+        syncAuthState();
+
+        window.addEventListener("storage", syncAuthState);
+        window.addEventListener("user-logged-in", syncAuthState);
+        window.addEventListener("user-logged-out", syncAuthState);
+
+        return () => {
+            window.removeEventListener("storage", syncAuthState);
+            window.removeEventListener("user-logged-in", syncAuthState);
+            window.removeEventListener("user-logged-out", syncAuthState);
+        };
     }, []);
     // UI State
     const [selectedDiamond, setSelectedDiamond] = useState<DiamondData | null>(

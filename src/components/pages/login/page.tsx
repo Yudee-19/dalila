@@ -119,6 +119,9 @@ export default function LoginPage() {
                         setIsLoading(false);
                         return;
                     }
+
+                    // Notify auth-aware components in the same tab immediately.
+                    window.dispatchEvent(new CustomEvent("user-logged-in"));
                 }
 
                 // UPDATED REDIRECT LOGIC - Check customer data status

@@ -202,6 +202,12 @@ export const useHeaderAuth = (): UseHeaderAuthReturn => {
                 window.dispatchEvent(logoutEvent);
             }
 
+            if (typeof window !== "undefined") {
+                // Force full document reload so next auth session starts from fresh backend data.
+                window.location.href = "/";
+                return;
+            }
+
             router.push("/");
         }
     };
