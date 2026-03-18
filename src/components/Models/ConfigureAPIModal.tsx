@@ -194,8 +194,8 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
   // Handle discount confirmation
   const handleConfirmDiscount = async () => {
     const discount = parseFloat(discountValue);
-    if (isNaN(discount) || discount < 0 || discount > 100) {
-      toast.error("Please enter a valid discount percentage between 0 and 100");
+    if (isNaN(discount)) {
+      toast.error("Please enter a valid numeric discount value");
       return;
     }
 
@@ -649,9 +649,7 @@ const ConfigureAPIModal: React.FC<ConfigureAPIModalProps> = ({
                           type="number"
                           value={discountValue}
                           onChange={(e) => setDiscountValue(e.target.value)}
-                          placeholder="Enter the discount"
-                          min="0"
-                          max="100"
+                          placeholder="Enter discount value"
                           step="0.1"
                           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#050C3A] focus:border-transparent"
                           autoFocus

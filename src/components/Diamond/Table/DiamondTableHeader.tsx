@@ -69,6 +69,7 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 {/* Checkbox Column - Sticky */}
                 {!isPublicApi && (
                     <th
+                        className="md:sticky"
                         style={{
                             ...horizontalStickyHeaderStyle,
                             left: stickyOffsets.checkbox,
@@ -226,9 +227,9 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                     className="text-white text-[14px] font-semibold text-left md:sticky"
                     style={{
                         ...regularHeaderStyle,
-                        width: "60px",
-                        minWidth: "60px",
-                        maxWidth: "60px",
+                        width: "100px",
+                        minWidth: "100px",
+                        maxWidth: "100px",
                     }}
                 >
                     Fluor
@@ -249,18 +250,18 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 {!isPublicApi && (
                     <>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
-                                width: "90px",
-                                minWidth: "90px",
-                                maxWidth: "90px",
+                                width: "100px",
+                                minWidth: "100px",
+                                maxWidth: "100px",
                             }}
                         >
                             Rap
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "75px",
@@ -271,18 +272,18 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                             Disc%
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
-                                width: "90px",
-                                minWidth: "90px",
-                                maxWidth: "90px",
+                                width: "100px",
+                                minWidth: "100px",
+                                maxWidth: "100px",
                             }}
                         >
                             Net Rate
                         </th>
                         <th
-                            className="text-white text-[14px] font-semibold text-left"
+                            className="text-white text-[14px] font-semibold text-left md:sticky"
                             style={{
                                 ...regularHeaderStyle,
                                 width: "100px",
