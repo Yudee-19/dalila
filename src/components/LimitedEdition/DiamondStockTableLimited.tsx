@@ -275,6 +275,8 @@ const DiamondStockTable: React.FC<LimitedTableProps> = ({
                   <th className="w-20 px-2 py-3 text-left text-[14px] font-medium">SW</th>
                   <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Report No</th>
                   <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Report Date</th>
+                  <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Source Type</th>
+                  <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Diamond ID</th>
                   <th className="w-20 px-2 py-3 text-left text-[14px] font-medium">Tinge</th>
                 </tr>
               </thead>
@@ -358,6 +360,8 @@ const DiamondStockTable: React.FC<LimitedTableProps> = ({
                     <td className="px-2 py-1 text-[14px] text-gray-700">{row.SW || "N/A"}</td>
                     <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.REPORT_NO}</td>
                     <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.REPORT_DATE ? new Date(row.REPORT_DATE).toLocaleDateString() : "N/A"}</td>
+                    <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.sourceType || "N/A"}</td>
+                    <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.diamondId || "N/A"}</td>
                     <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.TINGE || "N/A"}</td>
                   </tr>
                 ))}

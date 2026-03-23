@@ -24,6 +24,8 @@ interface InventoryDiamond {
   _id: string;
   STONE_NO: string;
   source: string;
+  sourceType?: string;
+  diamondId?: string;
   SHAPE: string;
   CARATS: string;
   COLOR: string;
@@ -491,6 +493,8 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
                 <th className="w-20 px-2 py-3 text-left text-[14px] font-medium">SW</th>
                 <th className="w-30 px-2 py-3 text-left text-[14px] font-medium">Report No</th>
                 <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Report Date</th>
+                <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Source Type</th>
+                <th className="w-24 px-2 py-3 text-left text-[14px] font-medium">Diamond ID</th>
                 <th className="w-20 px-2 py-3 text-left text-[14px] font-medium">Tinge</th>
                 <th className="w-20 px-2 py-3 text-left text-[14px] font-medium">Girdle</th>
                 <th className="w-20 px-2 py-3 text-left text-[14px] font-medium">Girdle %</th>
@@ -564,6 +568,8 @@ const InventoryDiamondTable: React.FC<InventoryTableProps> = ({
                   <td className="px-2 py-1 text-[14px] text-gray-700 truncate">
                     {row.REPORT_DATE ? new Date(row.REPORT_DATE).toLocaleDateString() : "N/A"}
                   </td>
+                  <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.sourceType || "N/A"}</td>
+                  <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.diamondId || "N/A"}</td>
                   <td className="px-2 py-1 text-[14px] text-gray-700 truncate">{row.TINGE || "N/A"}</td>
                   <td className="px-2 py-1 text-[14px] text-gray-700">{row.GIRDLE || "N/A"}</td>
                   <td className="px-2 py-1 text-[14px] text-gray-700">{row.GIRDLE_PER || "N/A"}</td>
