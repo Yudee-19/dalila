@@ -50,6 +50,8 @@ export interface DiamondData {
     WIDTH?: string;
     DEPTH?: string;
     RATIO?: string;
+    sourceType?: string;
+    diamondId?: string;
 }
 
 export interface FilterParams {

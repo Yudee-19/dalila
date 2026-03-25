@@ -63,6 +63,8 @@ interface InventoryDiamond {
   _id: string;
   STONE_NO: string;
   source: string;
+  sourceType?: string;
+  diamondId?: string;
   SHAPE: string;
   CARATS: string;
   COLOR: string;

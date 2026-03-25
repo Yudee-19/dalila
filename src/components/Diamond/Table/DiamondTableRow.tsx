@@ -636,6 +636,43 @@ export const DiamondTableRow: React.FC<DiamondTableRowProps> = ({
                     ? new Date(diamond.REPORT_DATE).toLocaleDateString()
                     : "N/A"}
             </td>
+
+            {/* Source Type Column */}
+            <td
+                className="text-[14px] text-gray-700"
+                style={{
+                    width: "100px",
+                    minWidth: "100px",
+                    maxWidth: "100px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    border: "none",
+                    margin: 0,
+                    padding: "4px 8px",
+                }}
+            >
+                {diamond.sourceType || "N/A"}
+            </td>
+
+            {/* Diamond ID Column */}
+            <td
+                className="text-[14px] text-gray-700"
+                style={{
+                    width: "120px",
+                    minWidth: "120px",
+                    maxWidth: "120px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    border: "none",
+                    margin: 0,
+                    padding: "4px 8px",
+                }}
+            >
+                {diamond.diamondId || "N/A"}
+            </td>
+
             {!isPublicApi && (
                 <td
                     className="text-[14px] text-gray-700"

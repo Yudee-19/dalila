@@ -503,6 +503,33 @@ export const DiamondTableHeader: React.FC<DiamondTableHeaderProps> = ({
                 >
                     Report Date
                 </th>
+
+                {/* Source Type Column */}
+                <th
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
+                    style={{
+                        ...regularHeaderStyle,
+                        width: "100px",
+                        minWidth: "100px",
+                        maxWidth: "100px",
+                    }}
+                >
+                    Source Type
+                </th>
+
+                {/* Diamond ID Column */}
+                <th
+                    className="text-white text-[14px] font-semibold text-left md:sticky"
+                    style={{
+                        ...regularHeaderStyle,
+                        width: "120px",
+                        minWidth: "120px",
+                        maxWidth: "120px",
+                    }}
+                >
+                    Diamond ID
+                </th>
+
                 {!isPublicApi && (
                     <th
                         className="text-white text-[14px] font-semibold text-left md:sticky"
